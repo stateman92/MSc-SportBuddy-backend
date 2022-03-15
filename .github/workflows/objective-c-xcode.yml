@@ -1,0 +1,20 @@
+name: Build and Analyze
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build and analyse project
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build application
+        run: swift build
+      - name: Test application
+        run: swift test
