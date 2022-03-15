@@ -1,2 +1,2 @@
-# MSc-SportBuddy-backend
+# SportBuddy-backend
 SportBuddy backend app
