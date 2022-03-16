@@ -14,13 +14,8 @@ final class AppTests: XCTestCase {
         DependencyInjector.registerDependencies()
     }
     
-    func testHelloWorld() throws {
-        let app = Application(.testing)
-        defer { app.shutdown() }
-        try app.setup()
-
-        try app.test(.GET, "test", afterResponse: { res in
-            XCTAssertEqual(res.status, .ok)
-        })
+    func testIsTesting() throws {
+        let isTesting = isTesting()
+        XCTAssert(isTesting)
     }
 }
