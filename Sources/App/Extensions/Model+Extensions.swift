@@ -16,13 +16,19 @@ extension Model {
     static func findOrAbort(_ id: Self.IDValue?, on request: Request, status: HTTPResponseStatus = .notFound) -> EventLoopFuture<Self> {
         find(id, on: request.db).unwrapOrAbort(status)
     }
+}
 
+extension Model {
     static func query(on request: Request) -> QueryBuilder<Self> {
         query(on: request.db)
     }
-    
+
     static func queryAll(on request: Request) -> EventLoopFuture<[Self]> {
-        query(on: request.db).all()
+        queryAll(on: request.db)
+    }
+
+    static func queryAll(on database: Database) -> EventLoopFuture<[Self]> {
+        query(on: database).all()
     }
 
     static func queryAll<NewValue>(on request: Request, map: @escaping ([Self]) -> (NewValue)) -> EventLoopFuture<NewValue>{
@@ -33,6 +39,16 @@ extension Model {
         queryAll(on: request).flatMap(flatMap)
     }
 
+    static func queryAll<NewValue>(on database: Database, map: @escaping ([Self]) -> (NewValue)) -> EventLoopFuture<NewValue>{
+        queryAll(on: database).map(map)
+    }
+
+    static func queryAll<NewValue>(on database: Database, flatMap: @escaping ([Self]) -> (EventLoopFuture<NewValue>)) -> EventLoopFuture<NewValue>{
+        queryAll(on: database).flatMap(flatMap)
+    }
+}
+
+extension Model {
     func create(on request: Request) -> EventLoopFuture<Void> {
         create(on: request.db)
     }
@@ -40,11 +56,15 @@ extension Model {
     func create<T>(on request: Request, transformTo instance: @escaping @autoclosure () -> T) -> EventLoopFuture<T> {
         create(on: request).transform(to: instance())
     }
+}
 
+extension Model {
     func delete(force: Bool = false, on request: Request) -> EventLoopFuture<Void> {
         delete(force: force, on: request.db)
     }
+}
 
+extension Model {
     func update(on request: Request) -> EventLoopFuture<Void> {
         update(on: request.db)
     }

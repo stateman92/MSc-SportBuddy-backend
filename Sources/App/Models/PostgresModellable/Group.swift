@@ -9,12 +9,12 @@ import FluentPostgresDriver
 import Foundation
 
 final class Group {
-    typealias IDValue = UUID
-    
     @ID(key: .id) var id: UUID?
     @Field(key: "sportType") var sportType: SportType
     @Field(key: "users") var users: [UUID]
     @Field(key: "groupEntries") var groupEntries: [GroupEntry]
+    @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?
+    @Timestamp(key: "updatedAt", on: .update, format: .iso8601) var updatedAt: Date?
 
     public init(id: UUID?, sportType: SportType, users: [UUID], groupEntries: [GroupEntry]) {
         self.id = id
@@ -30,7 +30,7 @@ extension Group: PostgresModellable {
     }
 
     convenience init() {
-        self.init(id: UUID(), sportType: .athletics, users: .empty, groupEntries: .empty)
+        self.init(id: .init(), sportType: .athletics, users: .empty, groupEntries: .empty)
     }
 
     convenience init(from dto: GroupDTO) {
@@ -38,7 +38,7 @@ extension Group: PostgresModellable {
     }
 
     var dto: GroupDTO {
-        .init(primaryId: id ?? UUID(), sportType: sportType.dto, users: users, groupEntries: groupEntries.map(\.dto))
+        .init(primaryId: id ?? .init(), sportType: sportType.dto, users: users, groupEntries: groupEntries.map(\.dto))
     }
 }
 

@@ -10,16 +10,16 @@ import FluentPostgresDriver
 import Foundation
 
 final class User {
-    typealias IDValue = UUID
-
     @ID(key: .id) var id: UUID?
     @Field(key: "name") var name: String
     @Field(key: "email") var email: String
     @Field(key: "password") var password: String
     @Field(key: "profileImageUrl") var profileImageUrl: String
-    @Field(key: "token") var token: Token?
+    @OptionalField(key: "token") var token: Token?
     @Field(key: "sports") var sports: [SportType]
     @Field(key: "chats") var chats: [UUID]
+    @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?
+    @Timestamp(key: "updatedAt", on: .update, format: .iso8601) var updatedAt: Date?
 
     init(id: UUID?, name: String, email: String, password: String, profileImageUrl: String, token: Token?, sports: [SportType], chats: [UUID]) {
         self.id = id
@@ -39,7 +39,7 @@ extension User: PostgresModellable {
     }
 
     convenience init() {
-        self.init(id: UUID(), name: .empty, email: .empty, password: .empty, profileImageUrl: .empty, token: nil, sports: .empty, chats: .empty)
+        self.init(id: .init(), name: .empty, email: .empty, password: .empty, profileImageUrl: .empty, token: nil, sports: .empty, chats: .empty)
     }
 
     convenience init(from dto: UserDTO) {
@@ -47,7 +47,7 @@ extension User: PostgresModellable {
     }
 
     var dto: UserDTO {
-        .init(primaryId: id ?? UUID(), name: name, email: email, profileImageUrl: profileImageUrl, sports: sports.map(\.dto), chats: chats)
+        .init(primaryId: id ?? .init(), name: name, email: email, profileImageUrl: profileImageUrl, sports: .empty, chats: chats)
     }
 }
 

@@ -5,7 +5,7 @@
 //  Created by Kristof Kalai on 2022. 03. 14..
 //
 
-enum SportType: String, Codable {
+enum SportType: String, Codable, CaseIterable {
     case athletics
     case yoga
     case workout

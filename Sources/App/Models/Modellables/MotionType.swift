@@ -5,7 +5,7 @@
 //  Created by Kristof Kalai on 2022. 03. 14..
 //
 
-enum MotionType: String, Codable {
+enum MotionType: String, Codable, CaseIterable {
     case runningMotion1
     case runningMotion2
     case runningMotion3

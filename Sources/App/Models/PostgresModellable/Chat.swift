@@ -9,11 +9,11 @@ import FluentPostgresDriver
 import Foundation
 
 final class Chat {
-    typealias IDValue = UUID
-
     @ID(key: .id) var id: UUID?
     @Field(key: "users") var users: [UUID]
     @Field(key: "chatEntries") var chatEntries: [ChatEntry]
+    @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?
+    @Timestamp(key: "updatedAt", on: .update, format: .iso8601) var updatedAt: Date?
 
     public init(id: UUID?, users: [UUID], chatEntries: [ChatEntry]) {
         self.id = id
@@ -28,7 +28,7 @@ extension Chat: PostgresModellable {
     }
 
     convenience init() {
-        self.init(id: UUID(), users: .empty, chatEntries: .empty)
+        self.init(id: .init(), users: .empty, chatEntries: .empty)
     }
 
     convenience init(from dto: ChatDTO) {
@@ -36,7 +36,7 @@ extension Chat: PostgresModellable {
     }
 
     var dto: ChatDTO {
-        .init(primaryId: id ?? UUID(), users: users, chatEntries: chatEntries.map(\.dto))
+        .init(primaryId: id ?? .init(), users: users, chatEntries: chatEntries.map(\.dto))
     }
 }
 

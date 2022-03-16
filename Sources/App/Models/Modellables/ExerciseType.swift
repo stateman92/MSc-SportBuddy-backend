@@ -5,7 +5,7 @@
 //  Created by Kristof Kalai on 2022. 03. 14..
 //
 
-enum ExerciseType: String, Codable {
+enum ExerciseType: String, Codable, CaseIterable {
     case highjump
     case running
     case stretching
