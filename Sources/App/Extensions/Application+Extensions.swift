@@ -35,18 +35,20 @@ extension Application {
 
     private func setupMigrations() throws {
         migrations.add(DependencyInjector.resolve() as InitialMigration)
-        try autoMigrate().wait()
+        if !isTesting() {
+            try autoMigrate().wait()
+        }
 
-        try addInitialData()
+        try addInitialData(db)
     }
 
-    private func addInitialData() throws {
-        try User.query(on: db).delete().wait()
-        try ChatEntry.query(on: db).delete().wait()
-        try Chat.query(on: db).delete().wait()
-        try GroupEntry.query(on: db).delete().wait()
-        try Group.query(on: db).delete().wait()
-        try Exercise.query(on: db).delete().wait()
+    private func addInitialData(_ database: Database) throws {
+        try User.query(on: database).delete().wait()
+        try ChatEntry.query(on: database).delete().wait()
+        try Chat.query(on: database).delete().wait()
+        try GroupEntry.query(on: database).delete().wait()
+        try Group.query(on: database).delete().wait()
+        try Exercise.query(on: database).delete().wait()
 
         let firstUser = User(id: UUID(),
                              name: "name1 name1",
@@ -59,7 +61,7 @@ extension Application {
                                       .workout],
                              chats: [UUID(),
                                      UUID()])
-        try firstUser.create(on: db).wait()
+        try firstUser.create(on: database).wait()
 
         let secondUser = User(id: UUID(),
                               name: "name2 name2",
@@ -72,7 +74,7 @@ extension Application {
                                        .yoga],
                               chats: [UUID(),
                                       UUID()])
-        try secondUser.create(on: db).wait()
+        try secondUser.create(on: database).wait()
 
         let thirdUser = User(id: UUID(),
                              name: "name3 name3",
@@ -85,12 +87,12 @@ extension Application {
                                       .yoga],
                              chats: [UUID(),
                                      UUID()])
-        try thirdUser.create(on: db).wait()
+        try thirdUser.create(on: database).wait()
 
         let firstChatEntry = ChatEntry(id: UUID(), message: "Hello!", timestamp: Date().secondsSince1970, sender: firstUser.id!)
-        try firstChatEntry.create(on: db).wait()
+        try firstChatEntry.create(on: database).wait()
         let secondChatEntry = ChatEntry(id: UUID(), message: "Hello there!", timestamp: Date().secondsSince1970, sender: secondUser.id!)
-        try secondChatEntry.create(on: db).wait()
+        try secondChatEntry.create(on: database).wait()
 
         let chat = Chat(id: UUID(),
                         users: [firstUser.id!,
@@ -98,17 +100,17 @@ extension Application {
                                 thirdUser.id!],
                         chatEntries: [firstChatEntry,
                                       secondChatEntry])
-        try chat.create(on: db).wait()
+        try chat.create(on: database).wait()
 
         let firstGroupEntry = GroupEntry(id: UUID(), message: "First group message.", timestamp: Date().secondsSince1970, sender: thirdUser.id!)
-        try firstGroupEntry.create(on: db).wait()
+        try firstGroupEntry.create(on: database).wait()
 
         let group = Group(id: UUID(),
                           sportType: .workout,
                           users: [firstUser.id!,
                                   thirdUser.id!],
                           groupEntries: [firstGroupEntry])
-        try group.create(on: db).wait()
+        try group.create(on: database).wait()
 
         let exercise = Exercise(id: UUID(),
                                 exerciseType: .running,
@@ -116,7 +118,7 @@ extension Application {
                                 exerciseVideoUrl: "exerciseVideoUrl",
                                 fractions: [.init(time: .init(fromTime: 0, toTime: 1), motionType: .runningMotion1),
                                             .init(time: .init(fromTime: 2, toTime: 3), motionType: .runningMotion3)])
-        try exercise.create(on: db).wait()
+        try exercise.create(on: database).wait()
     }
 }
 
