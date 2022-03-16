@@ -7,7 +7,7 @@
 
 import Vapor
 
-final class SecretMiddleware {
+final class SecretMiddleware: Initable {
     var secret: String = .empty
     var header = "secret"
 }

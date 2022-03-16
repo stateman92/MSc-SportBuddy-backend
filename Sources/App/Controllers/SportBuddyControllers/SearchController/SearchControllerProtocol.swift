@@ -8,5 +8,5 @@
 import Vapor
 
 protocol SearchControllerProtocol {
-    func searchUserPost(with req: Request, name: String) throws -> EventLoopFuture<searchUserPostResponse>
+    func searchUserPost(with req: Request, asAuthenticated user: User, name: String) throws -> EventLoopFuture<searchUserPostResponse>
 }

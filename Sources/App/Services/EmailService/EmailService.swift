@@ -17,10 +17,11 @@ extension EmailService: EmailServiceProtocol {
         app.sendgrid.initialize()
     }
 
-    func sendEmail(fromEmail: Email, replyTo: Email?, subject: String?, on request: Request) throws -> EventLoopFuture<Void> {
-        let email = SendGridEmail(from: fromEmail.sendGridEmail,
-                                  replyTo: replyTo?.sendGridEmail,
-                                  subject: subject)
+    func sendEmail(to toEmail: String, fromEmail: String, subject: String?, text: String, on request: Request) throws -> EventLoopFuture<Void> {
+        let email = SendGridEmail(personalizations: [.init(to: [.init(email: toEmail)], subject: subject)],
+                                  from: .init(email: fromEmail),
+                                  subject: subject,
+                                  content: [["type": "text/plain", "value": text], ["type": "text/html", "value": text]])
 
         return try request.application.sendgrid.client.send(email: email, on: request.eventLoop).flatMapError { error in
             if let sendgridError = error as? SendGridError {

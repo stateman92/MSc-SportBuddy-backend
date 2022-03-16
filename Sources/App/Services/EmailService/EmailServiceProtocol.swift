@@ -7,14 +7,17 @@
 
 import Vapor
 
-protocol EmailServiceProtocol {
-    init()
+protocol EmailServiceProtocol: Initable {
     func setup(app: Application)
-    func sendEmail(fromEmail: Email, replyTo: Email?, subject: String?, on request: Request) throws -> EventLoopFuture<Void>
+    func sendEmail(to toEmail: String, fromEmail: String, subject: String?, text: String, on request: Request) throws -> EventLoopFuture<Void>
 }
 
 extension EmailServiceProtocol {
-    func sendEmail(fromEmail: Email, replyTo: Email? = nil, subject: String? = nil, on request: Request) throws -> EventLoopFuture<Void> {
-        try sendEmail(fromEmail: fromEmail, replyTo: replyTo, subject: subject, on: request)
+    func sendEmail(to toEmail: String, fromEmail: String, subject: String? = nil, text: String, on request: Request) throws -> EventLoopFuture<Void> {
+        try sendEmail(to: toEmail, fromEmail: fromEmail, subject: subject, text: text, on: request)
+    }
+
+    func sendPasswordRecoveryEmail(to toEmail: String, on request: Request) throws -> EventLoopFuture<Void> {
+        try sendEmail(to: toEmail, fromEmail: "csakugy202@gmail.com", subject: "Forgotten password on SportBuddy!", text: "Your password is forgotten. :(", on: request)
     }
 }

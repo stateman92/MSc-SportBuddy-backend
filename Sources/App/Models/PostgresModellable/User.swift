@@ -15,7 +15,15 @@ final class User {
     @Field(key: "email") var email: String
     @Field(key: "password") var password: String
     @Field(key: "profileImageUrl") var profileImageUrl: String
-    @OptionalField(key: "token") var token: Token?
+    @Field(key: "token") private var _token: String
+    var token: Token? {
+        get {
+            .init(from: _token)
+        }
+        set {
+            _token = newValue?.encoded ?? .empty
+        }
+    }
     @Field(key: "sports") var sports: [SportType]
     @Field(key: "chats") var chats: [UUID]
     @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?

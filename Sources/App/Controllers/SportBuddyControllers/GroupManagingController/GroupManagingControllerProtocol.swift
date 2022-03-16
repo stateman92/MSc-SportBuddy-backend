@@ -9,6 +9,6 @@ import Vapor
 
 protocol GroupManagingControllerProtocol {
     func groupManagingGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<groupManagingGetResponse>
-    func groupManagingPost(with req: Request, asAuthenticated user: User, groupId: UUID) throws -> EventLoopFuture<groupManagingPostResponse>
-    func groupManagingDelete(with req: Request, asAuthenticated user: User, groupEntryDTOId: UUID) throws -> EventLoopFuture<groupManagingDeleteResponse>
+    func groupManagingPost(with req: Request, asAuthenticated user: User, body: String) throws -> EventLoopFuture<groupManagingPostResponse>
+    func groupManagingDelete(with req: Request, asAuthenticated user: User, body: String) throws -> EventLoopFuture<groupManagingDeleteResponse>
 }

@@ -428,7 +428,7 @@ public protocol BackendApiDelegate {
   /**
   PUT /chat
   Modify a chat message */
-  func chatPut(with req: Request, asAuthenticated user: AuthType, chatEntryDTOId: UUID, modifiedMessage: UUID) throws -> EventLoopFuture<chatPutResponse>
+  func chatPut(with req: Request, asAuthenticated user: AuthType, chatEntryDTOId: UUID, modifiedMessage: String) throws -> EventLoopFuture<chatPutResponse>
   /**
   DELETE /exercise
   Delete an exercise */
@@ -444,7 +444,7 @@ public protocol BackendApiDelegate {
   /**
   PUT /exercise
   Modify an exercise */
-  func exercisePut(with req: Request, asAuthenticated user: AuthType, body: ExerciseDTO, exerciseId: UUID) throws -> EventLoopFuture<exercisePutResponse>
+  func exercisePut(with req: Request, asAuthenticated user: AuthType, body: ExerciseDTO) throws -> EventLoopFuture<exercisePutResponse>
   /**
   POST /forgotPassword
   Send a recovery email to an existing user of the application or an admin */
@@ -460,7 +460,7 @@ public protocol BackendApiDelegate {
   /**
   DELETE /groupManaging
   Leave group */
-  func groupManagingDelete(with req: Request, asAuthenticated user: AuthType, groupEntryDTOId: UUID) throws -> EventLoopFuture<groupManagingDeleteResponse>
+  func groupManagingDelete(with req: Request, asAuthenticated user: AuthType, body: String) throws -> EventLoopFuture<groupManagingDeleteResponse>
   /**
   GET /groupManaging
   Get the list of groups */
@@ -468,7 +468,7 @@ public protocol BackendApiDelegate {
   /**
   POST /groupManaging
   Join a group */
-  func groupManagingPost(with req: Request, asAuthenticated user: AuthType, groupId: UUID) throws -> EventLoopFuture<groupManagingPostResponse>
+  func groupManagingPost(with req: Request, asAuthenticated user: AuthType, body: String) throws -> EventLoopFuture<groupManagingPostResponse>
   /**
   POST /group
   Post a group message */
@@ -492,7 +492,7 @@ public protocol BackendApiDelegate {
   /**
   POST /searchUser
   Search a user */
-  func searchUserPost(with req: Request, name: String) throws -> EventLoopFuture<searchUserPostResponse>
+  func searchUserPost(with req: Request, asAuthenticated user: AuthType, name: String) throws -> EventLoopFuture<searchUserPostResponse>
   /**
   GET /test
   Test */

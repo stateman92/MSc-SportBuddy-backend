@@ -9,7 +9,7 @@ import Fluent
 import FluentPostgresDriver
 import Foundation
 
-struct InitialMigration { }
+struct InitialMigration: Initable { }
 
 extension InitialMigration: Migration {
     func prepare(on database: Database) -> EventLoopFuture<Void> {

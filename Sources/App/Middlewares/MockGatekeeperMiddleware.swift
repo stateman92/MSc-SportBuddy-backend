@@ -7,7 +7,7 @@
 
 import Vapor
 
-final class MockGatekeeperMiddleware { }
+final class MockGatekeeperMiddleware: Initable { }
 
 extension MockGatekeeperMiddleware: Middleware {
     func respond(to request: Request, chainingTo next: Responder) -> EventLoopFuture<Response> {

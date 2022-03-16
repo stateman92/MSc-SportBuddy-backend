@@ -7,7 +7,9 @@
 
 import Vapor
 
-class AuthorizationServiceProtocol {
+class AuthorizationServiceProtocol: Initable {
+    required init() { }
+
     func auth(token: String, request: Request) -> EventLoopFuture<Void> {
         fatalError("AuthorizationServiceProtocol.auth(token:request) must be overridden!")
     }

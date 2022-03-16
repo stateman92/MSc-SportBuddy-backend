@@ -13,7 +13,7 @@ import SendGrid
 extension Application {
     public func setup() throws {
         try setupDatabase()
-        configureMiddlewares()
+//        configureMiddlewares()
         try setupRoutes()
         (DependencyInjector.resolve() as EmailServiceProtocol).setup(app: self)
     }
@@ -55,8 +55,7 @@ extension Application {
                              email: "email email1",
                              password: "password1 password1",
                              profileImageUrl: "profileImageUrl1 profileImageUrl1",
-                             token: Token(token: UUID(),
-                                          tokenGeneratedTime: 123),
+                             token: Token(),
                              sports: [.athletics,
                                       .workout],
                              chats: [UUID(),
@@ -68,8 +67,7 @@ extension Application {
                               email: "email2 email2",
                               password: "password2 password2",
                               profileImageUrl: "profileImageUrl2 profileImageUrl2",
-                              token: Token(token: UUID(),
-                                           tokenGeneratedTime: 123456),
+                              token: Token(),
                               sports: [.athletics,
                                        .yoga],
                               chats: [UUID(),
@@ -81,8 +79,7 @@ extension Application {
                              email: "email3 email3",
                              password: "password3 password3",
                              profileImageUrl: "profileImageUrl3 profileImageUrl3",
-                             token: Token(token: UUID(),
-                                          tokenGeneratedTime: 123456789),
+                             token: Token(),
                              sports: [.workout,
                                       .yoga],
                              chats: [UUID(),
