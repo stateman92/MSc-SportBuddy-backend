@@ -95,8 +95,8 @@ extension Application {
                         users: [firstUser.id!,
                                 secondUser.id!,
                                 thirdUser.id!],
-                        chatEntries: [firstChatEntry,
-                                      secondChatEntry])
+                        chatEntries: [firstChatEntry.id!,
+                                      secondChatEntry.id!])
         try chat.create(on: database).wait()
 
         let firstGroupEntry = GroupEntry(id: UUID(), message: "First group message.", timestamp: Date().secondsSince1970, sender: thirdUser.id!)
@@ -106,7 +106,7 @@ extension Application {
                           sportType: .workout,
                           users: [firstUser.id!,
                                   thirdUser.id!],
-                          groupEntries: [firstGroupEntry])
+                          groupEntries: [firstGroupEntry.id!])
         try group.create(on: database).wait()
 
         let exercise = Exercise(id: UUID(),

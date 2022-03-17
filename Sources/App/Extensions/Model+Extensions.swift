@@ -14,7 +14,30 @@ extension Model {
     }
 
     static func findOrAbort(_ id: Self.IDValue?, on request: Request, status: HTTPResponseStatus = .notFound) -> EventLoopFuture<Self> {
-        find(id, on: request.db).unwrapOrAbort(status)
+        findOrAbort(id, on: request.db)
+    }
+
+    static func findOrAbort(_ id: Self.IDValue?, on database: Database, status: HTTPResponseStatus = .notFound) -> EventLoopFuture<Self> {
+        find(id, on: database).unwrapOrAbort(status)
+    }
+
+    static func findOrAbort<NewValue>(_ id: Self.IDValue?, on request: Request, status: HTTPResponseStatus = .notFound, flatMap: @escaping (Self) -> (EventLoopFuture<NewValue>)) -> EventLoopFuture<NewValue> {
+        findOrAbort(id, on: request.db, status: status, flatMap: flatMap)
+    }
+
+    static func findOrAbort<NewValue>(_ id: Self.IDValue?, on database: Database, status: HTTPResponseStatus = .notFound, flatMap: @escaping (Self) -> (EventLoopFuture<NewValue>)) -> EventLoopFuture<NewValue> {
+        findOrAbort(id, on: database, status: status)
+            .flatMap(flatMap)
+    }
+
+    static func findOrAbortAndDelete(_ id: Self.IDValue?, on request: Request, status: HTTPResponseStatus = .notFound) -> EventLoopFuture<Void> {
+        findOrAbortAndDelete(id, on: request.db, status: status)
+    }
+
+    static func findOrAbortAndDelete(_ id: Self.IDValue?, on database: Database, status: HTTPResponseStatus = .notFound) -> EventLoopFuture<Void> {
+        findOrAbort(id, on: database, status: status, flatMap: {
+            $0.delete(on: database)
+        })
     }
 }
 
@@ -27,16 +50,16 @@ extension Model {
         queryAll(on: request.db)
     }
 
-    static func queryAll(on database: Database) -> EventLoopFuture<[Self]> {
-        query(on: database).all()
-    }
-
     static func queryAll<NewValue>(on request: Request, map: @escaping ([Self]) -> (NewValue)) -> EventLoopFuture<NewValue>{
         queryAll(on: request).map(map)
     }
 
     static func queryAll<NewValue>(on request: Request, flatMap: @escaping ([Self]) -> (EventLoopFuture<NewValue>)) -> EventLoopFuture<NewValue>{
         queryAll(on: request).flatMap(flatMap)
+    }
+
+    static func queryAll(on database: Database) -> EventLoopFuture<[Self]> {
+        query(on: database).all()
     }
 
     static func queryAll<NewValue>(on database: Database, map: @escaping ([Self]) -> (NewValue)) -> EventLoopFuture<NewValue>{
@@ -54,7 +77,11 @@ extension Model {
     }
 
     func create<T>(on request: Request, transformTo instance: @escaping @autoclosure () -> T) -> EventLoopFuture<T> {
-        create(on: request).transform(to: instance())
+        create(on: request.db, transformTo: instance())
+    }
+
+    func create<T>(on database: Database, transformTo instance: @escaping @autoclosure () -> T) -> EventLoopFuture<T> {
+        create(on: database).transform(to: instance())
     }
 }
 

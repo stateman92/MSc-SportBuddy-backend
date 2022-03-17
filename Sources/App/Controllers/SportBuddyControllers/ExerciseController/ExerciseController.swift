@@ -11,9 +11,9 @@ struct ExerciseController { }
 
 extension ExerciseController: ExerciseControllerProtocol {
     func exerciseGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<exerciseGetResponse> {
-        req
-            .eventLoop
-            .makeSucceededFuture(.http400)
+        Exercise
+            .queryAll(on: req)
+            .map { .http200($0.map(\.dto)) }
     }
 
     func exercisePost(with req: Request, asAuthenticated user: User, body: ExerciseDTO) throws -> EventLoopFuture<exercisePostResponse> {
@@ -30,8 +30,7 @@ extension ExerciseController: ExerciseControllerProtocol {
 
     func exerciseDelete(with req: Request, asAuthenticated user: User, exerciseId: UUID) throws -> EventLoopFuture<exerciseDeleteResponse> {
         Exercise
-            .findOrAbort(exerciseId, on: req)
-            .flatMap { $0.delete(on: req) }
+            .findOrAbortAndDelete(exerciseId, on: req)
             .transform(to: .http200)
     }
 }

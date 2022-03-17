@@ -17,12 +17,13 @@ extension ChatController: ChatControllerProtocol {
     }
 
     func chatPost(with req: Request, asAuthenticated user: User, chatId: UUID, message: String) throws -> EventLoopFuture<chatPostResponse> {
-        guard let id = user.id else { return req.eventLoop.future(.http400) }
+        guard let userId = user.id else { return req.eventLoop.future(.http400) }
         return Chat
             .findOrAbort(chatId, on: req)
             .flatMap { chat in
-                let chatEntry = ChatEntry(id: .init(), message: message, timestamp: Date().secondsSince1970, sender: id)
-                chat.chatEntries.append(chatEntry)
+                let id = UUID()
+                let chatEntry = ChatEntry(id: id, message: message, timestamp: Date().secondsSince1970, sender: userId)
+                chat.chatEntries.append(id)
                 return chatEntry
                     .create(on: req)
                     .flatMap { chat.update(on: req) }
@@ -35,20 +36,7 @@ extension ChatController: ChatControllerProtocol {
             .findOrAbort(chatEntryDTOId, on: req)
             .flatMap {
                 $0.message = modifiedMessage
-                return $0.update(on: req)
-            }
-            .flatMap {
-                Chat
-                    .queryAll(on: req)
-                    .map { chats in
-                        guard let chat = chats.first(where: { $0.chatEntries.contains { $0.id == chatEntryDTOId } }) else { return .http200 }
-                        chat.chatEntries.forEach { chatEntry in
-                            if chatEntry.id == chatEntryDTOId {
-                                chatEntry.message = modifiedMessage
-                            }
-                        }
-                        return .http200
-                    }
+                return $0.update(on: req, transformTo: .http200)
             }
     }
 
