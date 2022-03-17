@@ -5,15 +5,18 @@
 //  Created by Kristof Kalai on 2022. 03. 14..
 //
 
+import Resolver
 import Vapor
 import Gatekeeper
 
 public struct DependencyInjector {
-    private static let resolver = DependencyInjection.shared
+    private static let resolver = Resolver()
 }
 
 extension DependencyInjector {
     public static func registerDependencies() {
+        setupDefaultScope()
+
         registerControllers()
         registerServices()
         registerMiddlewares()
@@ -22,6 +25,12 @@ extension DependencyInjector {
 
     public static func resolve<Service>() -> Service {
         resolver.resolve()
+    }
+}
+
+extension DependencyInjector {
+    private static func setupDefaultScope() {
+        Resolver.defaultScope = Resolver.shared
     }
 }
 
