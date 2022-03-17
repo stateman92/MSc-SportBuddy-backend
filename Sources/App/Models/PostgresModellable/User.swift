@@ -18,7 +18,7 @@ final class User {
     @Field(key: "token") private var _token: String
     var token: Token? {
         get {
-            .init(from: _token)
+            Token(from: _token)
         }
         set {
             _token = newValue?.encoded ?? .empty
