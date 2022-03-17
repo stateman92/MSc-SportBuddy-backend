@@ -13,7 +13,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent-postgres-driver.git", .exact("2.2.4")),
         .package(url: "https://github.com/nodes-vapor/gatekeeper.git", .exact("4.2.0")),
         .package(url: "https://github.com/vapor-community/sendgrid.git", .exact("4.0.0")),
-        .package(url: "https://github.com/hmlongco/Resolver.git", from: "1.5.0")
+        .package(url: "https://github.com/hmlongco/Resolver.git", .exact("1.3.0"))
     ],
     targets: [
         .target(
