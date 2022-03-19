@@ -34,8 +34,12 @@ extension UserController: UserControllerProtocol {
             .flatMap {
                 if let user = $0.first(where: { $0.email == email }),
                    self.authenticationService.isValid(password: password, hashedPassword: user.password) {
-                    if let token = user.token, token.isValid(validityDuration: Constants.tokenValidityInterval) {
-                        return req.eventLoop.future(.http200(.init(token: token.token, user: user.dto)))
+                    if var token = user.token, token.isValid(validityDuration: Constants.tokenValidityInterval) {
+                        token.refresh()
+                        user.token = token
+                        return user
+                            .update(on: req)
+                            .transform(to: .http200(.init(token: token.token, user: user.dto)))
                     } else {
                         let token = Token()
                         user.token = token

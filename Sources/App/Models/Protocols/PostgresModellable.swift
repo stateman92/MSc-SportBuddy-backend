@@ -7,4 +7,5 @@
 
 import FluentPostgresDriver
 
+/// A typealias for the `Model` and the `Modellable`.
 typealias PostgresModellable = Modellable & Model

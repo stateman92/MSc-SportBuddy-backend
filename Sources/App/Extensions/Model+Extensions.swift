@@ -98,14 +98,14 @@ extension Model {
 }
 
 extension Model {
-    /// Creates and save the model on the `request`'s database.
+    /// Create and save the model on the `request`'s database.
     /// - Parameter request: the incoming request that has a database attached to.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func create(on request: Request) -> EventLoopFuture<Void> {
         create(on: request.db)
     }
 
-    /// Creates and save the model on the `request`'s database.
+    /// Create and save the model on the `request`'s database.
     /// - Parameter request: the incoming request that has a database attached to.
     /// - Parameter transformTo: a value to that the result of the creation of the model will be transformed.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
@@ -113,7 +113,7 @@ extension Model {
         create(on: request.db, transformTo: instance())
     }
 
-    /// Creates and save the model on the `database`.
+    /// Create and save the model on the `database`.
     /// - Parameter database: the database.
     /// - Parameter transformTo: a value to that the result of the creation of the model will be transformed.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
