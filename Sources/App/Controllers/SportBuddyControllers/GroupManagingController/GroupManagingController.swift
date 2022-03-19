@@ -11,17 +11,18 @@ struct GroupManagingController { }
 
 extension GroupManagingController: GroupManagingControllerProtocol {
     func groupManagingGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<groupManagingGetResponse> {
-        req.eventLoop.makeCompletedFuture(.success(.http200(SportType.allCases.map(\.dto))))
+        Group
+            .queryAll(on: req)
+            .map { .http200($0.map(\.dto)) }
     }
     
-    func groupManagingPost(with req: Request, asAuthenticated user: User, body: String) throws -> EventLoopFuture<groupManagingPostResponse> {
-        guard let sportType = SportType(rawValue: body) else { return req.eventLoop.future(.http400) }
-        return User
+    func groupManagingPost(with req: Request, asAuthenticated user: User, groupId: UUID) throws -> EventLoopFuture<groupManagingPostResponse> {
+        User
             .queryAll(on: req)
             .map { users -> EventLoopFuture<Void> in
                 guard let user = users.first(where: { $0.id == user.id }) else { return req.eventLoop.future() }
-                if !user.sports.contains(sportType) {
-                    user.sports.append(sportType)
+                if !user.groups.contains(groupId) {
+                    user.groups.append(groupId)
                     return user.update(on: req)
                 }
                 return req.eventLoop.future()
@@ -29,14 +30,13 @@ extension GroupManagingController: GroupManagingControllerProtocol {
             .transform(to: .http200)
     }
 
-    func groupManagingDelete(with req: Request, asAuthenticated user: User, body: String) throws -> EventLoopFuture<groupManagingDeleteResponse> {
-        guard let sportType = SportType(rawValue: body) else { return req.eventLoop.future(.http400) }
-        return User
+    func groupManagingDelete(with req: Request, asAuthenticated user: User, groupId: UUID) throws -> EventLoopFuture<groupManagingDeleteResponse> {
+        User
             .queryAll(on: req)
             .map { users -> EventLoopFuture<Void> in
                 guard let user = users.first(where: { $0.id == user.id }) else { return req.eventLoop.future() }
-                if user.sports.contains(sportType) {
-                    user.sports = user.sports.filter { $0 != sportType }
+                if user.groups.contains(groupId) {
+                    user.groups = user.groups.filter { $0 != groupId }
                     return user.update(on: req)
                 }
                 return req.eventLoop.future()

@@ -50,6 +50,13 @@ extension Application {
         try Group.query(on: database).delete().wait()
         try Exercise.query(on: database).delete().wait()
 
+        let firstUserId = UUID()
+        let secondUserId = UUID()
+        let thirdUserId = UUID()
+        let firstGroup = Group(id: UUID(), sportType: .athletics, users: [firstUserId, secondUserId], groupEntries: [])
+        let secondGroup = Group(id: UUID(), sportType: .workout, users: [secondUserId, thirdUserId], groupEntries: [])
+        let thirdGroup = Group(id: UUID(), sportType: .yoga, users: [firstUserId, thirdUserId], groupEntries: [])
+
         let firstChatId = UUID()
         let firstUser = User(id: UUID(),
                              name: "name1 name1",
@@ -57,9 +64,9 @@ extension Application {
                              password: "password1 password1",
                              profileImageUrl: "profileImageUrl1 profileImageUrl1",
                              token: Token(),
-                             sports: [.athletics,
-                                      .workout],
-                             chats: [firstChatId])
+                             chats: [firstChatId],
+                             groups: [firstGroup.id!,
+                                      thirdGroup.id!])
         try firstUser.create(on: database).wait()
 
         let secondUser = User(id: UUID(),
@@ -68,9 +75,9 @@ extension Application {
                               password: "password2 password2",
                               profileImageUrl: "profileImageUrl2 profileImageUrl2",
                               token: Token(),
-                              sports: [.athletics,
-                                       .yoga],
-                              chats: [firstChatId])
+                              chats: [firstChatId],
+                              groups: [firstGroup.id!,
+                                       secondGroup.id!])
         try secondUser.create(on: database).wait()
 
         let thirdUser = User(id: UUID(),
@@ -79,9 +86,9 @@ extension Application {
                              password: "password3 password3",
                              profileImageUrl: "profileImageUrl3 profileImageUrl3",
                              token: Token(),
-                             sports: [.workout,
-                                      .yoga],
-                             chats: [])
+                             chats: [],
+                             groups: [secondGroup.id!,
+                                      thirdGroup.id!])
         try thirdUser.create(on: database).wait()
 
         let firstChatEntry = ChatEntry(id: UUID(), message: "Hello!", timestamp: Date().secondsSince1970, sender: firstUser.id!, deleted: false)

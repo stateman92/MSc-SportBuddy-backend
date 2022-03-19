@@ -23,7 +23,7 @@ extension UserController: UserControllerProtocol {
                     return req.eventLoop.future(.http400)
                 }
                 let token = Token()
-                let user = User(id: UUID(), name: name, email: email, password: hashedPassword, profileImageUrl: .empty, token: token, sports: .empty, chats: .empty)
+                let user = User(id: UUID(), name: name, email: email, password: hashedPassword, profileImageUrl: .empty, token: token, chats: .empty, groups: .empty)
                 return user.create(on: req, transformTo: .http200(UserResponseDTO(token: token.token, user: user.dto)))
             }
     }

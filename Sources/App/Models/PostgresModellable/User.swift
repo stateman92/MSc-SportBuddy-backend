@@ -24,20 +24,20 @@ final class User {
             _token = newValue?.encoded ?? .empty
         }
     }
-    @Field(key: "sports") var sports: [SportType]
     @Field(key: "chats") var chats: [UUID]
+    @Field(key: "groups") var groups: [UUID]
     @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?
     @Timestamp(key: "updatedAt", on: .update, format: .iso8601) var updatedAt: Date?
 
-    init(id: UUID?, name: String, email: String, password: String, profileImageUrl: String, token: Token?, sports: [SportType], chats: [UUID]) {
+    init(id: UUID?, name: String, email: String, password: String, profileImageUrl: String, token: Token?, chats: [UUID], groups: [UUID]) {
         self.id = id
         self.name = name
         self.email = email
         self.password = password
         self.profileImageUrl = profileImageUrl
         self.token = token
-        self.sports = sports
         self.chats = chats
+        self.groups = groups
     }
 }
 
@@ -47,15 +47,15 @@ extension User: PostgresModellable {
     }
 
     convenience init() {
-        self.init(id: .init(), name: .empty, email: .empty, password: .empty, profileImageUrl: .empty, token: nil, sports: .empty, chats: .empty)
+        self.init(id: .init(), name: .empty, email: .empty, password: .empty, profileImageUrl: .empty, token: nil, chats: .empty, groups: .empty)
     }
 
     convenience init(from dto: UserDTO) {
-        self.init(id: dto.primaryId, name: dto.name, email: dto.email, password: .empty, profileImageUrl: dto.profileImageUrl ?? .empty, token: nil, sports: dto.sports.map(\.model), chats: dto.chats)
+        self.init(id: dto.primaryId, name: dto.name, email: dto.email, password: .empty, profileImageUrl: dto.profileImageUrl ?? .empty, token: nil, chats: dto.chats, groups: dto.groups)
     }
 
     var dto: UserDTO {
-        .init(primaryId: id ?? .init(), name: name, email: email, profileImageUrl: profileImageUrl, sports: .empty, chats: chats)
+        .init(primaryId: id ?? .init(), name: name, email: email, profileImageUrl: profileImageUrl, chats: chats, groups: groups)
     }
 }
 

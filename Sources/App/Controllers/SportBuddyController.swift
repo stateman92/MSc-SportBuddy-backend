@@ -71,7 +71,7 @@ extension SportBuddyController {
         try groupController.groupPost(with: req, asAuthenticated: user, groupId: groupId, message: message)
     }
 
-    func groupPut(with req: Request, asAuthenticated user: User, groupEntryDTOId: UUID, modifiedMessage: UUID) throws -> EventLoopFuture<groupPutResponse> {
+    func groupPut(with req: Request, asAuthenticated user: User, groupEntryDTOId: UUID, modifiedMessage: String) throws -> EventLoopFuture<groupPutResponse> {
         try groupController.groupPut(with: req, asAuthenticated: user, groupEntryDTOId: groupEntryDTOId, modifiedMessage: modifiedMessage)
     }
 
@@ -113,11 +113,11 @@ extension SportBuddyController {
         try groupManagingController.groupManagingGet(with: req, asAuthenticated: user)
     }
 
-    func groupManagingDelete(with req: Request, asAuthenticated user: User, body: String) throws -> EventLoopFuture<groupManagingDeleteResponse> {
-        try groupManagingController.groupManagingDelete(with: req, asAuthenticated: user, body: body)
+    func groupManagingDelete(with req: Request, asAuthenticated user: User, groupId: UUID) throws -> EventLoopFuture<groupManagingDeleteResponse> {
+        try groupManagingController.groupManagingDelete(with: req, asAuthenticated: user, groupId: groupId)
     }
 
-    func groupManagingPost(with req: Request, asAuthenticated user: User, body: String) throws -> EventLoopFuture<groupManagingPostResponse> {
-        try groupManagingController.groupManagingPost(with: req, asAuthenticated: user, body: body)
+    func groupManagingPost(with req: Request, asAuthenticated user: User, groupId: UUID) throws -> EventLoopFuture<groupManagingPostResponse> {
+        try groupManagingController.groupManagingPost(with: req, asAuthenticated: user, groupId: groupId)
     }
 }

@@ -257,7 +257,7 @@ public enum groupManagingDeleteResponse: ResponseEncodable {
 
 
 public enum groupManagingGetResponse: ResponseEncodable {
-  case http200([SportTypeDTO])
+  case http200([GroupDTO])
   case http400
 
   public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
@@ -502,7 +502,7 @@ public protocol BackendApiDelegate {
   /**
   DELETE /groupManaging
   Leave group */
-  func groupManagingDelete(with req: Request, asAuthenticated user: AuthType, body: String) throws -> EventLoopFuture<groupManagingDeleteResponse>
+  func groupManagingDelete(with req: Request, asAuthenticated user: AuthType, groupId: UUID) throws -> EventLoopFuture<groupManagingDeleteResponse>
   /**
   GET /groupManaging
   Get the list of groups */
@@ -510,7 +510,7 @@ public protocol BackendApiDelegate {
   /**
   POST /groupManaging
   Join a group */
-  func groupManagingPost(with req: Request, asAuthenticated user: AuthType, body: String) throws -> EventLoopFuture<groupManagingPostResponse>
+  func groupManagingPost(with req: Request, asAuthenticated user: AuthType, groupId: UUID) throws -> EventLoopFuture<groupManagingPostResponse>
   /**
   PATCH /group
   Undo message deletion */
@@ -522,7 +522,7 @@ public protocol BackendApiDelegate {
   /**
   PUT /group
   Modify a group message */
-  func groupPut(with req: Request, asAuthenticated user: AuthType, groupEntryDTOId: UUID, modifiedMessage: UUID) throws -> EventLoopFuture<groupPutResponse>
+  func groupPut(with req: Request, asAuthenticated user: AuthType, groupEntryDTOId: UUID, modifiedMessage: String) throws -> EventLoopFuture<groupPutResponse>
   /**
   POST /login
   Login an existing user of the application or an admin */

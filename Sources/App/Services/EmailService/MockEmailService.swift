@@ -14,7 +14,7 @@ struct MockEmailService {
 extension MockEmailService: EmailServiceProtocol {
     func setup(app: Application) { }
 
-    func sendEmail(fromEmail: Email, replyTo: Email?, subject: String?, on request: Request) throws -> EventLoopFuture<Void> {
+    func sendEmail(to toEmail: String, fromEmail: String, subject: String?, text: String, on request: Request) throws -> EventLoopFuture<Void> {
         request.eventLoop.makeSucceededVoidFuture()
     }
 }
