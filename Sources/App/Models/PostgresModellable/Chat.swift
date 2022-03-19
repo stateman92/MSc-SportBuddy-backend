@@ -42,9 +42,9 @@ extension Chat: PostgresModellable {
 
 extension Chat {
     func dto(with chatEntries: [ChatEntryDTO]) -> ChatDTO {
-        let dto = dto
-        dto.chatEntries = chatEntries
-        return dto
+        let modifiedDto = dto
+        modifiedDto.chatEntries = chatEntries
+        return modifiedDto
     }
 }
 

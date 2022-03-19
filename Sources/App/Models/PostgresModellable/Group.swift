@@ -42,6 +42,14 @@ extension Group: PostgresModellable {
     }
 }
 
+extension Group {
+    func dto(with groupEntries: [GroupEntryDTO]) -> GroupDTO {
+        let modifiedDto = dto
+        modifiedDto.groupEntries = groupEntries
+        return modifiedDto
+    }
+}
+
 extension GroupDTO {
     var model: Group {
         .init(from: self)
