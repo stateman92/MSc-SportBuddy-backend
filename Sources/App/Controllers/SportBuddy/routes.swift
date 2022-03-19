@@ -44,11 +44,14 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     return try backend.chatDelete(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatEntryDTOId: chatEntryDTOId)
   }
   groupForBearer.on(.GET, "/chat".asPathComponents) { (request: Request) -> EventLoopFuture<chatGetResponse> in
-    let chatIdOptional = try? request.query.get(UUID.self, at: "chatId")
-    guard let chatId = chatIdOptional else {
-      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter chatId")
+    return try backend.chatGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
+  }
+  groupForBearer.on(.PATCH, "/chat".asPathComponents) { (request: Request) -> EventLoopFuture<chatPatchResponse> in
+    let chatEntryDTOIdOptional = try? request.query.get(UUID.self, at: "chatEntryDTOId")
+    guard let chatEntryDTOId = chatEntryDTOIdOptional else {
+      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter chatEntryDTOId")
     }
-    return try backend.chatGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatId: chatId)
+    return try backend.chatPatch(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatEntryDTOId: chatEntryDTOId)
   }
   groupForBearer.on(.POST, "/chat".asPathComponents) { (request: Request) -> EventLoopFuture<chatPostResponse> in
     let chatIdOptional = try? request.query.get(UUID.self, at: "chatId")
@@ -105,11 +108,7 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     return try backend.groupDelete(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), groupEntryDTOId: groupEntryDTOId)
   }
   groupForBearer.on(.GET, "/group".asPathComponents) { (request: Request) -> EventLoopFuture<groupGetResponse> in
-    let groupIdOptional = try? request.query.get(UUID.self, at: "groupId")
-    guard let groupId = groupIdOptional else {
-      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter groupId")
-    }
-    return try backend.groupGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), groupId: groupId)
+    return try backend.groupGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
   }
   groupForBearer.on(.DELETE, "/groupManaging".asPathComponents) { (request: Request) -> EventLoopFuture<groupManagingDeleteResponse> in
     let body = try request.content.decode(String.self)
@@ -121,6 +120,13 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
   groupForBearer.on(.POST, "/groupManaging".asPathComponents) { (request: Request) -> EventLoopFuture<groupManagingPostResponse> in
     let body = try request.content.decode(String.self)
     return try backend.groupManagingPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
+  }
+  groupForBearer.on(.PATCH, "/group".asPathComponents) { (request: Request) -> EventLoopFuture<groupPatchResponse> in
+    let groupEntryDTOIdOptional = try? request.query.get(UUID.self, at: "groupEntryDTOId")
+    guard let groupEntryDTOId = groupEntryDTOIdOptional else {
+      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter groupEntryDTOId")
+    }
+    return try backend.groupPatch(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), groupEntryDTOId: groupEntryDTOId)
   }
   groupForBearer.on(.POST, "/group".asPathComponents) { (request: Request) -> EventLoopFuture<groupPostResponse> in
     let groupIdOptional = try? request.query.get(UUID.self, at: "groupId")
@@ -177,11 +183,14 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     return try backend.chatDelete(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatEntryDTOId: chatEntryDTOId)
   }
   groupForBearer.on(.GET, "/chat".asPathComponents) { (request: Request) -> EventLoopFuture<chatGetResponse> in
-    let chatIdOptional = try? request.query.get(UUID.self, at: "chatId")
-    guard let chatId = chatIdOptional else {
-      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter chatId")
+    return try backend.chatGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
+  }
+  groupForBearer.on(.PATCH, "/chat".asPathComponents) { (request: Request) -> EventLoopFuture<chatPatchResponse> in
+    let chatEntryDTOIdOptional = try? request.query.get(UUID.self, at: "chatEntryDTOId")
+    guard let chatEntryDTOId = chatEntryDTOIdOptional else {
+      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter chatEntryDTOId")
     }
-    return try backend.chatGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatId: chatId)
+    return try backend.chatPatch(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatEntryDTOId: chatEntryDTOId)
   }
   groupForBearer.on(.POST, "/chat".asPathComponents) { (request: Request) -> EventLoopFuture<chatPostResponse> in
     let chatIdOptional = try? request.query.get(UUID.self, at: "chatId")
@@ -238,11 +247,7 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     return try backend.groupDelete(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), groupEntryDTOId: groupEntryDTOId)
   }
   groupForBearer.on(.GET, "/group".asPathComponents) { (request: Request) -> EventLoopFuture<groupGetResponse> in
-    let groupIdOptional = try? request.query.get(UUID.self, at: "groupId")
-    guard let groupId = groupIdOptional else {
-      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter groupId")
-    }
-    return try backend.groupGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), groupId: groupId)
+    return try backend.groupGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
   }
   groupForBearer.on(.DELETE, "/groupManaging".asPathComponents) { (request: Request) -> EventLoopFuture<groupManagingDeleteResponse> in
     let body = try request.content.decode(String.self)
@@ -254,6 +259,13 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
   groupForBearer.on(.POST, "/groupManaging".asPathComponents) { (request: Request) -> EventLoopFuture<groupManagingPostResponse> in
     let body = try request.content.decode(String.self)
     return try backend.groupManagingPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
+  }
+  groupForBearer.on(.PATCH, "/group".asPathComponents) { (request: Request) -> EventLoopFuture<groupPatchResponse> in
+    let groupEntryDTOIdOptional = try? request.query.get(UUID.self, at: "groupEntryDTOId")
+    guard let groupEntryDTOId = groupEntryDTOIdOptional else {
+      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter groupEntryDTOId")
+    }
+    return try backend.groupPatch(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), groupEntryDTOId: groupEntryDTOId)
   }
   groupForBearer.on(.POST, "/group".asPathComponents) { (request: Request) -> EventLoopFuture<groupPostResponse> in
     let groupIdOptional = try? request.query.get(UUID.self, at: "groupId")
@@ -325,11 +337,14 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     return try backend.chatDelete(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatEntryDTOId: chatEntryDTOId)
   }
   groupForBearer.on(.GET, "/chat".asPathComponents) { (request: Request) -> EventLoopFuture<chatGetResponse> in
-    let chatIdOptional = try? request.query.get(UUID.self, at: "chatId")
-    guard let chatId = chatIdOptional else {
-      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter chatId")
+    return try backend.chatGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
+  }
+  groupForBearer.on(.PATCH, "/chat".asPathComponents) { (request: Request) -> EventLoopFuture<chatPatchResponse> in
+    let chatEntryDTOIdOptional = try? request.query.get(UUID.self, at: "chatEntryDTOId")
+    guard let chatEntryDTOId = chatEntryDTOIdOptional else {
+      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter chatEntryDTOId")
     }
-    return try backend.chatGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatId: chatId)
+    return try backend.chatPatch(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatEntryDTOId: chatEntryDTOId)
   }
   groupForBearer.on(.POST, "/chat".asPathComponents) { (request: Request) -> EventLoopFuture<chatPostResponse> in
     let chatIdOptional = try? request.query.get(UUID.self, at: "chatId")
@@ -371,11 +386,7 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     return try backend.groupDelete(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), groupEntryDTOId: groupEntryDTOId)
   }
   groupForBearer.on(.GET, "/group".asPathComponents) { (request: Request) -> EventLoopFuture<groupGetResponse> in
-    let groupIdOptional = try? request.query.get(UUID.self, at: "groupId")
-    guard let groupId = groupIdOptional else {
-      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter groupId")
-    }
-    return try backend.groupGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), groupId: groupId)
+    return try backend.groupGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
   }
   groupForBearer.on(.DELETE, "/groupManaging".asPathComponents) { (request: Request) -> EventLoopFuture<groupManagingDeleteResponse> in
     let body = try request.content.decode(String.self)
@@ -387,6 +398,13 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
   groupForBearer.on(.POST, "/groupManaging".asPathComponents) { (request: Request) -> EventLoopFuture<groupManagingPostResponse> in
     let body = try request.content.decode(String.self)
     return try backend.groupManagingPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
+  }
+  groupForBearer.on(.PATCH, "/group".asPathComponents) { (request: Request) -> EventLoopFuture<groupPatchResponse> in
+    let groupEntryDTOIdOptional = try? request.query.get(UUID.self, at: "groupEntryDTOId")
+    guard let groupEntryDTOId = groupEntryDTOIdOptional else {
+      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter groupEntryDTOId")
+    }
+    return try backend.groupPatch(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), groupEntryDTOId: groupEntryDTOId)
   }
   groupForBearer.on(.POST, "/group".asPathComponents) { (request: Request) -> EventLoopFuture<groupPostResponse> in
     let groupIdOptional = try? request.query.get(UUID.self, at: "groupId")

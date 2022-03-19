@@ -39,6 +39,32 @@ extension Model {
             $0.delete(on: database)
         })
     }
+
+    static func findOrAbortAndModify(_ id: Self.IDValue?, on request: Request, status: HTTPResponseStatus = .notFound, modify: @escaping (Self) -> Void) -> EventLoopFuture<Void> {
+        findOrAbortAndModify(id, on: request.db, status: status, modify: modify)
+    }
+
+    static func findOrAbortAndModify(_ id: Self.IDValue?, on database: Database, status: HTTPResponseStatus = .notFound, modify: @escaping (Self) -> Void) -> EventLoopFuture<Void> {
+        Self
+            .findOrAbort(id, on: database)
+            .flatMap {
+                modify($0)
+                return $0.update(on: database)
+            }
+    }
+
+    static func findOrAbortAndModifyThenTransform<NewValue>(_ id: Self.IDValue?, on request: Request, status: HTTPResponseStatus = .notFound, modify: @escaping (Self) -> Void, transformTo: NewValue) -> EventLoopFuture<NewValue> {
+        findOrAbortAndModifyThenTransform(id, on: request.db, status: status, modify: modify, transformTo: transformTo)
+    }
+
+    static func findOrAbortAndModifyThenTransform<NewValue>(_ id: Self.IDValue?, on database: Database, status: HTTPResponseStatus = .notFound, modify: @escaping (Self) -> Void, transformTo: NewValue) -> EventLoopFuture<NewValue> {
+        Self
+            .findOrAbort(id, on: database)
+            .flatMap {
+                modify($0)
+                return $0.update(on: database, transformTo: transformTo)
+            }
+    }
 }
 
 extension Model {
@@ -72,14 +98,25 @@ extension Model {
 }
 
 extension Model {
+    /// Creates and save the model on the `request`'s database.
+    /// - Parameter request: the incoming request that has a database attached to.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func create(on request: Request) -> EventLoopFuture<Void> {
         create(on: request.db)
     }
 
+    /// Creates and save the model on the `request`'s database.
+    /// - Parameter request: the incoming request that has a database attached to.
+    /// - Parameter transformTo: a value to that the result of the creation of the model will be transformed.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func create<T>(on request: Request, transformTo instance: @escaping @autoclosure () -> T) -> EventLoopFuture<T> {
         create(on: request.db, transformTo: instance())
     }
 
+    /// Creates and save the model on the `database`.
+    /// - Parameter database: the database.
+    /// - Parameter transformTo: a value to that the result of the creation of the model will be transformed.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func create<T>(on database: Database, transformTo instance: @escaping @autoclosure () -> T) -> EventLoopFuture<T> {
         create(on: database).transform(to: instance())
     }
@@ -97,6 +134,10 @@ extension Model {
     }
 
     func update<T>(on request: Request, transformTo instance: @escaping @autoclosure () -> T) -> EventLoopFuture<T> {
-        update(on: request).transform(to: instance())
+        update(on: request.db, transformTo: instance())
+    }
+
+    func update<T>(on database: Database, transformTo instance: @escaping @autoclosure () -> T) -> EventLoopFuture<T> {
+        update(on: database).transform(to: instance())
     }
 }

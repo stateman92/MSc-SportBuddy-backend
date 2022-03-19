@@ -10,7 +10,7 @@ import Vapor
 struct GroupController { }
 
 extension GroupController: GroupControllerProtocol {
-    func groupGet(with req: Request, asAuthenticated user: User, groupId: UUID) throws -> EventLoopFuture<groupGetResponse> {
+    func groupGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<groupGetResponse> {
         req.eventLoop.makeSucceededFuture(.http400)
     }
 
@@ -23,6 +23,9 @@ extension GroupController: GroupControllerProtocol {
     }
 
     func groupDelete(with req: Request, asAuthenticated user: User, groupEntryDTOId: UUID) throws -> EventLoopFuture<groupDeleteResponse> {
+        req.eventLoop.makeSucceededFuture(.http400)
+    }
+    func groupPatch(with req: Request, asAuthenticated user: User, groupEntryDTOId: UUID) throws -> EventLoopFuture<groupPatchResponse> {
         req.eventLoop.makeSucceededFuture(.http400)
     }
 }

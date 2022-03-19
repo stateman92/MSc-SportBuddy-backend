@@ -40,6 +40,14 @@ extension Chat: PostgresModellable {
     }
 }
 
+extension Chat {
+    func dto(with chatEntries: [ChatEntryDTO]) -> ChatDTO {
+        let dto = dto
+        dto.chatEntries = chatEntries
+        return dto
+    }
+}
+
 extension ChatDTO {
     var model: Chat {
         .init(from: self)

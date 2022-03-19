@@ -23,8 +23,8 @@ extension SportBuddyController {
 }
 
 extension SportBuddyController {
-    func chatGet(with req: Request, asAuthenticated user: User, chatId: UUID) throws -> EventLoopFuture<chatGetResponse> {
-        try chatController.chatGet(with: req, asAuthenticated: user, chatId: chatId)
+    func chatGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<chatGetResponse> {
+        try chatController.chatGet(with: req, asAuthenticated: user)
     }
 
     func chatPost(with req: Request, asAuthenticated user: User, chatId: UUID, message: String) throws -> EventLoopFuture<chatPostResponse> {
@@ -37,6 +37,10 @@ extension SportBuddyController {
 
     func chatDelete(with req: Request, asAuthenticated user: User, chatEntryDTOId: UUID) throws -> EventLoopFuture<chatDeleteResponse> {
         try chatController.chatDelete(with: req, asAuthenticated: user, chatEntryDTOId: chatEntryDTOId)
+    }
+
+    func chatPatch(with req: Request, asAuthenticated user: User, chatEntryDTOId: UUID) throws -> EventLoopFuture<chatPatchResponse> {
+        try chatController.chatPatch(with: req, asAuthenticated: user, chatEntryDTOId: chatEntryDTOId)
     }
 }
 
@@ -59,8 +63,8 @@ extension SportBuddyController {
 }
 
 extension SportBuddyController {
-    func groupGet(with req: Request, asAuthenticated user: User, groupId: UUID) throws -> EventLoopFuture<groupGetResponse> {
-        try groupController.groupGet(with: req, asAuthenticated: user, groupId: groupId)
+    func groupGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<groupGetResponse> {
+        try groupController.groupGet(with: req, asAuthenticated: user)
     }
 
     func groupPost(with req: Request, asAuthenticated user: User, groupId: UUID, message: String) throws -> EventLoopFuture<groupPostResponse> {
@@ -73,6 +77,10 @@ extension SportBuddyController {
 
     func groupDelete(with req: Request, asAuthenticated user: User, groupEntryDTOId: UUID) throws -> EventLoopFuture<groupDeleteResponse> {
         try groupController.groupDelete(with: req, asAuthenticated: user, groupEntryDTOId: groupEntryDTOId)
+    }
+
+    func groupPatch(with req: Request, asAuthenticated user: User, groupEntryDTOId: UUID) throws -> EventLoopFuture<groupPatchResponse> {
+        try groupController.groupPatch(with: req, asAuthenticated: user, groupEntryDTOId: groupEntryDTOId)
     }
 }
 

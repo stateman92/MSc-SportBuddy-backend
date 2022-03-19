@@ -13,7 +13,7 @@ import SendGrid
 extension Application {
     public func setup() throws {
         try setupDatabase()
-//        configureMiddlewares()
+        configureMiddlewares()
         try setupRoutes()
         (DependencyInjector.resolve() as EmailServiceProtocol).setup(app: self)
     }
@@ -50,6 +50,7 @@ extension Application {
         try Group.query(on: database).delete().wait()
         try Exercise.query(on: database).delete().wait()
 
+        let firstChatId = UUID()
         let firstUser = User(id: UUID(),
                              name: "name1 name1",
                              email: "email email1",
@@ -58,8 +59,7 @@ extension Application {
                              token: Token(),
                              sports: [.athletics,
                                       .workout],
-                             chats: [UUID(),
-                                     UUID()])
+                             chats: [firstChatId])
         try firstUser.create(on: database).wait()
 
         let secondUser = User(id: UUID(),
@@ -70,8 +70,7 @@ extension Application {
                               token: Token(),
                               sports: [.athletics,
                                        .yoga],
-                              chats: [UUID(),
-                                      UUID()])
+                              chats: [firstChatId])
         try secondUser.create(on: database).wait()
 
         let thirdUser = User(id: UUID(),
@@ -82,16 +81,15 @@ extension Application {
                              token: Token(),
                              sports: [.workout,
                                       .yoga],
-                             chats: [UUID(),
-                                     UUID()])
+                             chats: [])
         try thirdUser.create(on: database).wait()
 
-        let firstChatEntry = ChatEntry(id: UUID(), message: "Hello!", timestamp: Date().secondsSince1970, sender: firstUser.id!)
+        let firstChatEntry = ChatEntry(id: UUID(), message: "Hello!", timestamp: Date().secondsSince1970, sender: firstUser.id!, deleted: false)
         try firstChatEntry.create(on: database).wait()
-        let secondChatEntry = ChatEntry(id: UUID(), message: "Hello there!", timestamp: Date().secondsSince1970, sender: secondUser.id!)
+        let secondChatEntry = ChatEntry(id: UUID(), message: "Hello there!", timestamp: Date().secondsSince1970, sender: secondUser.id!, deleted: false)
         try secondChatEntry.create(on: database).wait()
 
-        let chat = Chat(id: UUID(),
+        let chat = Chat(id: firstChatId,
                         users: [firstUser.id!,
                                 secondUser.id!,
                                 thirdUser.id!],
@@ -99,7 +97,7 @@ extension Application {
                                       secondChatEntry.id!])
         try chat.create(on: database).wait()
 
-        let firstGroupEntry = GroupEntry(id: UUID(), message: "First group message.", timestamp: Date().secondsSince1970, sender: thirdUser.id!)
+        let firstGroupEntry = GroupEntry(id: UUID(), message: "First group message.", timestamp: Date().secondsSince1970, sender: thirdUser.id!, deleted: false)
         try firstGroupEntry.create(on: database).wait()
 
         let group = Group(id: UUID(),
