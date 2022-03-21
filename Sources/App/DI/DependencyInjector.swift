@@ -40,7 +40,7 @@ extension DependencyInjector {
 
         resolver.register(ChatControllerProtocol.self) { ChatController() }
         resolver.register(ExerciseControllerProtocol.self) { ExerciseController() }
-        resolver.register(ExerciseControllerProtocol.self) { ExerciseController() }
+        resolver.register(GroupControllerProtocol.self) { GroupController() }
         resolver.register(UserControllerProtocol.self) { UserController() }
         resolver.register(SearchControllerProtocol.self) { SearchController() }
         resolver.register(GroupManagingControllerProtocol.self) { GroupManagingController() }

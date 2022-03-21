@@ -16,6 +16,7 @@ extension Application {
         configureMiddlewares()
         try setupRoutes()
         (DependencyInjector.resolve() as EmailServiceProtocol).setup(app: self)
+        reigsterRepositories()
     }
 }
 
@@ -107,12 +108,9 @@ extension Application {
         let firstGroupEntry = GroupEntry(id: UUID(), message: "First group message.", timestamp: Date().secondsSince1970, sender: thirdUser.id!, deleted: false)
         try firstGroupEntry.create(on: database).wait()
 
-        let group = Group(id: UUID(),
-                          sportType: .workout,
-                          users: [firstUser.id!,
-                                  thirdUser.id!],
-                          groupEntries: [firstGroupEntry.id!])
-        try group.create(on: database).wait()
+        try firstGroup.create(on: database).wait()
+        try secondGroup.create(on: database).wait()
+        try thirdGroup.create(on: database).wait()
 
         let exercise = Exercise(id: UUID(),
                                 exerciseType: .running,
@@ -140,6 +138,26 @@ extension Application {
 
     private func configureCorsPolicy() {
         middleware.use(DependencyInjector.resolve() as CORSMiddleware, at: .beginning)
+    }
+}
+
+extension Application {
+    private func reigsterRepositories() {
+        if isTesting() {
+            repositories.register(.chats) { MockRepository<Chat>(req: $0) }
+            repositories.register(.chatEntries) { MockRepository<ChatEntry>(req: $0) }
+            repositories.register(.exercises) { MockRepository<Exercise>(req: $0) }
+            repositories.register(.groups) { MockRepository<Group>(req: $0) }
+            repositories.register(.groupEntries) { MockRepository<GroupEntry>(req: $0) }
+            repositories.register(.users) { MockRepository<User>(req: $0) }
+        } else {
+            repositories.register(.chats) { Repository<Chat>(req: $0) }
+            repositories.register(.chatEntries) { Repository<ChatEntry>(req: $0) }
+            repositories.register(.exercises) { Repository<Exercise>(req: $0) }
+            repositories.register(.groups) { Repository<Group>(req: $0) }
+            repositories.register(.groupEntries) { Repository<GroupEntry>(req: $0) }
+            repositories.register(.users) { Repository<User>(req: $0) }
+        }
     }
 }
 
