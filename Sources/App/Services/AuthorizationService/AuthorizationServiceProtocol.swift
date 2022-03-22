@@ -25,7 +25,7 @@ class AuthorizationServiceProtocol: Initable {
 extension AuthorizationServiceProtocol: BearerAuthenticator {
     /// Authenticate the incoming request.
     /// - Parameter bearer: the authentication object.
-    /// - Parameter for: the request.
+    /// - Parameter request: the request.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func authenticate(bearer: BearerAuthorization, for request: Request) -> EventLoopFuture<Void> {
         auth(token: bearer.token, req: request)

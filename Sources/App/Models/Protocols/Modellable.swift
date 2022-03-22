@@ -7,7 +7,7 @@
 
 protocol Modellable: Convertible {
     /// Initialize the object from a DTO object.
-    /// - Parameter from: the DTO object.
+    /// - Parameter dto: the DTO object.
     init(from dto: OtherForm)
 
     /// Get the object as a DTO object.
@@ -16,7 +16,7 @@ protocol Modellable: Convertible {
 
 extension Modellable {
     /// Initialize the object from an other form.
-    /// - Parameter from: the other form.
+    /// - Parameter string: the other form.
     init(from otherForm: OtherForm) {
         self.init(from: otherForm)
     }

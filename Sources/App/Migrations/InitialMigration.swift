@@ -14,7 +14,7 @@ struct InitialMigration: Initable { }
 
 extension InitialMigration: Migration {
     /// Prepare the migration.
-    /// - Parameter on: the database.
+    /// - Parameter database: the database.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func prepare(on database: Database) -> EventLoopFuture<Void> {
         createUsers(on: database)
@@ -26,7 +26,7 @@ extension InitialMigration: Migration {
     }
 
     /// Revert the migration.
-    /// - Parameter on: the database.
+    /// - Parameter database: the database.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func revert(on database: Database) -> EventLoopFuture<Void> {
         Constants.Schema
@@ -39,7 +39,7 @@ extension InitialMigration: Migration {
 
 extension InitialMigration {
     /// Create the users schema.
-    /// - Parameter on: the database.
+    /// - Parameter database: the database.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createUsers(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.users)
@@ -58,7 +58,7 @@ extension InitialMigration {
     }
 
     /// Create the chat entries schema.
-    /// - Parameter on: the database.
+    /// - Parameter database: the database.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createChatEntries(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.chatEntries)
@@ -73,7 +73,7 @@ extension InitialMigration {
     }
 
     /// Create the group entries schema.
-    /// - Parameter on: the database.
+    /// - Parameter database: the database.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createGroupEntries(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.groupEntries)
@@ -88,13 +88,13 @@ extension InitialMigration {
     }
 
     /// Create the chats schema.
-    /// - Parameter on: the database.
+    /// - Parameter database: the database.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createChats(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.chats)
             .id()
-            .field("users", .array(of: .uuid))
             .field("image", .string)
+            .field("users", .array(of: .uuid))
             .field("chatEntries", .array(of: .uuid))
             .field("createdAt", .string)
             .field("updatedAt", .string)
@@ -102,7 +102,7 @@ extension InitialMigration {
     }
 
     /// Create the groups schema.
-    /// - Parameter on: the database.
+    /// - Parameter database: the database.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createGroups(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.groups)
@@ -117,7 +117,7 @@ extension InitialMigration {
     }
 
     /// Create the exercises schema.
-    /// - Parameter on: the database.
+    /// - Parameter database: the database.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createExercises(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.exercises)

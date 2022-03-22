@@ -24,6 +24,8 @@ extension SportBuddyController {
     }
 }
 
+// MARK: - ChatEntriesController
+
 extension SportBuddyController {
     func chatEntriesGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<chatEntriesGetResponse> {
         try chatEntriesController.chatEntriesGet(with: req, asAuthenticated: user)
@@ -46,17 +48,23 @@ extension SportBuddyController {
     }
 }
 
+// MARK: - ChatController
+
 extension SportBuddyController {
     func chatPut(with req: Request, asAuthenticated user: User, chatId: UUID, body: String?, users: [UUID]?) throws -> EventLoopFuture<chatPutResponse> {
         try chatController.chatPut(with: req, asAuthenticated: user, chatId: chatId, body: body, users: users)
     }
 }
 
+// MARK: - GroupController
+
 extension SportBuddyController {
     func groupPut(with req: Request, asAuthenticated user: User, groupId: UUID, body: String?, users: [UUID]?) throws -> EventLoopFuture<groupPutResponse> {
         try groupController.groupPut(with: req, asAuthenticated: user, groupId: groupId, body: body, users: users)
     }
 }
+
+// MARK: - ExerciseController
 
 extension SportBuddyController {
     func exerciseGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<exerciseGetResponse> {
@@ -75,6 +83,8 @@ extension SportBuddyController {
         try exerciseController.exerciseDelete(with: req, asAuthenticated: user, exerciseId: exerciseId)
     }
 }
+
+// MARK: - GroupEntriesController
 
 extension SportBuddyController {
     func groupEntriesGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<groupEntriesGetResponse> {
@@ -98,6 +108,8 @@ extension SportBuddyController {
     }
 }
 
+// MARK: - GroupManagingController
+
 extension SportBuddyController {
     func groupManagingGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<groupManagingGetResponse> {
         try groupManagingController.groupManagingGet(with: req, asAuthenticated: user)
@@ -112,11 +124,15 @@ extension SportBuddyController {
     }
 }
 
+// MARK: - SearchController
+
 extension SportBuddyController {
     func searchUserPost(with req: Request, asAuthenticated user: User, name: String) throws -> EventLoopFuture<searchUserPostResponse> {
         try searchController.searchUserPost(with: req, asAuthenticated: user, name: name)
     }
 }
+
+// MARK: - UserController
 
 extension SportBuddyController {
     func registerPost(with req: Request, name: String, email: String, password: String) throws -> EventLoopFuture<registerPostResponse> {

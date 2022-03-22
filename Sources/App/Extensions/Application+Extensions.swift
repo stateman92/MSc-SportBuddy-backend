@@ -11,6 +11,7 @@ import FluentPostgresDriver
 import SendGrid
 
 extension Application {
+    /// Setup the application.
     public func setup() throws {
         try setupDatabase()
         configureMiddlewares()
@@ -21,6 +22,7 @@ extension Application {
 }
 
 extension Application {
+    /// Setup the database.
     private func setupDatabase() throws {
         var tlsConfiguration: TLSConfiguration = .makeClientConfiguration()
         tlsConfiguration.certificateVerification = .none
@@ -34,6 +36,7 @@ extension Application {
         try setupMigrations()
     }
 
+    /// Setup the migrations.
     private func setupMigrations() throws {
         migrations.add(DependencyInjector.resolve() as InitialMigration)
         if !isTesting() {
@@ -43,13 +46,15 @@ extension Application {
         try addInitialData(db)
     }
 
+    /// Add initial data to the database.
+    /// - Parameter database: the database.
     private func addInitialData(_ database: Database) throws {
-        try User.query(on: database).delete().wait()
-        try ChatEntry.query(on: database).delete().wait()
-        try Chat.query(on: database).delete().wait()
-        try GroupEntry.query(on: database).delete().wait()
-        try Group.query(on: database).delete().wait()
-        try Exercise.query(on: database).delete().wait()
+        try User.deleteAll(on: database).wait()
+        try ChatEntry.deleteAll(on: database).wait()
+        try Chat.deleteAll(on: database).wait()
+        try GroupEntry.deleteAll(on: database).wait()
+        try Group.deleteAll(on: database).wait()
+        try Exercise.deleteAll(on: database).wait()
 
         let firstUserId = UUID()
         let secondUserId = UUID()
@@ -101,10 +106,10 @@ extension Application {
         try secondChatEntry.create(on: database).wait()
 
         let chat = Chat(id: firstChatId,
+                        image: .empty,
                         users: [firstUser.id!,
                                 secondUser.id!,
                                 thirdUser.id!],
-                        image: .empty,
                         chatEntries: [firstChatEntry.id!,
                                       secondChatEntry.id!])
         try chat.create(on: database).wait()
@@ -127,11 +132,13 @@ extension Application {
 }
 
 extension Application {
+    /// Setup the middlewares.
     private func configureMiddlewares() {
         configureRateLimiting()
         configureCorsPolicy()
     }
 
+    /// Setup the rate limiting middleware.
     private func configureRateLimiting() {
         caches.use(.memory)
         gatekeeper.config = Constants.gatekeeperConfig
@@ -140,12 +147,14 @@ extension Application {
         }
     }
 
+    /// Setup the rate cors policy middleware.
     private func configureCorsPolicy() {
         middleware.use(DependencyInjector.resolve() as CORSMiddleware, at: .beginning)
     }
 }
 
 extension Application {
+    /// Setup the repositories.
     private func reigsterRepositories() {
         if isTesting() {
             repositories.register(.chats) { MockRepository<Chat>(req: $0) }
@@ -166,6 +175,7 @@ extension Application {
 }
 
 extension Application {
+    /// Setup the routes.
     private func setupRoutes() throws {
         try App.routes(self,
                        backend: DependencyInjector.resolve() as SportBuddyController,

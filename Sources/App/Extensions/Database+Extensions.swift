@@ -8,6 +8,9 @@
 import FluentPostgresDriver
 
 extension Database {
+    /// Get a `SchemaBuilder`.
+    /// - Parameter tableName: the name of the schema.
+    /// - Returns: The `SchemaBuilder`.
     func schema(_ tableName: Constants.Schema) -> SchemaBuilder {
         schema(tableName.rawValue)
     }

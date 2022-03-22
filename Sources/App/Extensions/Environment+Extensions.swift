@@ -8,6 +8,9 @@
 import Vapor
 
 extension Environment {
+    /// Get a value from the `Environment`.
+    /// - Parameter key: the key of the value.
+    /// - Returns: The value.
     static func get(_ key: Constants.EnvironmentKey) -> String {
         get(key.key) ?? .empty
     }

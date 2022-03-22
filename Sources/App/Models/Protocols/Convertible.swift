@@ -11,7 +11,7 @@ protocol Convertible {
     associatedtype OtherForm
 
     /// Initialize the object from an other form.
-    /// - Parameter from: the other form.
+    /// - Parameter otherForm: the other form.
     init(from otherForm: OtherForm)
 
     /// Get the object as an other form.

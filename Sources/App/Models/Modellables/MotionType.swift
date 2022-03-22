@@ -12,6 +12,8 @@ enum MotionType: String, Codable, CaseIterable {
 }
 
 extension MotionType: Modellable {
+    /// Initialize the object from a DTO object.
+    /// - Parameter dto: the DTO object.
     init(from dto: MotionTypeDTO) {
         switch dto {
         case .runningmotion1: self = .runningMotion1
@@ -20,6 +22,7 @@ extension MotionType: Modellable {
         }
     }
 
+    /// Get the object as a DTO object.
     var dto: MotionTypeDTO {
         switch self {
         case .runningMotion1: return .runningmotion1
@@ -30,6 +33,7 @@ extension MotionType: Modellable {
 }
 
 extension MotionTypeDTO {
+    /// Get the DTO object as an object.
     var model: MotionType {
         .init(from: self)
     }

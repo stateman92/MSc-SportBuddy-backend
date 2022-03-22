@@ -61,13 +61,13 @@ extension Repository {
     /// - Parameter id: the identifier of the given object.
     /// - Parameter status: the status of abort (if neccessary to use). By default `.notFound`.
     /// - Parameter modify: the modification of the found object.
-    /// - Parameter transformTo: the new value to be transformed the result of the modification.
+    /// - Parameter instance: the new value to be transformed the result of the modification.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
-    func findOrAbortAndModifyThenTransform<NewValue>(_ id: T.IDValue?, status: HTTPResponseStatus = .notFound, modify: @escaping (T) -> Void, transformTo: NewValue) -> EventLoopFuture<NewValue> {
+    func findOrAbortAndModifyThenTransform<NewValue>(_ id: T.IDValue?, status: HTTPResponseStatus = .notFound, modify: @escaping (T) -> Void, transformTo instance: NewValue) -> EventLoopFuture<NewValue> {
         T.findOrAbort(id, on: req.db)
             .flatMap {
                 modify($0)
-                return $0.update(on: req.db, transformTo: transformTo)
+                return $0.update(on: req.db, transformTo: instance)
             }
     }
 }
@@ -97,7 +97,7 @@ extension Repository {
 extension Repository {
     /// Create an object in the repository and then transform the value to a new value.
     /// - Parameter model: the model to be created.
-    /// - Parameter transformTo: the new value to be transformed the result of the modification.
+    /// - Parameter instance: the new value to be transformed the result of the modification.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func create<NewValue>(_ model: T, transformTo instance: @escaping @autoclosure () -> NewValue) -> EventLoopFuture<NewValue> {
         model.create(on: req.db).transform(to: instance())
@@ -107,7 +107,7 @@ extension Repository {
 extension Repository {
     /// Update an object in the repository and then transform the value to a new value.
     /// - Parameter model: the model to be updated.
-    /// - Parameter transformTo: the new value to be transformed the result of the modification.
+    /// - Parameter instance: the new value to be transformed the result of the modification.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func update<NewValue>(_ model: T, transformTo instance: @escaping @autoclosure () -> NewValue) -> EventLoopFuture<NewValue> {
         model.update(on: req.db).transform(to: instance())
@@ -121,5 +121,12 @@ extension Repository {
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func delete(_ model: T, force: Bool = false) -> EventLoopFuture<Void> {
         model.delete(force: force, on: req.db)
+    }
+
+    /// Delete all the objects from the repository.
+    /// - Parameter force: whether to use force delete or not. By default `false`.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
+    func deleteAll(force: Bool = false) -> EventLoopFuture<Void> {
+        T.deleteAll(on: req.db, force: force)
     }
 }

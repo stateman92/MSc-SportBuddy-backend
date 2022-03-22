@@ -15,8 +15,8 @@ final class SecretMiddleware: Initable {
 
 extension SecretMiddleware: Middleware {
     /// Respond to the given request.
-    /// - Parameter to: the request.
-    /// - Parameter chainingTo: the next responder (maybe another middleware or the application).
+    /// - Parameter req: the request.
+    /// - Parameter next: the next responder (maybe another middleware or the application).
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func respond(to req: Request, chainingTo next: Responder) -> EventLoopFuture<Response> {
         guard !secret.isEmpty else {

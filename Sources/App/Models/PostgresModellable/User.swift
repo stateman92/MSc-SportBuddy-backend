@@ -30,6 +30,16 @@ final class User {
     @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?
     @Timestamp(key: "updatedAt", on: .update, format: .iso8601) var updatedAt: Date?
 
+    /// Initialize an object.
+    /// - Parameter id: the identifier.
+    /// - Parameter name: the name of the user.
+    /// - Parameter email: the email of the user.
+    /// - Parameter password: the (hashed) password of the user.
+    /// - Parameter profileImage: the profile image of the user.
+    /// - Parameter bio: the bio of the user.
+    /// - Parameter token: the token of the user.
+    /// - Parameter chats: the chats which the user participants in.
+    /// - Parameter groups: the groups which the user participants in.
     init(id: UUID?, name: String, email: String, password: String, profileImage: String, bio: String, token: Token?, chats: [UUID], groups: [UUID]) {
         self.id = id
         self.name = name
@@ -44,21 +54,34 @@ final class User {
 }
 
 extension User: PostgresModellable {
+    /// The schema of the class.
     static var schema: String {
         Constants.Schema.users.rawValue
     }
 
+    /// Initialize an empty object for a new record in the schema.
     convenience init() {
         self.init(id: .init(), name: .empty, email: .empty, password: .empty, profileImage: .empty, bio: .empty, token: nil, chats: .empty, groups: .empty)
     }
 
+    /// Initialize the object from a DTO object.
+    /// - Parameter dto: the DTO object.
     convenience init(from dto: UserDTO) {
         self.init(id: dto.primaryId, name: dto.name, email: dto.email, password: .empty, profileImage: dto.profileImage ?? .empty, bio: dto.bio ?? .empty, token: nil, chats: dto.chats, groups: dto.groups)
     }
 
+    /// Get the object as a DTO object.
     var dto: UserDTO {
         .init(primaryId: id ?? .init(), name: name, email: email, profileImage: profileImage, bio: bio, chats: chats, groups: groups)
     }
 }
 
+extension UserDTO {
+    /// Get the DTO object as an object.
+    var model: User {
+        .init(from: self)
+    }
+}
+
+/// Use the `User` as a class that holds data of the auth.
 extension User: Authenticatable { }

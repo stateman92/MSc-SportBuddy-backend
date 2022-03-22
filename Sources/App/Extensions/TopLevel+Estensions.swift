@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Check whether the app's tests are running or not.
 func isTesting() -> Bool {
     NSClassFromString("XCTest") != nil
 }

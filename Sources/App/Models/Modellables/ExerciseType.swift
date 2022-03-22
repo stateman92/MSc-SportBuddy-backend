@@ -12,6 +12,8 @@ enum ExerciseType: String, Codable, CaseIterable {
 }
 
 extension ExerciseType: Modellable {
+    /// Initialize the object from a DTO object.
+    /// - Parameter dto: the DTO object.
     init(from dto: ExerciseTypeDTO) {
         switch dto {
         case .highjump: self = .highjump
@@ -20,6 +22,7 @@ extension ExerciseType: Modellable {
         }
     }
 
+    /// Get the object as a DTO object.
     var dto: ExerciseTypeDTO {
         switch self {
         case .highjump: return .highjump
@@ -30,6 +33,7 @@ extension ExerciseType: Modellable {
 }
 
 extension ExerciseTypeDTO {
+    /// Get the DTO object as an object.
     var model: ExerciseType {
         .init(from: self)
     }

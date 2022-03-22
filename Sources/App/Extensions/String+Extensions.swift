@@ -6,6 +6,7 @@
 //
 
 extension String {
+    /// An empty `String`.
     static var empty: Self {
         .init()
     }

@@ -12,6 +12,8 @@ enum SportType: String, Codable, CaseIterable {
 }
 
 extension SportType: Modellable {
+    /// Initialize the object from a DTO object.
+    /// - Parameter dto: the DTO object.
     init(from dto: SportTypeDTO) {
         switch dto {
         case .athletics: self = .athletics
@@ -20,6 +22,7 @@ extension SportType: Modellable {
         }
     }
 
+    /// Get the object as a DTO object.
     var dto: SportTypeDTO {
         switch self {
         case .athletics: return .athletics
@@ -30,6 +33,7 @@ extension SportType: Modellable {
 }
 
 extension SportTypeDTO {
+    /// Get the DTO object as an object.
     var model: SportType {
         .init(from: self)
     }
