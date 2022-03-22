@@ -12,6 +12,7 @@ extension Application {
         typealias Value = RepositoryRegistry
     }
 
+    /// Get the repositories of the application.
     var repositories: RepositoryRegistry {
         if let storage = storage[Key.self] {
             return storage

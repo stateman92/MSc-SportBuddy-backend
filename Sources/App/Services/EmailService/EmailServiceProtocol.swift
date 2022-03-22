@@ -20,7 +20,7 @@ protocol EmailServiceProtocol: Initable {
     /// - Parameter text: the content of the email.
     /// - Parameter on: the request that the email will be sent on.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
-    func sendEmail(to toEmail: String, fromEmail: String, subject: String?, text: String, on request: Request) throws -> EventLoopFuture<Void>
+    func sendEmail(to toEmail: String, fromEmail: String, subject: String?, text: String, on req: Request) throws -> EventLoopFuture<Void>
 }
 
 extension EmailServiceProtocol {
@@ -31,15 +31,15 @@ extension EmailServiceProtocol {
     /// - Parameter text: the content of the email.
     /// - Parameter on: the request that the email will be sent on.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
-    func sendEmail(to toEmail: String, fromEmail: String, subject: String? = nil, text: String, on request: Request) throws -> EventLoopFuture<Void> {
-        try sendEmail(to: toEmail, fromEmail: fromEmail, subject: subject, text: text, on: request)
+    func sendEmail(to toEmail: String, fromEmail: String, subject: String? = nil, text: String, on req: Request) throws -> EventLoopFuture<Void> {
+        try sendEmail(to: toEmail, fromEmail: fromEmail, subject: subject, text: text, on: req)
     }
 
     /// Send an recovery email.
     /// - Parameter to: the target email.
     /// - Parameter on: the request that the email will be sent on.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
-    func sendPasswordRecoveryEmail(to toEmail: String, on request: Request) throws -> EventLoopFuture<Void> {
-        try sendEmail(to: toEmail, fromEmail: "csakugy202@gmail.com", subject: "Forgotten password on SportBuddy!", text: "Your password is forgotten. :(", on: request)
+    func sendPasswordRecoveryEmail(to toEmail: String, on req: Request) throws -> EventLoopFuture<Void> {
+        try sendEmail(to: toEmail, fromEmail: "csakugy202@gmail.com", subject: "Forgotten password on SportBuddy!", text: "Your password is forgotten. :(", on: req)
     }
 }

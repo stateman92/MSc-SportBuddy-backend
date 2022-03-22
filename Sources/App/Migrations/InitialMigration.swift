@@ -9,9 +9,13 @@ import Fluent
 import FluentPostgresDriver
 import Foundation
 
+/// The representation of the initial migration of the database.
 struct InitialMigration: Initable { }
 
 extension InitialMigration: Migration {
+    /// Prepare the migration.
+    /// - Parameter on: the database.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func prepare(on database: Database) -> EventLoopFuture<Void> {
         createUsers(on: database)
             .transform(to: createChatEntries(on: database))
@@ -21,6 +25,9 @@ extension InitialMigration: Migration {
             .transform(to: createExercises(on: database))
     }
 
+    /// Revert the migration.
+    /// - Parameter on: the database.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func revert(on database: Database) -> EventLoopFuture<Void> {
         Constants.Schema
             .allCases
@@ -31,13 +38,17 @@ extension InitialMigration: Migration {
 }
 
 extension InitialMigration {
+    /// Create the users schema.
+    /// - Parameter on: the database.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createUsers(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.users)
             .id()
             .field("name", .string)
             .field("email", .string)
             .field("password", .string)
-            .field("profileImageUrl", .string)
+            .field("profileImage", .string)
+            .field("bio", .string)
             .field("token", .string)
             .field("chats", .array(of: .uuid))
             .field("groups", .array(of: .uuid))
@@ -46,6 +57,9 @@ extension InitialMigration {
             .create()
     }
 
+    /// Create the chat entries schema.
+    /// - Parameter on: the database.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createChatEntries(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.chatEntries)
             .id()
@@ -58,6 +72,9 @@ extension InitialMigration {
             .create()
     }
 
+    /// Create the group entries schema.
+    /// - Parameter on: the database.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createGroupEntries(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.groupEntries)
             .id()
@@ -70,20 +87,28 @@ extension InitialMigration {
             .create()
     }
 
+    /// Create the chats schema.
+    /// - Parameter on: the database.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createChats(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.chats)
             .id()
             .field("users", .array(of: .uuid))
+            .field("image", .string)
             .field("chatEntries", .array(of: .uuid))
             .field("createdAt", .string)
             .field("updatedAt", .string)
             .create()
     }
 
+    /// Create the groups schema.
+    /// - Parameter on: the database.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createGroups(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.groups)
             .id()
             .field("sportType", .string)
+            .field("image", .string)
             .field("users", .array(of: .uuid))
             .field("groupEntries", .array(of: .uuid))
             .field("createdAt", .string)
@@ -91,11 +116,14 @@ extension InitialMigration {
             .create()
     }
 
+    /// Create the exercises schema.
+    /// - Parameter on: the database.
+    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     private func createExercises(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.exercises)
             .id()
             .field("exerciseType", .string)
-            .field("previewImageUrl", .string)
+            .field("previewImage", .string)
             .field("exerciseVideoUrl", .string)
             .field("fractions", .array(of: .string))
             .field("createdAt", .string)

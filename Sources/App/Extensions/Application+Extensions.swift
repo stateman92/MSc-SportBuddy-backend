@@ -54,16 +54,17 @@ extension Application {
         let firstUserId = UUID()
         let secondUserId = UUID()
         let thirdUserId = UUID()
-        let firstGroup = Group(id: UUID(), sportType: .athletics, users: [firstUserId, secondUserId], groupEntries: [])
-        let secondGroup = Group(id: UUID(), sportType: .workout, users: [secondUserId, thirdUserId], groupEntries: [])
-        let thirdGroup = Group(id: UUID(), sportType: .yoga, users: [firstUserId, thirdUserId], groupEntries: [])
+        let firstGroup = Group(id: UUID(), sportType: .athletics, image: .empty, users: [firstUserId, secondUserId], groupEntries: [])
+        let secondGroup = Group(id: UUID(), sportType: .workout, image: .empty, users: [secondUserId, thirdUserId], groupEntries: [])
+        let thirdGroup = Group(id: UUID(), sportType: .yoga, image: .empty, users: [firstUserId, thirdUserId], groupEntries: [])
 
         let firstChatId = UUID()
         let firstUser = User(id: UUID(),
                              name: "name1 name1",
                              email: "email email1",
                              password: "password1 password1",
-                             profileImageUrl: "profileImageUrl1 profileImageUrl1",
+                             profileImage: "profileImage1 profileImage1",
+                             bio: "bio 1",
                              token: Token(),
                              chats: [firstChatId],
                              groups: [firstGroup.id!,
@@ -74,7 +75,8 @@ extension Application {
                               name: "name2 name2",
                               email: "email2 email2",
                               password: "password2 password2",
-                              profileImageUrl: "profileImageUrl2 profileImageUrl2",
+                              profileImage: "profileImage2 profileImage2",
+                              bio: "bio 2",
                               token: Token(),
                               chats: [firstChatId],
                               groups: [firstGroup.id!,
@@ -85,7 +87,8 @@ extension Application {
                              name: "name3 name3",
                              email: "email3 email3",
                              password: "password3 password3",
-                             profileImageUrl: "profileImageUrl3 profileImageUrl3",
+                             profileImage: "profileImage3 profileImage3",
+                             bio: "bio 3",
                              token: Token(),
                              chats: [],
                              groups: [secondGroup.id!,
@@ -101,6 +104,7 @@ extension Application {
                         users: [firstUser.id!,
                                 secondUser.id!,
                                 thirdUser.id!],
+                        image: .empty,
                         chatEntries: [firstChatEntry.id!,
                                       secondChatEntry.id!])
         try chat.create(on: database).wait()
@@ -114,7 +118,7 @@ extension Application {
 
         let exercise = Exercise(id: UUID(),
                                 exerciseType: .running,
-                                previewImageUrl: "previewImageUrl",
+                                previewImage: "previewImage",
                                 exerciseVideoUrl: "exerciseVideoUrl",
                                 fractions: [.init(time: .init(fromTime: 0, toTime: 1), motionType: .runningMotion1),
                                             .init(time: .init(fromTime: 2, toTime: 3), motionType: .runningMotion3)])

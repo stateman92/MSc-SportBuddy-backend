@@ -13,7 +13,10 @@ struct RepositoryFactory {
 }
 
 extension RepositoryFactory {
-    func make(_ id: Constants.Schema) -> RepositoryProtocol {
-        registry.make(id, req)
+    /// Get a repository.
+    /// - Parameter schema: the schema of the desired repository.
+    /// - Returns: The repository.
+    func make(_ schema: Constants.Schema) -> RepositoryProtocol {
+        registry.make(schema, req)
     }
 }

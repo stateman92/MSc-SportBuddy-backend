@@ -14,11 +14,13 @@ public final class GroupDTO: Content {
     public var sportType: SportTypeDTO
     public var users: [UUID]
     public var groupEntries: [GroupEntryDTO]
+    public var image: String
 
-    public init(primaryId: UUID, sportType: SportTypeDTO, users: [UUID], groupEntries: [GroupEntryDTO]) { 
+    public init(primaryId: UUID, sportType: SportTypeDTO, users: [UUID], groupEntries: [GroupEntryDTO], image: String) { 
         self.primaryId = primaryId
         self.sportType = sportType
         self.users = users
         self.groupEntries = groupEntries
+        self.image = image
     }
 }

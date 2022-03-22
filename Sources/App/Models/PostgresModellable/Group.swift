@@ -11,14 +11,16 @@ import Foundation
 final class Group {
     @ID(key: .id) var id: UUID?
     @Field(key: "sportType") var sportType: SportType
+    @Field(key: "image") var image: String
     @Field(key: "users") var users: [UUID]
     @Field(key: "groupEntries") var groupEntries: [UUID]
     @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?
     @Timestamp(key: "updatedAt", on: .update, format: .iso8601) var updatedAt: Date?
 
-    public init(id: UUID?, sportType: SportType, users: [UUID], groupEntries: [UUID]) {
+    public init(id: UUID?, sportType: SportType, image: String, users: [UUID], groupEntries: [UUID]) {
         self.id = id
         self.sportType = sportType
+        self.image = image
         self.users = users
         self.groupEntries = groupEntries
     }
@@ -30,15 +32,15 @@ extension Group: PostgresModellable {
     }
 
     convenience init() {
-        self.init(id: .init(), sportType: .athletics, users: .empty, groupEntries: .empty)
+        self.init(id: .init(), sportType: .athletics, image: .empty, users: .empty, groupEntries: .empty)
     }
 
     convenience init(from dto: GroupDTO) {
-        self.init(id: dto.primaryId, sportType: dto.sportType.model, users: dto.users, groupEntries: dto.groupEntries.map(\.primaryId))
+        self.init(id: dto.primaryId, sportType: dto.sportType.model, image: dto.image, users: dto.users, groupEntries: dto.groupEntries.map(\.primaryId))
     }
 
     var dto: GroupDTO {
-        .init(primaryId: id ?? .init(), sportType: sportType.dto, users: users, groupEntries: .empty)
+        .init(primaryId: id ?? .init(), sportType: sportType.dto, users: users, groupEntries: .empty, image: image)
     }
 }
 

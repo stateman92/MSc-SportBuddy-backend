@@ -11,26 +11,32 @@ struct ExerciseController { }
 
 extension ExerciseController: ExerciseControllerProtocol {
     func exerciseGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<exerciseGetResponse> {
-        Exercise
-            .queryAll(on: req)
+        req
+            .repositories
+            .exercises
+            .queryAll()
             .map { .http200($0.map(\.dto)) }
     }
 
     func exercisePost(with req: Request, asAuthenticated user: User, body: ExerciseDTO) throws -> EventLoopFuture<exercisePostResponse> {
-        body
-            .model
-            .create(on: req, transformTo: .http200)
+        req
+            .repositories
+            .exercises
+            .create(body.model, transformTo: .http200)
     }
 
     func exercisePut(with req: Request, asAuthenticated user: User, body: ExerciseDTO) throws -> EventLoopFuture<exercisePutResponse> {
-        body
-            .model
-            .update(on: req, transformTo: .http200)
+        req
+            .repositories
+            .exercises
+            .update(body.model, transformTo: .http200)
     }
 
     func exerciseDelete(with req: Request, asAuthenticated user: User, exerciseId: UUID) throws -> EventLoopFuture<exerciseDeleteResponse> {
-        Exercise
-            .findOrAbortAndDelete(exerciseId, on: req)
+        req
+            .repositories
+            .exercises
+            .findOrAbortAndDelete(exerciseId)
             .transform(to: .http200)
     }
 }

@@ -14,7 +14,7 @@ extension Array {
 }
 
 extension Array where Element == EventLoopFuture<Void> {
-    func flatten(on request: Request) -> EventLoopFuture<Void> {
-        flatten(on: request.eventLoop)
+    func flatten(on req: Request) -> EventLoopFuture<Void> {
+        flatten(on: req.eventLoop)
     }
 }

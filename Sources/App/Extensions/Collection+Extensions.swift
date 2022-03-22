@@ -8,7 +8,7 @@
 import Vapor
 
 extension Collection {
-    func flatten<Value>(on request: Request) -> EventLoopFuture<[Value]> where Element == EventLoopFuture<Value> {
-        flatten(on: request.eventLoop)
+    func flatten<Value>(on req: Request) -> EventLoopFuture<[Value]> where Element == EventLoopFuture<Value> {
+        flatten(on: req.eventLoop)
     }
 }

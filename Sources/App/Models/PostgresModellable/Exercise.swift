@@ -11,16 +11,16 @@ import Foundation
 final class Exercise {
     @ID(key: .id) var id: UUID?
     @Field(key: "exerciseType") var exerciseType: ExerciseType
-    @Field(key: "previewImageUrl") var previewImageUrl: String
+    @Field(key: "previewImage") var previewImage: String
     @Field(key: "exerciseVideoUrl") var exerciseVideoUrl: String
     @Field(key: "fractions") var fractions: [ExerciseFraction]
     @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?
     @Timestamp(key: "updatedAt", on: .update, format: .iso8601) var updatedAt: Date?
 
-    init(id: UUID?, exerciseType: ExerciseType, previewImageUrl: String, exerciseVideoUrl: String, fractions: [ExerciseFraction]) {
+    init(id: UUID?, exerciseType: ExerciseType, previewImage: String, exerciseVideoUrl: String, fractions: [ExerciseFraction]) {
         self.id = id
         self.exerciseType = exerciseType
-        self.previewImageUrl = previewImageUrl
+        self.previewImage = previewImage
         self.exerciseVideoUrl = exerciseVideoUrl
         self.fractions = fractions
     }
@@ -32,15 +32,15 @@ extension Exercise: PostgresModellable {
     }
 
     convenience init() {
-        self.init(id: .init(), exerciseType: .running, previewImageUrl: .empty, exerciseVideoUrl: .empty, fractions: .empty)
+        self.init(id: .init(), exerciseType: .running, previewImage: .empty, exerciseVideoUrl: .empty, fractions: .empty)
     }
 
     convenience init(from dto: ExerciseDTO) {
-        self.init(id: dto.primaryId, exerciseType: dto.exerciseType.model, previewImageUrl: dto.previewImageUrl, exerciseVideoUrl: dto.exerciseVideoUrl, fractions: dto.fractions.map(\.model))
+        self.init(id: dto.primaryId, exerciseType: dto.exerciseType.model, previewImage: dto.previewImage, exerciseVideoUrl: dto.exerciseVideoUrl, fractions: dto.fractions.map(\.model))
     }
 
     var dto: ExerciseDTO {
-        .init(primaryId: id ?? .init(), exerciseType: exerciseType.dto, previewImageUrl: previewImageUrl, exerciseVideoUrl: exerciseVideoUrl, fractions: fractions.map(\.dto))
+        .init(primaryId: id ?? .init(), exerciseType: exerciseType.dto, previewImage: previewImage, exerciseVideoUrl: exerciseVideoUrl, fractions: fractions.map(\.dto))
     }
 }
 

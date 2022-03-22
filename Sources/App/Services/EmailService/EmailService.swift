@@ -27,17 +27,17 @@ extension EmailService: EmailServiceProtocol {
     /// - Parameter text: the content of the email.
     /// - Parameter on: the request that the email will be sent on.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
-    func sendEmail(to toEmail: String, fromEmail: String, subject: String? = nil, text: String, on request: Request) throws -> EventLoopFuture<Void> {
+    func sendEmail(to toEmail: String, fromEmail: String, subject: String? = nil, text: String, on req: Request) throws -> EventLoopFuture<Void> {
         let email = SendGridEmail(personalizations: [.init(to: [.init(email: toEmail)], subject: subject)],
                                   from: .init(email: fromEmail),
                                   subject: subject,
                                   content: [["type": "text/plain", "value": text], ["type": "text/html", "value": text]])
 
-        return try request.application.sendgrid.client.send(email: email, on: request.eventLoop).flatMapError { error in
+        return try req.application.sendgrid.client.send(email: email, on: req.eventLoop).flatMapError { error in
             if let sendgridError = error as? SendGridError {
-                request.logger.error("\(sendgridError)")
+                req.logger.error("\(sendgridError)")
             }
-            return request.eventLoop.makeSucceededVoidFuture()
+            return req.eventLoop.makeSucceededVoidFuture()
         }
     }
 }

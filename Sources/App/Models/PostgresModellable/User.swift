@@ -14,7 +14,8 @@ final class User {
     @Field(key: "name") var name: String
     @Field(key: "email") var email: String
     @Field(key: "password") var password: String
-    @Field(key: "profileImageUrl") var profileImageUrl: String
+    @Field(key: "profileImage") var profileImage: String
+    @Field(key: "bio") var bio: String
     @Field(key: "token") private var _token: String
     var token: Token? {
         get {
@@ -29,12 +30,13 @@ final class User {
     @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?
     @Timestamp(key: "updatedAt", on: .update, format: .iso8601) var updatedAt: Date?
 
-    init(id: UUID?, name: String, email: String, password: String, profileImageUrl: String, token: Token?, chats: [UUID], groups: [UUID]) {
+    init(id: UUID?, name: String, email: String, password: String, profileImage: String, bio: String, token: Token?, chats: [UUID], groups: [UUID]) {
         self.id = id
         self.name = name
         self.email = email
         self.password = password
-        self.profileImageUrl = profileImageUrl
+        self.profileImage = profileImage
+        self.bio = bio
         self.token = token
         self.chats = chats
         self.groups = groups
@@ -47,15 +49,15 @@ extension User: PostgresModellable {
     }
 
     convenience init() {
-        self.init(id: .init(), name: .empty, email: .empty, password: .empty, profileImageUrl: .empty, token: nil, chats: .empty, groups: .empty)
+        self.init(id: .init(), name: .empty, email: .empty, password: .empty, profileImage: .empty, bio: .empty, token: nil, chats: .empty, groups: .empty)
     }
 
     convenience init(from dto: UserDTO) {
-        self.init(id: dto.primaryId, name: dto.name, email: dto.email, password: .empty, profileImageUrl: dto.profileImageUrl ?? .empty, token: nil, chats: dto.chats, groups: dto.groups)
+        self.init(id: dto.primaryId, name: dto.name, email: dto.email, password: .empty, profileImage: dto.profileImage ?? .empty, bio: dto.bio ?? .empty, token: nil, chats: dto.chats, groups: dto.groups)
     }
 
     var dto: UserDTO {
-        .init(primaryId: id ?? .init(), name: name, email: email, profileImageUrl: profileImageUrl, chats: chats, groups: groups)
+        .init(primaryId: id ?? .init(), name: name, email: email, profileImage: profileImage, bio: bio, chats: chats, groups: groups)
     }
 }
 

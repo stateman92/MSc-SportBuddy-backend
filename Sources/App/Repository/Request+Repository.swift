@@ -8,6 +8,7 @@
 import Vapor
 
 extension Request {
+    /// Get a repository factory of the application.
     var repositories: RepositoryFactory {
         application.repositories.builder(self)
     }
