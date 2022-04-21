@@ -12,6 +12,8 @@ import Gatekeeper
 /// A thin layer between the application and the DI library (Resolver).
 public struct DependencyInjector {
     private static let resolver = Resolver()
+
+    private init() { }
 }
 
 extension DependencyInjector {

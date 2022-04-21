@@ -188,6 +188,9 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
   groupForBearer.on(.POST, "/logout".asPathComponents) { (request: Request) -> EventLoopFuture<logoutPostResponse> in
     return try backend.logoutPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
   }
+  groupForBearer.on(.POST, "/refreshToken".asPathComponents) { (request: Request) -> EventLoopFuture<refreshTokenPostResponse> in
+    return try backend.refreshTokenPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
+  }
   groupForBearer.on(.POST, "/searchUser".asPathComponents) { (request: Request) -> EventLoopFuture<searchUserPostResponse> in
     let nameOptional = try? request.query.get(String.self, at: "name")
     guard let name = nameOptional else {
@@ -351,6 +354,9 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
   groupForBearer.on(.POST, "/logout".asPathComponents) { (request: Request) -> EventLoopFuture<logoutPostResponse> in
     return try backend.logoutPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
   }
+  groupForBearer.on(.POST, "/refreshToken".asPathComponents) { (request: Request) -> EventLoopFuture<refreshTokenPostResponse> in
+    return try backend.refreshTokenPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
+  }
   app.on(.POST, "/register".asPathComponents) { (request: Request) -> EventLoopFuture<registerPostResponse> in
     let nameOptional = try? request.query.get(String.self, at: "name")
     guard let name = nameOptional else {
@@ -513,6 +519,9 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
   }
   groupForBearer.on(.POST, "/logout".asPathComponents) { (request: Request) -> EventLoopFuture<logoutPostResponse> in
     return try backend.logoutPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
+  }
+  groupForBearer.on(.POST, "/refreshToken".asPathComponents) { (request: Request) -> EventLoopFuture<refreshTokenPostResponse> in
+    return try backend.refreshTokenPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
   }
   app.on(.POST, "/register".asPathComponents) { (request: Request) -> EventLoopFuture<registerPostResponse> in
     let nameOptional = try? request.query.get(String.self, at: "name")

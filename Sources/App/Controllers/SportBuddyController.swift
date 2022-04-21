@@ -143,6 +143,10 @@ extension SportBuddyController {
         try userController.loginPost(with: req, email: email, password: password)
     }
 
+    func refreshTokenPost(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<refreshTokenPostResponse> {
+        req.eventLoop.future(.http200)
+    }
+
     func forgotPasswordPost(with req: Request, email: String) throws -> EventLoopFuture<forgotPasswordPostResponse> {
         try userController.forgotPasswordPost(with: req, email: email)
     }

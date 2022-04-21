@@ -429,6 +429,25 @@ public enum logoutPostResponse: ResponseEncodable {
 }
 
 
+public enum refreshTokenPostResponse: ResponseEncodable {
+  case http200
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 200)
+      return request.eventLoop.makeSucceededFuture(response)
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
 public enum registerPostResponse: ResponseEncodable {
   case http200(UserResponseDTO)
   case http400
@@ -577,6 +596,10 @@ public protocol BackendApiDelegate {
   POST /logout
   Logout an existing user of the application or an admin */
   func logoutPost(with req: Request, asAuthenticated user: AuthType) throws -> EventLoopFuture<logoutPostResponse>
+  /**
+  POST /refreshToken
+  Refresh the stored token */
+  func refreshTokenPost(with req: Request, asAuthenticated user: AuthType) throws -> EventLoopFuture<refreshTokenPostResponse>
   /**
   POST /register
   Register a new user in the application */
