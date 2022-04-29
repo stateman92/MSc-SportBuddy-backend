@@ -59,9 +59,9 @@ extension Application {
         let firstUserId = UUID()
         let secondUserId = UUID()
         let thirdUserId = UUID()
-        let firstGroup = Group(id: UUID(), sportType: .athletics, image: .empty, users: [firstUserId, secondUserId], groupEntries: [])
-        let secondGroup = Group(id: UUID(), sportType: .workout, image: .empty, users: [secondUserId, thirdUserId], groupEntries: [])
-        let thirdGroup = Group(id: UUID(), sportType: .yoga, image: .empty, users: [firstUserId, thirdUserId], groupEntries: [])
+        let firstGroup = Group(id: UUID(), sportType: .athletics, image: .init(), users: [firstUserId, secondUserId], groupEntries: [])
+        let secondGroup = Group(id: UUID(), sportType: .workout, image: .init(), users: [secondUserId, thirdUserId], groupEntries: [])
+        let thirdGroup = Group(id: UUID(), sportType: .yoga, image: .init(), users: [firstUserId, thirdUserId], groupEntries: [])
 
         let firstChatId = UUID()
         let firstUser = User(id: UUID(),
@@ -106,7 +106,7 @@ extension Application {
         try secondChatEntry.create(on: database).wait()
 
         let chat = Chat(id: firstChatId,
-                        image: .empty,
+                        image: .init(),
                         users: [firstUser.id!,
                                 secondUser.id!,
                                 thirdUser.id!],
@@ -180,5 +180,14 @@ extension Application {
         try App.routes(self,
                        backend: DependencyInjector.resolve() as SportBuddyController,
                        authForBearer: DependencyInjector.resolve() as AuthorizationServiceProtocol)
+        setupWebSocket()
+    }
+
+    /// Setup the websockets.
+    private func setupWebSocket() {
+        let webSocketHandler = WebSocketHandler(eventLoop: eventLoopGroup.next())
+        webSocket { req, ws in
+            webSocketHandler.connect(req, ws)
+        }
     }
 }

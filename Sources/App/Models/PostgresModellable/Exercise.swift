@@ -40,7 +40,7 @@ extension Exercise: PostgresModellable {
 
     /// Initialize an empty object for a new record in the schema.
     convenience init() {
-        self.init(id: .init(), exerciseType: .running, previewImage: .empty, exerciseVideoUrl: .empty, fractions: .empty)
+        self.init(id: .init(), exerciseType: .running, previewImage: .init(), exerciseVideoUrl: .init(), fractions: .init())
     }
 
     /// Initialize the object from a DTO object.

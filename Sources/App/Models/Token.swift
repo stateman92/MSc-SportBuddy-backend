@@ -49,8 +49,8 @@ extension Token {
 extension Token: Codable {
     /// A convenience accessor of the `String` encoded value of the token.
     var encoded: String {
-        guard let encoded = try? JSONEncoder().encode(self) else { return .empty }
-        return String(data: encoded, encoding: .utf8) ?? .empty
+        guard let encoded = try? JSONEncoder().encode(self) else { return .init() }
+        return String(data: encoded, encoding: .utf8) ?? .init()
     }
 
     /// A convenience (failable) initializer from the `String` encoded value of the token.

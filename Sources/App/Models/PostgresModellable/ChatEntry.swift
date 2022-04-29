@@ -40,7 +40,7 @@ extension ChatEntry: PostgresModellable {
 
     /// Initialize an empty object for a new record in the schema.
     convenience init() {
-        self.init(id: .init(), message: .empty, timestamp: .zero, sender: .init(), deleted: false)
+        self.init(id: .init(), message: .init(), timestamp: .zero, sender: .init(), deleted: false)
     }
 
     /// Initialize the object from a DTO object.

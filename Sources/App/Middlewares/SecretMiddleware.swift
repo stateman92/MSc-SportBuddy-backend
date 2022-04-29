@@ -9,7 +9,7 @@ import Vapor
 
 /// A middleware that checks that is there a value in the header that matches the secret.
 final class SecretMiddleware: Initable {
-    var secret: String = .empty
+    var secret: String = .init()
     var header = "secret"
 }
 

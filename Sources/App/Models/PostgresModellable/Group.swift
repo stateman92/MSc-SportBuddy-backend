@@ -39,7 +39,7 @@ extension Group: PostgresModellable {
 
     /// Initialize an empty object for a new record in the schema.
     convenience init() {
-        self.init(id: .init(), sportType: .athletics, image: .empty, users: .empty, groupEntries: .empty)
+        self.init(id: .init(), sportType: .athletics, image: .init(), users: .init(), groupEntries: .init())
     }
 
     /// Initialize the object from a DTO object.
@@ -50,7 +50,7 @@ extension Group: PostgresModellable {
 
     /// Get the object as a DTO object.
     var dto: GroupDTO {
-        .init(primaryId: id ?? .init(), sportType: sportType.dto, users: users, groupEntries: .empty, image: image)
+        .init(primaryId: id ?? .init(), sportType: sportType.dto, users: users, groupEntries: .init(), image: image)
     }
 }
 

@@ -15,3 +15,11 @@ extension EventLoopFuture where Value: OptionalType {
         unwrap(or: Abort(status))
     }
 }
+
+extension EventLoopFuture {
+    @discardableResult func waitCarefully(on request: Request) -> EventLoopFuture<Void> {
+        flatMap { _ in
+            request.eventLoop.future()
+        }
+    }
+}

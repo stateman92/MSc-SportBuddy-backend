@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol AuthenticationServiceProtocol: Initable {
+protocol AuthenticationServiceProtocol: Initable, AutoMockable {
     /// Hash a password.
     /// - Parameter password: the plain text password.
     /// - Returns: The hashed password.

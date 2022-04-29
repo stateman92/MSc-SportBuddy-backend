@@ -1,12 +1,14 @@
 //
 //  LazyInjected.swift
-//  
+//  SportBuddy
 //
-//  Created by Kristof Kalai on 2022. 03. 14..
+//  Created by Kristof Kalai on 2022. 03. 29..
 //
 
-/// A thin layer between the application and the DI library (Resolver). The dependency will be resolver lazily (at the first time you want to use).
+/// A thin layer between the application and the DI library (Resolver). The dependency will be resolved lazily (at the first time you want to use).
 @propertyWrapper struct LazyInjected<Service> {
+    // MARK: Properties
+
     private lazy var service: Service = DependencyInjector.resolve()
 
     /// The injected object.

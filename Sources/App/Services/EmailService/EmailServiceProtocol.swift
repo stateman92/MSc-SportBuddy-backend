@@ -8,7 +8,7 @@
 import Vapor
 
 /// A common protocol for the service that is capable of email sending.
-protocol EmailServiceProtocol: Initable {
+protocol EmailServiceProtocol: Initable, AutoMockable {
     /// Setup the service.
     /// - Parameter app: the `Application` instance.
     func setup(app: Application)

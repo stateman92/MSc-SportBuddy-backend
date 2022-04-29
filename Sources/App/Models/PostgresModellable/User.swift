@@ -22,7 +22,7 @@ final class User {
             Token(from: _token)
         }
         set {
-            _token = newValue?.encoded ?? .empty
+            _token = newValue?.encoded ?? .init()
         }
     }
     @Field(key: "chats") var chats: [UUID]
@@ -61,13 +61,13 @@ extension User: PostgresModellable {
 
     /// Initialize an empty object for a new record in the schema.
     convenience init() {
-        self.init(id: .init(), name: .empty, email: .empty, password: .empty, profileImage: .empty, bio: .empty, token: nil, chats: .empty, groups: .empty)
+        self.init(id: .init(), name: .init(), email: .init(), password: .init(), profileImage: .init(), bio: .init(), token: nil, chats: .init(), groups: .init())
     }
 
     /// Initialize the object from a DTO object.
     /// - Parameter dto: the DTO object.
     convenience init(from dto: UserDTO) {
-        self.init(id: dto.primaryId, name: dto.name, email: dto.email, password: .empty, profileImage: dto.profileImage ?? .empty, bio: dto.bio ?? .empty, token: nil, chats: dto.chats, groups: dto.groups)
+        self.init(id: dto.primaryId, name: dto.name, email: dto.email, password: .init(), profileImage: dto.profileImage ?? .init(), bio: dto.bio ?? .init(), token: nil, chats: dto.chats, groups: dto.groups)
     }
 
     /// Get the object as a DTO object.

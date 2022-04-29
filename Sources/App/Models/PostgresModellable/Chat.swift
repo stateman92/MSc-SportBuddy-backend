@@ -37,7 +37,7 @@ extension Chat: PostgresModellable {
 
     /// Initialize an empty object for a new record in the schema.
     convenience init() {
-        self.init(id: .init(), image: .empty, users: .empty, chatEntries: .empty)
+        self.init(id: .init(), image: .init(), users: .init(), chatEntries: .init())
     }
 
     /// Initialize the object from a DTO object.
@@ -48,7 +48,7 @@ extension Chat: PostgresModellable {
 
     /// Get the object as a DTO object.
     var dto: ChatDTO {
-        .init(primaryId: id ?? .init(), users: users, chatEntries: .empty, image: image)
+        .init(primaryId: id ?? .init(), users: users, chatEntries: .init(), image: image)
     }
 }
 

@@ -45,3 +45,11 @@ OR as a one-liner:
 - Run `heroku git:remote -a sportbuddy-backend` in the terminal
 
 - Run `git push heroku main` in the terminal
+
+#### Update mocks
+
+- Make sure you've installed [Sourcery](https://github.com/krzysztofzablocki/Sourcery) - if not, use e.g. `brew install sourcery` via [Homebrew](https://brew.sh/)
+
+- Run `sh sourcery.sh` in the terminal in the root directory
+
+- Xcode should automatically import the results (Tests/Generated/)

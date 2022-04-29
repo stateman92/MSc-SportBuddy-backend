@@ -8,7 +8,7 @@
 import Vapor
 
 /// A common abstract class for the service that is capable of authorize the incoming requests.
-class AuthorizationServiceProtocol: Initable {
+class AuthorizationServiceProtocol: Initable, AutoMockable {
     /// Initialize the object.
     required init() { }
 

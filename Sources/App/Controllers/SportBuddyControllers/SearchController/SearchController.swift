@@ -15,6 +15,6 @@ extension SearchController: SearchControllerProtocol {
             .repositories
             .users
             .queryAll()
-            .map { .http200($0.filter { $0.name.contains(name) && $0.id != user.id }.map(\.dto)) }
+            .map { .http200($0.filter { $0.name.localizedStandardContains(name) && $0.id != user.id }.map(\.dto)) }
     }
 }
