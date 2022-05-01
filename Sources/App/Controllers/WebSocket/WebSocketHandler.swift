@@ -101,7 +101,7 @@ extension WebSocketHandler {
                         guard let response: String = self.coderService.encode(object: chat) else {
                             return req.eventLoop.future()
                         }
-                        chatDto.users.forEach { userInChat in
+                        chat.users.forEach { userInChat in
                             self.clients.find(userInChat)?.send(response)
                         }
                         return req.eventLoop.future()
