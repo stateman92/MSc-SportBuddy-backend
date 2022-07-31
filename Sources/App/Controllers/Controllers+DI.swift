@@ -10,13 +10,17 @@ extension DependencyInjector {
     static func registerControllers() {
         resolver.register { SportBuddyController() }
 
-        resolver.register(ChatControllerProtocol.self) { ChatController() }
-        resolver.register(ChatEntriesControllerProtocol.self) { ChatEntriesController() }
-        resolver.register(ExerciseControllerProtocol.self) { ExerciseController() }
-        resolver.register(GroupControllerProtocol.self) { GroupController() }
-        resolver.register(GroupEntriesControllerProtocol.self) { GroupEntriesController() }
-        resolver.register(GroupManagingControllerProtocol.self) { GroupManagingController() }
-        resolver.register(SearchControllerProtocol.self) { SearchController() }
-        resolver.register(UserControllerProtocol.self) { UserController() }
+        resolver.register(ChatController.self) { ChatControllerImpl() }
+        resolver.register(ChatEntriesController.self) { ChatEntriesControllerImpl() }
+        resolver.register(ExerciseController.self) { ExerciseControllerImpl() }
+        resolver.register(GroupController.self) { GroupControllerImpl() }
+        resolver.register(GroupEntriesController.self) { GroupEntriesControllerImpl() }
+        resolver.register(GroupManagingController.self) { GroupManagingControllerImpl() }
+        resolver.register(SearchController.self) { SearchControllerImpl() }
+        resolver.register(UserController.self) { UserControllerImpl() }
+
+        resolver.register(WebSocketHandler.self) { _, args in
+            WebSocketHandlerImpl(eventLoop: args.get())
+        }
     }
 }

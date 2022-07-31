@@ -16,7 +16,7 @@ extension RepositoryFactory {
     /// Get a repository.
     /// - Parameter schema: the schema of the desired repository.
     /// - Returns: The repository.
-    func make(_ schema: Constants.Schema) -> RepositoryProtocol {
+    func make(_ schema: Constants.Schema) -> Repository {
         registry.make(schema, req)
     }
 }

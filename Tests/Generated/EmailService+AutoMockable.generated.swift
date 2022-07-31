@@ -4,7 +4,7 @@
 
 import Foundation
 
-class EmailServiceProtocolMock: EmailServiceProtocol {
+class EmailServiceMock: EmailService {
 
     //MARK: - setup
 

@@ -1,17 +1,17 @@
 //
-//  WebSocketHandler.swift
-//  
+//  WebSocketHandlerImpl.swift
 //
-//  Created by Kristof Kalai on 2022. 04. 29..
+//
+//  Created by Kristof Kalai on 2022. 07. 30..
 //
 
 import Vapor
 
-final class WebSocketHandler {
+final class WebSocketHandlerImpl {
     // MARK: Properties
 
     private let clients: WebSocketStorage
-    @LazyInjected private var coderService: CoderServiceProtocol
+    @LazyInjected private var coderService: CoderService
 
     // MARK: Initialization
 
@@ -20,9 +20,9 @@ final class WebSocketHandler {
     }
 }
 
-// MARK: - Public methods
+// MARK: - WebSocketHandler
 
-extension WebSocketHandler {
+extension WebSocketHandlerImpl: WebSocketHandler {
     func connect(_ req: Request, _ ws: WebSocket) {
         ws.onText { [unowned self] webSocket, string in
             if let connection: WSConnectionDTO = coderService.decode(string: string) {
@@ -37,7 +37,7 @@ extension WebSocketHandler {
 
 // MARK: - Private methods
 
-extension WebSocketHandler {
+extension WebSocketHandlerImpl {
     private func handle(_ connectionDto: WSConnectionDTO, _ req: Request, _ webSocket: WebSocket) {
         clients.add(.init(id: connectionDto.clientIdentifier, socket: webSocket))
     }
@@ -113,7 +113,7 @@ extension WebSocketHandler {
 
 // MARK: - Helpers
 
-extension WebSocketHandler {
+extension WebSocketHandlerImpl {
     private func getChatDTO(from chat: Chat, on req: Request) -> EventLoopFuture<ChatDTO> {
         getChatEntries(for: chat.chatEntries, on: req)
             .map { $0.map(\.dto) }

@@ -7,16 +7,6 @@
 
 import Vapor
 
-struct GroupController { }
-
-extension GroupController: GroupControllerProtocol {
-    func groupPut(with req: Request, asAuthenticated user: User, groupId: UUID, body: String?, users: [UUID]?) throws -> EventLoopFuture<groupPutResponse> {
-        req
-            .repositories
-            .groups
-            .findOrAbortAndModifyThenTransform(groupId, modify: { group in
-                group.image = body ?? group.image
-                group.users = users ?? group.users
-            }, transformTo: .http200)
-    }
+protocol GroupController {
+    func groupPut(with req: Request, asAuthenticated user: User, groupId: UUID, body: String?, users: [UUID]?) throws -> EventLoopFuture<groupPutResponse>
 }

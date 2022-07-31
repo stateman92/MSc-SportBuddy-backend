@@ -8,16 +8,16 @@
 extension DependencyInjector {
     /// Register all the services of the application.
     static func registerServices() {
-        resolver.register { AuthorizationService() }.implements(AuthorizationServiceProtocol.self)
-        resolver.register { AuthenticationService() }.implements(AuthenticationServiceProtocol.self)
+        resolver.register { AuthorizationServiceImpl() }.implements(AuthorizationService.self)
+        resolver.register { AuthenticationServiceImpl() }.implements(AuthenticationService.self)
         resolver
-            .register { () -> EmailServiceProtocol in
+            .register { () -> EmailService in
                 if isTesting() {
                     return MockEmailService()
                 } else {
-                    return EmailService()
+                    return EmailServiceImpl()
                 }
             }
-        resolver.register { CoderService() }.implements(CoderServiceProtocol.self)
+        resolver.register { CoderServiceImpl() }.implements(CoderService.self)
     }
 }

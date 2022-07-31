@@ -7,6 +7,5 @@
 
 final class GoogleSignInService: AutoMockable, Initable {
     init() { }
-    func signIn() {
-    }
+    func signIn() {}
 }

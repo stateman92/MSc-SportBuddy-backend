@@ -9,11 +9,13 @@ import Vapor
 import Fluent
 import FluentKit
 
-struct MockRepository<T: Model>: QueriableRepositoryProtocol {
+struct MockRepository<T: Model> {
     let req: Request
 }
 
-extension MockRepository {
+// MARK: - QueriableRepository
+
+extension MockRepository: QueriableRepository {
     /// Query the repository.
     /// - Returns: The `QueryBuilder`.
     func query() -> QueryBuilder<T> {

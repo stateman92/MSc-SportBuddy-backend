@@ -12,7 +12,9 @@ struct MockEmailService {
     init() { }
 }
 
-extension MockEmailService: EmailServiceProtocol {
+// MARK: - EmailService
+
+extension MockEmailService: EmailService {
     /// Setup the service.
     /// - Parameter app: the `Application` instance.
     func setup(app: Application) { }

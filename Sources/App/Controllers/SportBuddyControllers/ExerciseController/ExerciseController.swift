@@ -7,36 +7,9 @@
 
 import Vapor
 
-struct ExerciseController { }
-
-extension ExerciseController: ExerciseControllerProtocol {
-    func exerciseGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<exerciseGetResponse> {
-        req
-            .repositories
-            .exercises
-            .queryAll()
-            .map { .http200($0.map(\.dto)) }
-    }
-
-    func exercisePost(with req: Request, asAuthenticated user: User, body: ExerciseDTO) throws -> EventLoopFuture<exercisePostResponse> {
-        req
-            .repositories
-            .exercises
-            .create(body.model, transformTo: .http200)
-    }
-
-    func exercisePut(with req: Request, asAuthenticated user: User, body: ExerciseDTO) throws -> EventLoopFuture<exercisePutResponse> {
-        req
-            .repositories
-            .exercises
-            .update(body.model, transformTo: .http200)
-    }
-
-    func exerciseDelete(with req: Request, asAuthenticated user: User, exerciseId: UUID) throws -> EventLoopFuture<exerciseDeleteResponse> {
-        req
-            .repositories
-            .exercises
-            .findOrAbortAndDelete(exerciseId)
-            .transform(to: .http200)
-    }
+protocol ExerciseController {
+    func exerciseGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<exerciseGetResponse>
+    func exercisePost(with req: Request, asAuthenticated user: User, body: ExerciseDTO) throws -> EventLoopFuture<exercisePostResponse>
+    func exercisePut(with req: Request, asAuthenticated user: User, body: ExerciseDTO) throws -> EventLoopFuture<exercisePutResponse>
+    func exerciseDelete(with req: Request, asAuthenticated user: User, exerciseId: UUID) throws -> EventLoopFuture<exerciseDeleteResponse>
 }

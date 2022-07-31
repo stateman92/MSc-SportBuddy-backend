@@ -1,5 +1,5 @@
 //
-//  QueriableRepositoryProtocol.swift
+//  QueriableRepository.swift
 //  
 //
 //  Created by Kristof Kalai on 2022. 03. 20..
@@ -8,7 +8,7 @@
 import Fluent
 
 /// A common protocol for repositories that can be queried and thus has an associatedtype.
-protocol QueriableRepositoryProtocol: RepositoryProtocol {
+protocol QueriableRepository: Repository {
     associatedtype T: Model
 
     /// Query the repository.

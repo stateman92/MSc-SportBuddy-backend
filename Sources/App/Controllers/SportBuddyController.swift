@@ -8,14 +8,14 @@
 import Vapor
 
 final class SportBuddyController: BackendApiDelegate {
-    @LazyInjected private var chatController: ChatControllerProtocol
-    @LazyInjected private var chatEntriesController: ChatEntriesControllerProtocol
-    @LazyInjected private var exerciseController: ExerciseControllerProtocol
-    @LazyInjected private var groupController: GroupControllerProtocol
-    @LazyInjected private var groupEntriesController: GroupEntriesControllerProtocol
-    @LazyInjected private var groupManagingController: GroupManagingControllerProtocol
-    @LazyInjected private var searchController: SearchControllerProtocol
-    @LazyInjected private var userController: UserControllerProtocol
+    @LazyInjected private var chatController: ChatController
+    @LazyInjected private var chatEntriesController: ChatEntriesController
+    @LazyInjected private var exerciseController: ExerciseController
+    @LazyInjected private var groupController: GroupController
+    @LazyInjected private var groupEntriesController: GroupEntriesController
+    @LazyInjected private var groupManagingController: GroupManagingController
+    @LazyInjected private var searchController: SearchController
+    @LazyInjected private var userController: UserController
 }
 
 extension SportBuddyController {

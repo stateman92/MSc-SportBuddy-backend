@@ -11,7 +11,7 @@ import Resolver
 public struct DependencyInjector {
     // MARK: Properties
 
-    static let resolver = Resolver.self
+    static let resolver = Resolver()
 
     // MARK: Initialization
 

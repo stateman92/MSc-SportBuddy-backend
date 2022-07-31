@@ -16,7 +16,7 @@ extension Application {
         try setupDatabase()
         configureMiddlewares()
         try setupRoutes()
-        (DependencyInjector.resolve() as EmailServiceProtocol).setup(app: self)
+        (DependencyInjector.resolve() as EmailService).setup(app: self)
         reigsterRepositories()
     }
 }
@@ -164,12 +164,12 @@ extension Application {
             repositories.register(.groupEntries) { MockRepository<GroupEntry>(req: $0) }
             repositories.register(.users) { MockRepository<User>(req: $0) }
         } else {
-            repositories.register(.chats) { Repository<Chat>(req: $0) }
-            repositories.register(.chatEntries) { Repository<ChatEntry>(req: $0) }
-            repositories.register(.exercises) { Repository<Exercise>(req: $0) }
-            repositories.register(.groups) { Repository<Group>(req: $0) }
-            repositories.register(.groupEntries) { Repository<GroupEntry>(req: $0) }
-            repositories.register(.users) { Repository<User>(req: $0) }
+            repositories.register(.chats) { RepositoryImpl<Chat>(req: $0) }
+            repositories.register(.chatEntries) { RepositoryImpl<ChatEntry>(req: $0) }
+            repositories.register(.exercises) { RepositoryImpl<Exercise>(req: $0) }
+            repositories.register(.groups) { RepositoryImpl<Group>(req: $0) }
+            repositories.register(.groupEntries) { RepositoryImpl<GroupEntry>(req: $0) }
+            repositories.register(.users) { RepositoryImpl<User>(req: $0) }
         }
     }
 }
@@ -179,13 +179,13 @@ extension Application {
     private func setupRoutes() throws {
         try App.routes(self,
                        backend: DependencyInjector.resolve() as SportBuddyController,
-                       authForBearer: DependencyInjector.resolve() as AuthorizationServiceProtocol)
+                       authForBearer: DependencyInjector.resolve() as AuthorizationService)
         setupWebSocket()
     }
 
     /// Setup the websockets.
     private func setupWebSocket() {
-        let webSocketHandler = WebSocketHandler(eventLoop: eventLoopGroup.next())
+        let webSocketHandler: WebSocketHandler = DependencyInjector.resolve(args: eventLoopGroup.next())
         webSocket { req, ws in
             webSocketHandler.connect(req, ws)
         }

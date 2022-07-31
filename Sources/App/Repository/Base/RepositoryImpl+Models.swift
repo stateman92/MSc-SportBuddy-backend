@@ -1,5 +1,5 @@
 //
-//  Repository+Models.swift
+//  RepositoryImpl+Models.swift
 //  
 //
 //  Created by Kristof Kalai on 2022. 03. 21..
@@ -8,7 +8,7 @@
 import Vapor
 import FluentPostgresDriver
 
-extension Repository {
+extension RepositoryImpl {
     /// Get the object of the given identifier.
     /// - Parameter id: the identifier of the given object.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
@@ -72,7 +72,7 @@ extension Repository {
     }
 }
 
-extension Repository {
+extension RepositoryImpl {
     /// Get all the objects of the repository.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func queryAll() -> EventLoopFuture<[T]> {
@@ -94,7 +94,7 @@ extension Repository {
     }
 }
 
-extension Repository {
+extension RepositoryImpl {
     /// Create an object in the repository and then transform the value to a new value.
     /// - Parameter model: the model to be created.
     /// - Parameter instance: the new value to be transformed the result of the modification.
@@ -104,7 +104,7 @@ extension Repository {
     }
 }
 
-extension Repository {
+extension RepositoryImpl {
     /// Update an object in the repository and then transform the value to a new value.
     /// - Parameter model: the model to be updated.
     /// - Parameter instance: the new value to be transformed the result of the modification.
@@ -114,7 +114,7 @@ extension Repository {
     }
 }
 
-extension Repository {
+extension RepositoryImpl {
     /// Delete the object from the repository.
     /// - Parameter model: the object.
     /// - Parameter force: whether to use force delete or not. By default `false`.

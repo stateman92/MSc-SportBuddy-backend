@@ -4,7 +4,7 @@
 
 import Foundation
 
-class AuthenticationServiceProtocolMock: AuthenticationServiceProtocol {
+class AuthenticationServiceMock: AuthenticationService {
 
     //MARK: - hash
 

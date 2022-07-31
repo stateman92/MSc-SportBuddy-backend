@@ -1,5 +1,5 @@
 //
-//  Repository.swift
+//  RepositoryImpl.swift
 //  
 //
 //  Created by Kristof Kalai on 2022. 03. 20..
@@ -9,11 +9,13 @@ import Vapor
 import Fluent
 import FluentKit
 
-struct Repository<T: Model>: QueriableRepositoryProtocol {
+struct RepositoryImpl<T: Model> {
     let req: Request
 }
 
-extension Repository {
+// MARK: - QueriableRepository
+
+extension RepositoryImpl: QueriableRepository {
     /// Query the repository.
     /// - Returns: The `QueryBuilder`.
     func query() -> QueryBuilder<T> {
@@ -35,7 +37,7 @@ extension Repository {
     }
 }
 
-extension Repository {
+extension RepositoryImpl {
     /// Get all the objects of the repository.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func getAll() -> EventLoopFuture<[T]> {
@@ -57,7 +59,7 @@ extension Repository {
     }
 }
 
-extension Repository {
+extension RepositoryImpl {
     /// Create an object in the repository.
     /// - Parameter model: the model to be created.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
@@ -66,7 +68,7 @@ extension Repository {
     }
 }
 
-extension Repository {
+extension RepositoryImpl {
     /// Update an object in the repository.
     /// - Parameter model: the model to be updated.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
@@ -75,7 +77,7 @@ extension Repository {
     }
 }
 
-extension Repository {
+extension RepositoryImpl {
     /// Delete the object from the repository.
     /// - Parameter id: the identifier of the given object.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.

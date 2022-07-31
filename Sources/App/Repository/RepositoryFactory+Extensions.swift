@@ -9,8 +9,8 @@ extension RepositoryFactory {
     /// Get a repository of the given schema.
     /// - Parameter schema: the schema of the desired repository.
     /// - Returns: The repository.
-    func repository<T>(schema: Constants.Schema) -> Repository<T> {
-        guard let result = make(schema) as? Repository<T> else {
+    func repository<T>(schema: Constants.Schema) -> RepositoryImpl<T> {
+        guard let result = make(schema) as? RepositoryImpl<T> else {
             fatalError("Repository<\(T.self)> repository didn't set.")
         }
         return result
@@ -19,32 +19,32 @@ extension RepositoryFactory {
 
 extension RepositoryFactory {
     /// The repository of the `Chat` objects.
-    var chats: Repository<Chat> {
+    var chats: RepositoryImpl<Chat> {
         repository(schema: .chats)
     }
 
     /// The repository of the `ChatEntry` objects.
-    var chatEntries: Repository<ChatEntry> {
+    var chatEntries: RepositoryImpl<ChatEntry> {
         repository(schema: .chatEntries)
     }
 
     /// The repository of the `Group` objects.
-    var groups: Repository<Group> {
+    var groups: RepositoryImpl<Group> {
         repository(schema: .groups)
     }
 
     /// The repository of the `GroupEntry` objects.
-    var groupEntries: Repository<GroupEntry> {
+    var groupEntries: RepositoryImpl<GroupEntry> {
         repository(schema: .groupEntries)
     }
 
     /// The repository of the `User` objects.
-    var users: Repository<User> {
+    var users: RepositoryImpl<User> {
         repository(schema: .users)
     }
 
     /// The repository of the `Exercise` objects.
-    var exercises: Repository<Exercise> {
+    var exercises: RepositoryImpl<Exercise> {
         repository(schema: .exercises)
     }
 }

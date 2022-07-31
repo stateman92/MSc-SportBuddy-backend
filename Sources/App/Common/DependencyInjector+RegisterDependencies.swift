@@ -17,4 +17,8 @@ extension DependencyInjector {
         registerMiddlewares()
         registerMigrations()
     }
+
+    static func resolve<T>(args: Any?) -> T {
+        resolver.resolve(T.self, args: args)
+    }
 }

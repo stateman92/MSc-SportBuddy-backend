@@ -9,7 +9,7 @@ import Vapor
 
 final class RepositoryRegistry {
     private let app: Application
-    private var builders: [Constants.Schema: ((Request) -> RepositoryProtocol)] = [:]
+    private var builders: [Constants.Schema: ((Request) -> Repository)] = [:]
 
     /// Initialize a registry.
     /// - Parameter app: the application.
@@ -30,7 +30,7 @@ extension RepositoryRegistry {
     /// - Parameter schema: the schema of the desired repository.
     /// - Parameter req: the request.
     /// - Returns: The repository.
-    func make(_ schema: Constants.Schema, _ req: Request) -> RepositoryProtocol {
+    func make(_ schema: Constants.Schema, _ req: Request) -> Repository {
         guard let builder = builders[schema] else {
             fatalError("\(schema) didn't get registered in the registry.")
         }
@@ -40,7 +40,7 @@ extension RepositoryRegistry {
     /// Register a repository.
     /// - Parameter schema: the schema of the repository that is being registered.
     /// - Parameter builder: the builder that shows how to create such a repository.
-    func register(_ schema: Constants.Schema, _ builder: @escaping (Request) -> RepositoryProtocol) {
+    func register(_ schema: Constants.Schema, _ builder: @escaping (Request) -> Repository) {
         builders[schema] = builder
     }
 }
