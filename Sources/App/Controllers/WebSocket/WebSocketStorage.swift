@@ -44,4 +44,8 @@ extension WebSocketStorage {
     func find(_ uuid: UUID) -> WebSocketClient? {
         storage[uuid]
     }
+
+    func forEach(_ body: (WebSocketClient) -> Void) {
+        storage.map(\.value).forEach(body)
+    }
 }

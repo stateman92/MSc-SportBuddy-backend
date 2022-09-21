@@ -31,6 +31,9 @@ extension WebSocketHandlerImpl: WebSocketHandler {
             if let chat: ChatDTO = coderService.decode(string: string) {
                 handle(chat, req, webSocket)
             }
+            if let liveFeed: LiveFeedDTO = coderService.decode(string: string) {
+                handle(liveFeed, req, webSocket)
+            }
         }
     }
 }
@@ -106,6 +109,36 @@ extension WebSocketHandlerImpl {
                         }
                         return req.eventLoop.future()
                     }
+            }
+            .waitCarefully(on: req)
+    }
+
+    private func handle(_ liveFeedDto: LiveFeedDTO, _ req: Request, _ webSocket: WebSocket) {
+        req
+            .eventLoop
+            .future()
+            .flatMap { _ -> EventLoopFuture<String> in
+                req
+                    .repositories
+                    .users
+                    .findOrAbort(liveFeedDto.sender)
+                    .map(\.profileImage)
+            }
+            .flatMap { image -> EventLoopFuture<Void> in
+                let notOursDto = LiveFeedResponseDTO(image: image, message: liveFeedDto.message, date: liveFeedDto.date)
+                let oursDto = LiveFeedResponseDTO(image: nil, message: liveFeedDto.message, date: liveFeedDto.date)
+                guard let notOursResponse: String = self.coderService.encode(object: notOursDto),
+                      let oursResponse: String = self.coderService.encode(object: oursDto) else {
+                    return req.eventLoop.future()
+                }
+                self.clients.forEach { client in
+                    if client.identifier == liveFeedDto.sender {
+                        client.send(oursResponse)
+                    } else {
+                        client.send(notOursResponse)
+                    }
+                }
+                return req.eventLoop.future()
             }
             .waitCarefully(on: req)
     }
