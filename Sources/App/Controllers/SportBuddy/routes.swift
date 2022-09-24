@@ -340,6 +340,10 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     let body = try request.content.decode(String.self)
     return try backend.groupPut(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), groupId: groupId, body: body, users: users)
   }
+  groupForBearer.on(.POST, "/image".asPathComponents) { (request: Request) -> EventLoopFuture<imagePostResponse> in
+    let body = try request.content.decode(String.self)
+    return try backend.imagePost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
+  }
   app.on(.POST, "/login".asPathComponents) { (request: Request) -> EventLoopFuture<loginPostResponse> in
     let emailOptional = try? request.query.get(String.self, at: "email")
     guard let email = emailOptional else {
@@ -505,6 +509,10 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     let users = try? request.query.get([UUID].self, at: "users")
     let body = try request.content.decode(String.self)
     return try backend.groupPut(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), groupId: groupId, body: body, users: users)
+  }
+  groupForBearer.on(.POST, "/image".asPathComponents) { (request: Request) -> EventLoopFuture<imagePostResponse> in
+    let body = try request.content.decode(String.self)
+    return try backend.imagePost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
   }
   app.on(.POST, "/login".asPathComponents) { (request: Request) -> EventLoopFuture<loginPostResponse> in
     let emailOptional = try? request.query.get(String.self, at: "email")

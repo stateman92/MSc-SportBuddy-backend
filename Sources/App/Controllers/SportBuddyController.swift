@@ -154,4 +154,8 @@ extension SportBuddyController {
     func logoutPost(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<logoutPostResponse> {
         try userController.logoutPost(with: req, asAuthenticated: user)
     }
+
+    func imagePost(with req: Request, asAuthenticated user: User, body: String?) throws -> EventLoopFuture<imagePostResponse> {
+        try userController.imagePost(with: req, asAuthenticated: user, body: body)
+    }
 }

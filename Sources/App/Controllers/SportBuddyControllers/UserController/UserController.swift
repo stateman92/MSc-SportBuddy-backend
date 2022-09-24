@@ -12,4 +12,5 @@ protocol UserController {
     func loginPost(with req: Request, email: String, password: String) throws -> EventLoopFuture<loginPostResponse>
     func forgotPasswordPost(with req: Request, email: String) throws -> EventLoopFuture<forgotPasswordPostResponse>
     func logoutPost(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<logoutPostResponse>
+    func imagePost(with req: Request, asAuthenticated user: User, body: String?) throws -> EventLoopFuture<imagePostResponse>
 }

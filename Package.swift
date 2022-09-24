@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.7
 import PackageDescription
 
 let package = Package(
@@ -8,14 +8,14 @@ let package = Package(
     ],
     dependencies: [
         // 💧 A server-side Swift web framework.
-        .package(url: "https://github.com/vapor/vapor.git", .exact("4.55.3")),
-        .package(url: "https://github.com/vapor/fluent.git", .exact("4.4.0")),
-        .package(url: "https://github.com/vapor/postgres-kit.git", .exact("2.5.1")),
-        .package(url: "https://github.com/vapor/postgres-nio.git", .exact("1.7.2")),
-        .package(url: "https://github.com/vapor/fluent-postgres-driver.git", .exact("2.2.4")),
-        .package(url: "https://github.com/nodes-vapor/gatekeeper.git", .exact("4.2.0")),
-        .package(url: "https://github.com/vapor-community/sendgrid.git", .exact("4.0.0")),
-        .package(url: "https://github.com/hmlongco/Resolver.git", .exact("1.3.0"))
+        .package(url: "https://github.com/vapor/vapor.git", exact: .init(4, 65, 2)),
+        .package(url: "https://github.com/vapor/fluent.git", exact: .init(4, 4, 0)),
+        .package(url: "https://github.com/vapor/postgres-kit.git", exact: .init(2, 5, 1)),
+        .package(url: "https://github.com/vapor/postgres-nio.git", exact: .init(1, 7, 2)),
+        .package(url: "https://github.com/vapor/fluent-postgres-driver.git", exact: .init(2, 2, 4)),
+        .package(url: "https://github.com/nodes-vapor/gatekeeper.git", exact: .init(4, 2, 0)),
+        .package(url: "https://github.com/vapor-community/sendgrid.git", exact: .init(4, 0, 0)),
+        .package(url: "https://github.com/hmlongco/Resolver.git", exact: .init(1, 3, 0))
     ],
     targets: [
         .target(

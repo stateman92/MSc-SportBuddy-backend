@@ -77,4 +77,18 @@ extension UserControllerImpl: UserController {
                 return req.eventLoop.future(.http400)
             }
     }
+
+    func imagePost(with req: Request, asAuthenticated user: User, body: String?) throws -> EventLoopFuture<imagePostResponse> {
+        req
+            .repositories
+            .users
+            .queryAll()
+            .flatMap {
+                if let user = $0.first(where: { $0.email == user.email }) {
+                    user.profileImage = body ?? .init()
+                    return req.repositories.users.update(user, transformTo: .http200(user.dto))
+                }
+                return req.eventLoop.future(.http400)
+            }
+    }
 }

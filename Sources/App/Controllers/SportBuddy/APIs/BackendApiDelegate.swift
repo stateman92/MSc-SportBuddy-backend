@@ -390,6 +390,26 @@ public enum groupPutResponse: ResponseEncodable {
 }
 
 
+public enum imagePostResponse: ResponseEncodable {
+  case http200(UserDTO)
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200(let content):
+      return content.encodeResponse(for: request).map { (response: Response) -> (Response) in
+        response.status = HTTPStatus(statusCode: 200)
+        return response
+      }
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
 public enum loginPostResponse: ResponseEncodable {
   case http200(UserResponseDTO)
   case http400
@@ -588,6 +608,10 @@ public protocol BackendApiDelegate {
   PUT /group
   Update a group */
   func groupPut(with req: Request, asAuthenticated user: AuthType, groupId: UUID, body: String?, users: [UUID]?) throws -> EventLoopFuture<groupPutResponse>
+  /**
+  POST /image
+  Upload an image of the user */
+  func imagePost(with req: Request, asAuthenticated user: AuthType, body: String?) throws -> EventLoopFuture<imagePostResponse>
   /**
   POST /login
   Login an existing user of the application or an admin */
