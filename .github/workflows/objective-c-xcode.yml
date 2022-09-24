@@ -9,7 +9,8 @@ on:
 jobs:
   build:
     name: Build and analyse project
-    runs-on: macos-latest
+      run: sudo xcode-select -s '/Applications/Xcode_14.0.app/Contents/Developer'
+    runs-on: macos-12
 
     steps:
       - name: Checkout
