@@ -11,9 +11,6 @@ final class SportBuddyController: BackendApiDelegate {
     @LazyInjected private var chatController: ChatController
     @LazyInjected private var chatEntriesController: ChatEntriesController
     @LazyInjected private var exerciseController: ExerciseController
-    @LazyInjected private var groupController: GroupController
-    @LazyInjected private var groupEntriesController: GroupEntriesController
-    @LazyInjected private var groupManagingController: GroupManagingController
     @LazyInjected private var searchController: SearchController
     @LazyInjected private var userController: UserController
 }
@@ -56,14 +53,6 @@ extension SportBuddyController {
     }
 }
 
-// MARK: - GroupController
-
-extension SportBuddyController {
-    func groupPut(with req: Request, asAuthenticated user: User, groupId: UUID, body: String?, users: [UUID]?) throws -> EventLoopFuture<groupPutResponse> {
-        try groupController.groupPut(with: req, asAuthenticated: user, groupId: groupId, body: body, users: users)
-    }
-}
-
 // MARK: - ExerciseController
 
 extension SportBuddyController {
@@ -81,46 +70,6 @@ extension SportBuddyController {
 
     func exerciseDelete(with req: Request, asAuthenticated user: User, exerciseId: UUID) throws -> EventLoopFuture<exerciseDeleteResponse> {
         try exerciseController.exerciseDelete(with: req, asAuthenticated: user, exerciseId: exerciseId)
-    }
-}
-
-// MARK: - GroupEntriesController
-
-extension SportBuddyController {
-    func groupEntriesGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<groupEntriesGetResponse> {
-        try groupEntriesController.groupEntriesGet(with: req, asAuthenticated: user)
-    }
-
-    func groupEntriesPost(with req: Request, asAuthenticated user: User, groupId: UUID, message: String) throws -> EventLoopFuture<groupEntriesPostResponse> {
-        try groupEntriesController.groupEntriesPost(with: req, asAuthenticated: user, groupId: groupId, message: message)
-    }
-
-    func groupEntriesPut(with req: Request, asAuthenticated user: User, groupEntryDTOId: UUID, modifiedMessage: String) throws -> EventLoopFuture<groupEntriesPutResponse> {
-        try groupEntriesController.groupEntriesPut(with: req, asAuthenticated: user, groupEntryDTOId: groupEntryDTOId, modifiedMessage: modifiedMessage)
-    }
-
-    func groupEntriesDelete(with req: Request, asAuthenticated user: User, groupEntryDTOId: UUID) throws -> EventLoopFuture<groupEntriesDeleteResponse> {
-        try groupEntriesController.groupEntriesDelete(with: req, asAuthenticated: user, groupEntryDTOId: groupEntryDTOId)
-    }
-
-    func groupEntriesPatch(with req: Request, asAuthenticated user: User, groupEntryDTOId: UUID) throws -> EventLoopFuture<groupEntriesPatchResponse> {
-        try groupEntriesController.groupEntriesPatch(with: req, asAuthenticated: user, groupEntryDTOId: groupEntryDTOId)
-    }
-}
-
-// MARK: - GroupManagingController
-
-extension SportBuddyController {
-    func groupManagingGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<groupManagingGetResponse> {
-        try groupManagingController.groupManagingGet(with: req, asAuthenticated: user)
-    }
-
-    func groupManagingDelete(with req: Request, asAuthenticated user: User, groupId: UUID) throws -> EventLoopFuture<groupManagingDeleteResponse> {
-        try groupManagingController.groupManagingDelete(with: req, asAuthenticated: user, groupId: groupId)
-    }
-
-    func groupManagingPost(with req: Request, asAuthenticated user: User, groupId: UUID) throws -> EventLoopFuture<groupManagingPostResponse> {
-        try groupManagingController.groupManagingPost(with: req, asAuthenticated: user, groupId: groupId)
     }
 }
 
@@ -157,5 +106,9 @@ extension SportBuddyController {
 
     func imagePost(with req: Request, asAuthenticated user: User, body: String?) throws -> EventLoopFuture<imagePostResponse> {
         try userController.imagePost(with: req, asAuthenticated: user, body: body)
+    }
+
+    func userImageGet(with req: Request, asAuthenticated user: User, chatId: String) throws -> EventLoopFuture<userImageGetResponse> {
+        try userController.userImageGet(with: req, asAuthenticated: user, chatId: chatId)
     }
 }

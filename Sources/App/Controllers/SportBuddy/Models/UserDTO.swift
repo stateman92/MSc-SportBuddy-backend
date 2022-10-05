@@ -16,15 +16,13 @@ public final class UserDTO: Content {
     public var profileImage: String?
     public var bio: String?
     public var chats: [UUID]
-    public var groups: [UUID]
 
-    public init(primaryId: UUID, name: String, email: String, profileImage: String?, bio: String?, chats: [UUID], groups: [UUID]) { 
+    public init(primaryId: UUID, name: String, email: String, profileImage: String?, bio: String?, chats: [UUID]) { 
         self.primaryId = primaryId
         self.name = name
         self.email = email
         self.profileImage = profileImage
         self.bio = bio
         self.chats = chats
-        self.groups = groups
     }
 }

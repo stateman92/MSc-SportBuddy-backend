@@ -10,15 +10,17 @@ import Vapor
 
 public final class ChatDTO: Content {
 
-    public var primaryId: UUID
-    public var users: [UUID]
     public var chatEntries: [ChatEntryDTO]
     public var image: String
+    public var primaryId: UUID
+    public var users: [UUID]
+    public var otherParty: String
 
-    public init(primaryId: UUID, users: [UUID], chatEntries: [ChatEntryDTO], image: String) { 
-        self.primaryId = primaryId
-        self.users = users
+    public init(chatEntries: [ChatEntryDTO], image: String, primaryId: UUID, users: [UUID], otherParty: String) { 
         self.chatEntries = chatEntries
         self.image = image
+        self.primaryId = primaryId
+        self.users = users
+        self.otherParty = otherParty
     }
 }

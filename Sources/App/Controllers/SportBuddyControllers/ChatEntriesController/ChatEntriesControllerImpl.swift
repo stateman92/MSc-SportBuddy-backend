@@ -16,7 +16,7 @@ extension ChatEntriesControllerImpl: ChatEntriesController {
         getChats(of: user, on: req)
             .flatMap {
                 $0
-                    .map { getChatDTO(from: $0, on: req) }
+                    .map { getChatDTO(from: $0, otherParty: $0.users.first { $0 != user.id }!, on: req) }
                     .flatten(on: req)
             }
             .map { .http200($0) }
@@ -75,10 +75,15 @@ extension ChatEntriesControllerImpl {
             .flatten(on: req)
     }
 
-    private func getChatDTO(from chat: Chat, on req: Request) -> EventLoopFuture<ChatDTO> {
+    private func getChatDTO(from chat: Chat, otherParty: UUID, on req: Request) -> EventLoopFuture<ChatDTO> {
         getChatEntries(for: chat.chatEntries, on: req)
             .map { $0.map(\.dto) }
-            .map { chat.dto(with: $0) }
+            .flatMap { entries in
+                req.repositories.users.findOrAbort(otherParty).map(\.name).map {
+                    (entries, $0)
+                }
+            }
+            .map { chat.dto(with: $0.0, otherParty: $0.1) }
     }
 
     private func deleteOrUndelete<NewValue>(delete: Bool, chatEntryDTOId: UUID, on req: Request, transformTo: NewValue) -> EventLoopFuture<NewValue> {

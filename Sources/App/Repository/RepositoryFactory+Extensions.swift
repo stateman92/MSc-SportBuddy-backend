@@ -28,16 +28,6 @@ extension RepositoryFactory {
         repository(schema: .chatEntries)
     }
 
-    /// The repository of the `Group` objects.
-    var groups: RepositoryImpl<Group> {
-        repository(schema: .groups)
-    }
-
-    /// The repository of the `GroupEntry` objects.
-    var groupEntries: RepositoryImpl<GroupEntry> {
-        repository(schema: .groupEntries)
-    }
-
     /// The repository of the `User` objects.
     var users: RepositoryImpl<User> {
         repository(schema: .users)

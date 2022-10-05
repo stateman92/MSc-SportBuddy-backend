@@ -217,179 +217,6 @@ public enum forgotPasswordPostResponse: ResponseEncodable {
 }
 
 
-public enum groupEntriesDeleteResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
-public enum groupEntriesGetResponse: ResponseEncodable {
-  case http200([GroupDTO])
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200(let content):
-      return content.encodeResponse(for: request).map { (response: Response) -> (Response) in
-        response.status = HTTPStatus(statusCode: 200)
-        return response
-      }
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
-public enum groupEntriesPatchResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
-public enum groupEntriesPostResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
-public enum groupEntriesPutResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
-public enum groupManagingDeleteResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
-public enum groupManagingGetResponse: ResponseEncodable {
-  case http200([GroupDTO])
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200(let content):
-      return content.encodeResponse(for: request).map { (response: Response) -> (Response) in
-        response.status = HTTPStatus(statusCode: 200)
-        return response
-      }
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
-public enum groupManagingPostResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
-public enum groupPutResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
 public enum imagePostResponse: ResponseEncodable {
   case http200(UserDTO)
   case http400
@@ -526,6 +353,26 @@ public enum testGetResponse: ResponseEncodable {
   }
 }
 
+
+public enum userImageGetResponse: ResponseEncodable {
+  case http200(String)
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200(let content):
+      return content.encodeResponse(for: request).map { (response: Response) -> (Response) in
+        response.status = HTTPStatus(statusCode: 200)
+        return response
+      }
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
 public protocol BackendApiDelegate {
   associatedtype AuthType
   /**
@@ -573,42 +420,6 @@ public protocol BackendApiDelegate {
   Send a recovery email to an existing user of the application or an admin */
   func forgotPasswordPost(with req: Request, email: String) throws -> EventLoopFuture<forgotPasswordPostResponse>
   /**
-  DELETE /groupEntries
-  Delete a group message */
-  func groupEntriesDelete(with req: Request, asAuthenticated user: AuthType, groupEntryDTOId: UUID) throws -> EventLoopFuture<groupEntriesDeleteResponse>
-  /**
-  GET /groupEntries
-  Get a group's messages */
-  func groupEntriesGet(with req: Request, asAuthenticated user: AuthType) throws -> EventLoopFuture<groupEntriesGetResponse>
-  /**
-  PATCH /groupEntries
-  Undo message deletion */
-  func groupEntriesPatch(with req: Request, asAuthenticated user: AuthType, groupEntryDTOId: UUID) throws -> EventLoopFuture<groupEntriesPatchResponse>
-  /**
-  POST /groupEntries
-  Post a group message */
-  func groupEntriesPost(with req: Request, asAuthenticated user: AuthType, groupId: UUID, message: String) throws -> EventLoopFuture<groupEntriesPostResponse>
-  /**
-  PUT /groupEntries
-  Modify a group message */
-  func groupEntriesPut(with req: Request, asAuthenticated user: AuthType, groupEntryDTOId: UUID, modifiedMessage: String) throws -> EventLoopFuture<groupEntriesPutResponse>
-  /**
-  DELETE /groupManaging
-  Leave group */
-  func groupManagingDelete(with req: Request, asAuthenticated user: AuthType, groupId: UUID) throws -> EventLoopFuture<groupManagingDeleteResponse>
-  /**
-  GET /groupManaging
-  Get the list of groups */
-  func groupManagingGet(with req: Request, asAuthenticated user: AuthType) throws -> EventLoopFuture<groupManagingGetResponse>
-  /**
-  POST /groupManaging
-  Join a group */
-  func groupManagingPost(with req: Request, asAuthenticated user: AuthType, groupId: UUID) throws -> EventLoopFuture<groupManagingPostResponse>
-  /**
-  PUT /group
-  Update a group */
-  func groupPut(with req: Request, asAuthenticated user: AuthType, groupId: UUID, body: String?, users: [UUID]?) throws -> EventLoopFuture<groupPutResponse>
-  /**
   POST /image
   Upload an image of the user */
   func imagePost(with req: Request, asAuthenticated user: AuthType, body: String?) throws -> EventLoopFuture<imagePostResponse>
@@ -636,4 +447,8 @@ public protocol BackendApiDelegate {
   GET /test
   Test */
   func testGet(with req: Request) throws -> EventLoopFuture<testGetResponse>
+  /**
+  GET /userImage
+  Image gathering of a chat (user) */
+  func userImageGet(with req: Request, asAuthenticated user: AuthType, chatId: String) throws -> EventLoopFuture<userImageGetResponse>
 }

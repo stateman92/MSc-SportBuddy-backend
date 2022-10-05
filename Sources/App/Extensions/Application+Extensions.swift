@@ -52,16 +52,7 @@ extension Application {
         try User.deleteAll(on: database).wait()
         try ChatEntry.deleteAll(on: database).wait()
         try Chat.deleteAll(on: database).wait()
-        try GroupEntry.deleteAll(on: database).wait()
-        try Group.deleteAll(on: database).wait()
         try Exercise.deleteAll(on: database).wait()
-
-        let firstUserId = UUID()
-        let secondUserId = UUID()
-        let thirdUserId = UUID()
-        let firstGroup = Group(id: UUID(), sportType: .athletics, image: .init(), users: [firstUserId, secondUserId], groupEntries: [])
-        let secondGroup = Group(id: UUID(), sportType: .workout, image: .init(), users: [secondUserId, thirdUserId], groupEntries: [])
-        let thirdGroup = Group(id: UUID(), sportType: .yoga, image: .init(), users: [firstUserId, thirdUserId], groupEntries: [])
 
         let firstChatId = UUID()
         let firstUser = User(id: UUID(),
@@ -71,9 +62,7 @@ extension Application {
                              profileImage: "profileImage1 profileImage1",
                              bio: "bio 1",
                              token: Token(),
-                             chats: [firstChatId],
-                             groups: [firstGroup.id!,
-                                      thirdGroup.id!])
+                             chats: [firstChatId])
         try firstUser.create(on: database).wait()
 
         let secondUser = User(id: UUID(),
@@ -83,9 +72,7 @@ extension Application {
                               profileImage: "profileImage2 profileImage2",
                               bio: "bio 2",
                               token: Token(),
-                              chats: [firstChatId],
-                              groups: [firstGroup.id!,
-                                       secondGroup.id!])
+                              chats: [firstChatId])
         try secondUser.create(on: database).wait()
 
         let thirdUser = User(id: UUID(),
@@ -95,9 +82,7 @@ extension Application {
                              profileImage: "profileImage3 profileImage3",
                              bio: "bio 3",
                              token: Token(),
-                             chats: [],
-                             groups: [secondGroup.id!,
-                                      thirdGroup.id!])
+                             chats: [])
         try thirdUser.create(on: database).wait()
 
         let firstChatEntry = ChatEntry(id: UUID(), message: "Hello!", timestamp: Date().secondsSince1970, sender: firstUser.id!, deleted: false)
@@ -113,13 +98,6 @@ extension Application {
                         chatEntries: [firstChatEntry.id!,
                                       secondChatEntry.id!])
         try chat.create(on: database).wait()
-
-        let firstGroupEntry = GroupEntry(id: UUID(), message: "First group message.", timestamp: Date().secondsSince1970, sender: thirdUser.id!, deleted: false)
-        try firstGroupEntry.create(on: database).wait()
-
-        try firstGroup.create(on: database).wait()
-        try secondGroup.create(on: database).wait()
-        try thirdGroup.create(on: database).wait()
 
         let exercise = Exercise(id: UUID(),
                                 exerciseType: .running,
@@ -160,15 +138,11 @@ extension Application {
             repositories.register(.chats) { MockRepository<Chat>(req: $0) }
             repositories.register(.chatEntries) { MockRepository<ChatEntry>(req: $0) }
             repositories.register(.exercises) { MockRepository<Exercise>(req: $0) }
-            repositories.register(.groups) { MockRepository<Group>(req: $0) }
-            repositories.register(.groupEntries) { MockRepository<GroupEntry>(req: $0) }
             repositories.register(.users) { MockRepository<User>(req: $0) }
         } else {
             repositories.register(.chats) { RepositoryImpl<Chat>(req: $0) }
             repositories.register(.chatEntries) { RepositoryImpl<ChatEntry>(req: $0) }
             repositories.register(.exercises) { RepositoryImpl<Exercise>(req: $0) }
-            repositories.register(.groups) { RepositoryImpl<Group>(req: $0) }
-            repositories.register(.groupEntries) { RepositoryImpl<GroupEntry>(req: $0) }
             repositories.register(.users) { RepositoryImpl<User>(req: $0) }
         }
     }

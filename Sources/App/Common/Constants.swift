@@ -14,8 +14,6 @@ enum Constants {
         case exercises
         case chats
         case chatEntries
-        case groups
-        case groupEntries
     }
 
     enum EnvironmentKey: String {
@@ -33,7 +31,7 @@ enum Constants {
         }
     }
 
-    static let tokenValidityInterval: TimeInterval = 5 * 60
+    static let tokenValidityInterval: TimeInterval = 30 * 60 // 30 minutes
 
     static let gatekeeperConfig: GatekeeperConfig = .init(maxRequests: 5, per: .second)
 }

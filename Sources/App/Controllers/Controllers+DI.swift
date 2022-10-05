@@ -13,9 +13,6 @@ extension DependencyInjector {
         resolver.register(ChatController.self) { ChatControllerImpl() }
         resolver.register(ChatEntriesController.self) { ChatEntriesControllerImpl() }
         resolver.register(ExerciseController.self) { ExerciseControllerImpl() }
-        resolver.register(GroupController.self) { GroupControllerImpl() }
-        resolver.register(GroupEntriesController.self) { GroupEntriesControllerImpl() }
-        resolver.register(GroupManagingController.self) { GroupManagingControllerImpl() }
         resolver.register(SearchController.self) { SearchControllerImpl() }
         resolver.register(UserController.self) { UserControllerImpl() }
 

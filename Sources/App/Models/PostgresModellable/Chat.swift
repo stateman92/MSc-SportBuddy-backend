@@ -48,7 +48,7 @@ extension Chat: PostgresModellable {
 
     /// Get the object as a DTO object.
     var dto: ChatDTO {
-        .init(primaryId: id ?? .init(), users: users, chatEntries: .init(), image: image)
+        .init(chatEntries: .init(), image: image, primaryId: id ?? .init(), users: users, otherParty: .init())
     }
 }
 
@@ -56,9 +56,10 @@ extension Chat {
     /// Get the object as a DTO object.
     /// - Parameter chatEntries: the chat entries. This is neccessary since these values aren't stored in the database's chat schema.
     /// - Returns: The DTO object.
-    func dto(with chatEntries: [ChatEntryDTO]) -> ChatDTO {
+    func dto(with chatEntries: [ChatEntryDTO], otherParty: String) -> ChatDTO {
         let modifiedDto = dto
         modifiedDto.chatEntries = chatEntries
+        modifiedDto.otherParty = otherParty
         return modifiedDto
     }
 }

@@ -98,14 +98,21 @@ extension WebSocketHandlerImpl {
                     .chats
                     .findOrAbort(chatDto.primaryId)
                     .flatMap { chatDto in
-                        self.getChatDTO(from: chatDto, on: req)
+                        let firstChat = self.getChatDTO(from: chatDto, otherParty: chatDto.users[0], on: req)
+                        let secondChat = self.getChatDTO(from: chatDto, otherParty: chatDto.users[1], on: req)
+                        return [firstChat, secondChat].flatten(on: req)
                     }
-                    .flatMap { chat -> EventLoopFuture<Void> in
-                        guard let response: String = self.coderService.encode(object: chat) else {
+                    .flatMap { (chats: [ChatDTO]) -> EventLoopFuture<Void> in
+                        guard let firstChat: String = self.coderService.encode(object: chats[0]),
+                        let secondChat: String = self.coderService.encode(object: chats[1]) else {
                             return req.eventLoop.future()
                         }
-                        chat.users.forEach { userInChat in
-                            self.clients.find(userInChat)?.send(response)
+                        chats[0].users.forEach { userInChat in
+                            if userInChat == chats[0].users[0] {
+                                self.clients.find(userInChat)?.send(secondChat)
+                            } else {
+                                self.clients.find(userInChat)?.send(firstChat)
+                            }
                         }
                         return req.eventLoop.future()
                     }
@@ -147,10 +154,15 @@ extension WebSocketHandlerImpl {
 // MARK: - Helpers
 
 extension WebSocketHandlerImpl {
-    private func getChatDTO(from chat: Chat, on req: Request) -> EventLoopFuture<ChatDTO> {
+    private func getChatDTO(from chat: Chat, otherParty: UUID, on req: Request) -> EventLoopFuture<ChatDTO> {
         getChatEntries(for: chat.chatEntries, on: req)
             .map { $0.map(\.dto) }
-            .map { chat.dto(with: $0) }
+            .flatMap { entries in
+                req.repositories.users.findOrAbort(otherParty).map(\.name).map {
+                    (entries, $0)
+                }
+            }
+            .map { chat.dto(with: $0.0, otherParty: $0.1) }
     }
 
     private func getChatEntries(for ids: [UUID], on req: Request) -> EventLoopFuture<[ChatEntry]> {

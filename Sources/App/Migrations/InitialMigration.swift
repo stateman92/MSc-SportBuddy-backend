@@ -19,9 +19,7 @@ extension InitialMigration: Migration {
     func prepare(on database: Database) -> EventLoopFuture<Void> {
         createUsers(on: database)
             .transform(to: createChatEntries(on: database))
-            .transform(to: createGroupEntries(on: database))
             .transform(to: createChats(on: database))
-            .transform(to: createGroups(on: database))
             .transform(to: createExercises(on: database))
     }
 
@@ -51,7 +49,6 @@ extension InitialMigration {
             .field("bio", .string)
             .field("token", .string)
             .field("chats", .array(of: .uuid))
-            .field("groups", .array(of: .uuid))
             .field("createdAt", .string)
             .field("updatedAt", .string)
             .create()
@@ -72,21 +69,6 @@ extension InitialMigration {
             .create()
     }
 
-    /// Create the group entries schema.
-    /// - Parameter database: the database.
-    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
-    private func createGroupEntries(on database: Database) -> EventLoopFuture<Void> {
-        database.schema(.groupEntries)
-            .id()
-            .field("message", .string)
-            .field("timestamp", .int)
-            .field("sender", .uuid)
-            .field("deleted", .bool)
-            .field("createdAt", .string)
-            .field("updatedAt", .string)
-            .create()
-    }
-
     /// Create the chats schema.
     /// - Parameter database: the database.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
@@ -96,21 +78,6 @@ extension InitialMigration {
             .field("image", .string)
             .field("users", .array(of: .uuid))
             .field("chatEntries", .array(of: .uuid))
-            .field("createdAt", .string)
-            .field("updatedAt", .string)
-            .create()
-    }
-
-    /// Create the groups schema.
-    /// - Parameter database: the database.
-    /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
-    private func createGroups(on database: Database) -> EventLoopFuture<Void> {
-        database.schema(.groups)
-            .id()
-            .field("sportType", .string)
-            .field("image", .string)
-            .field("users", .array(of: .uuid))
-            .field("groupEntries", .array(of: .uuid))
             .field("createdAt", .string)
             .field("updatedAt", .string)
             .create()

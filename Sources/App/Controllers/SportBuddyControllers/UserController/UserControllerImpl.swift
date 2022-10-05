@@ -29,7 +29,7 @@ extension UserControllerImpl: UserController {
                     return req.eventLoop.future(.http400)
                 }
                 let token = Token()
-                let user = User(id: UUID(), name: name, email: email, password: hashedPassword, profileImage: .init(), bio: .init(), token: token, chats: .init(), groups: .init())
+                let user = User(id: UUID(), name: name, email: email, password: hashedPassword, profileImage: .init(), bio: .init(), token: token, chats: .init())
                 return req.repositories.users.create(user, transformTo: .http200(UserResponseDTO(token: token.token, user: user.dto)))
             }
     }
@@ -89,6 +89,24 @@ extension UserControllerImpl: UserController {
                     return req.repositories.users.update(user, transformTo: .http200(user.dto))
                 }
                 return req.eventLoop.future(.http400)
+            }
+    }
+
+    func userImageGet(with req: Request, asAuthenticated user: User, chatId: String) throws -> EventLoopFuture<userImageGetResponse> {
+        req
+            .repositories
+            .chats
+            .find(.init(uuidString: chatId))
+            .unwrapOrAbort()
+            .map { $0.users.first { $0 != user.id } }
+            .flatMap { userId in
+                req
+                    .repositories
+                    .users
+                    .find(userId)
+                    .unwrapOrAbort()
+                    .map(\.profileImage)
+                    .map { .http200($0) }
             }
     }
 }
