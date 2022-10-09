@@ -9,38 +9,60 @@
 import XCTest
 import Vapor
 
-final class WebSocketStorageTests: BaseTestCase { }
+final class WebSocketStorageTests: BaseTestCase {
+    // MARK: Properties
+
+    private let storage = WebSocketStorage(eventLoop: MockEventLoop())
+}
 
 // MARK: - Tests
 
 extension WebSocketStorageTests {
     func testStorageFind() {
-        let storage = WebSocketStorage(eventLoop: MockEventLoop())
+        // Given
+
         let id = UUID()
-        let socket = SocketableMock()
-        storage.add(.init(id: id, socket: socket))
+        storage.add(.init(id: id, socket: SocketableMock()))
+
+        // When
+
         let client = storage.find(id)
+
+        // Then
+
         XCTAssert(client != nil, "Client with given id must be found!")
     }
 
     func testStorageRemoveAndFind() {
-        let storage = WebSocketStorage(eventLoop: MockEventLoop())
+        // Given
+
         let id = UUID()
-        let socket = SocketableMock()
-        storage.add(.init(id: id, socket: socket))
+        storage.add(.init(id: id, socket: SocketableMock()))
         storage.remove(id)
+
+        // When
+
         let client = storage.find(id)
+
+        // Then
+
         XCTAssert(client == nil, "Client with given id must be removed and therefore not be found!")
     }
 
     func testStorageSendText() {
-        let storage = WebSocketStorage(eventLoop: MockEventLoop())
-        let id = UUID()
+        // Given
+
         let socket = SocketableMock()
-        storage.add(.init(id: id, socket: socket))
+        storage.add(.init(id: .init(), socket: socket))
+
+        // When
+
         storage.forEach { client in
             client.send("text")
         }
+
+        // Then
+
         XCTAssert(socket.sendCallsCount == 1, "Client must be called once!")
         XCTAssert(socket.sendReceivedText == "text", "Client must be called with the text \"text\"!")
     }

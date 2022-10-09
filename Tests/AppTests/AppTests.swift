@@ -14,7 +14,14 @@ final class AppTests: BaseTestCase { }
 
 extension AppTests {
     func testIsTesting() {
+        // Given
+
         let isTesting = isTesting
+
+        // When
+
+        // Then
+
         XCTAssert(isTesting)
     }
 }
