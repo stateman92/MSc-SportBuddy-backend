@@ -121,83 +121,6 @@ public enum chatPutResponse: ResponseEncodable {
 }
 
 
-public enum exerciseDeleteResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
-public enum exerciseGetResponse: ResponseEncodable {
-  case http200([ExerciseDTO])
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200(let content):
-      return content.encodeResponse(for: request).map { (response: Response) -> (Response) in
-        response.status = HTTPStatus(statusCode: 200)
-        return response
-      }
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
-public enum exercisePostResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
-public enum exercisePutResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
 public enum forgotPasswordPostResponse: ResponseEncodable {
   case http200
   case http400
@@ -399,22 +322,6 @@ public protocol BackendApiDelegate {
   PUT /chat
   Update a chat */
   func chatPut(with req: Request, asAuthenticated user: AuthType, chatId: UUID, body: String?, users: [UUID]?) throws -> EventLoopFuture<chatPutResponse>
-  /**
-  DELETE /exercise
-  Delete an exercise */
-  func exerciseDelete(with req: Request, asAuthenticated user: AuthType, exerciseId: UUID) throws -> EventLoopFuture<exerciseDeleteResponse>
-  /**
-  GET /exercise
-  Get the exercises */
-  func exerciseGet(with req: Request, asAuthenticated user: AuthType) throws -> EventLoopFuture<exerciseGetResponse>
-  /**
-  POST /exercise
-  Post an exercises */
-  func exercisePost(with req: Request, asAuthenticated user: AuthType, body: ExerciseDTO) throws -> EventLoopFuture<exercisePostResponse>
-  /**
-  PUT /exercise
-  Modify an exercise */
-  func exercisePut(with req: Request, asAuthenticated user: AuthType, body: ExerciseDTO) throws -> EventLoopFuture<exercisePutResponse>
   /**
   POST /forgotPassword
   Send a recovery email to an existing user of the application or an admin */

@@ -10,7 +10,6 @@ import Vapor
 final class SportBuddyController: BackendApiDelegate {
     @LazyInjected private var chatController: ChatController
     @LazyInjected private var chatEntriesController: ChatEntriesController
-    @LazyInjected private var exerciseController: ExerciseController
     @LazyInjected private var searchController: SearchController
     @LazyInjected private var userController: UserController
 }
@@ -50,26 +49,6 @@ extension SportBuddyController {
 extension SportBuddyController {
     func chatPut(with req: Request, asAuthenticated user: User, chatId: UUID, body: String?, users: [UUID]?) throws -> EventLoopFuture<chatPutResponse> {
         try chatController.chatPut(with: req, asAuthenticated: user, chatId: chatId, body: body, users: users)
-    }
-}
-
-// MARK: - ExerciseController
-
-extension SportBuddyController {
-    func exerciseGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<exerciseGetResponse> {
-        try exerciseController.exerciseGet(with: req, asAuthenticated: user)
-    }
-
-    func exercisePost(with req: Request, asAuthenticated user: User, body: ExerciseDTO) throws -> EventLoopFuture<exercisePostResponse> {
-        try exerciseController.exercisePost(with: req, asAuthenticated: user, body: body)
-    }
-
-    func exercisePut(with req: Request, asAuthenticated user: User, body: ExerciseDTO) throws -> EventLoopFuture<exercisePutResponse> {
-        try exerciseController.exercisePut(with: req, asAuthenticated: user, body: body)
-    }
-
-    func exerciseDelete(with req: Request, asAuthenticated user: User, exerciseId: UUID) throws -> EventLoopFuture<exerciseDeleteResponse> {
-        try exerciseController.exerciseDelete(with: req, asAuthenticated: user, exerciseId: exerciseId)
     }
 }
 

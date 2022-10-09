@@ -7,6 +7,7 @@
 
 import Vapor
 
+/// A struct for authenticating the users.
 struct AuthenticationServiceImpl { }
 
 // MARK: - AuthenticationService
@@ -32,7 +33,7 @@ extension AuthenticationServiceImpl: AuthenticationService {
     /// Check if the given email is valid.
     /// - Parameter email: the email.
     /// - Returns: Whether the email is valid.
-    /// - Note: A `true` return value doesn't mean that the email is indeed exists.
+    /// - Note: A `true` return value doesn't mean that the email is indeed existing.
     func isValid(email: String) -> Bool {
         email.contains("@") &&
         email.firstIndex(of: "@") == email.lastIndex(of: "@") &&

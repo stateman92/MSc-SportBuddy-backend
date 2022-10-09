@@ -38,7 +38,7 @@ OR as a one-liner:
 
 #### Push version to Heroku
 
-- As of 21.04.2022. [GitHub connection fails with Heroku](https://status.heroku.com/incidents/2413) (see: "this will prevent you from deploying your apps from GitHub through the dashboard or via automation")
+- ~~As of 21.04.2022. [GitHub connection fails with Heroku](https://status.heroku.com/incidents/2413) (see: "this will prevent you from deploying your apps from GitHub through the dashboard or via automation")~~ Solved.
 
 - Run `heroku login` in the terminal
 
@@ -52,4 +52,4 @@ OR as a one-liner:
 
 - Run `sh sourcery.sh` in the terminal in the root directory
 
-- Xcode should automatically import the results (Tests/Generated/)
+- Xcode should automatically import the results (Tests/AppTests/Generated/)

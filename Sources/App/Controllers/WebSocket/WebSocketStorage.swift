@@ -25,8 +25,7 @@ final class WebSocketStorage {
     }
 
     deinit {
-        let futures = storage.values.map { $0.close() }
-        try! eventLoop.flatten(futures).wait()
+        storage.values.forEach { $0.close() }
     }
 }
 
@@ -37,8 +36,8 @@ extension WebSocketStorage {
         storage[client.identifier] = client
     }
 
-    func remove(_ client: WebSocketClient) {
-        storage[client.identifier] = nil
+    func remove(_ uuid: UUID) {
+        storage[uuid] = nil
     }
 
     func find(_ uuid: UUID) -> WebSocketClient? {

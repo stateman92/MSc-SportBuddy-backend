@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A protocol for authenticating the users.
 protocol AuthenticationService: Initable, AutoMockable {
     /// Hash a password.
     /// - Parameter password: the plain text password.
@@ -22,7 +23,7 @@ protocol AuthenticationService: Initable, AutoMockable {
     /// Check if the given email is valid.
     /// - Parameter email: the email.
     /// - Returns: Whether the email is valid.
-    /// - Note: A `true` return value doesn't mean that the email is indeed exists.
+    /// - Note: A `true` return value doesn't mean that the email is indeed existing.
     func isValid(email: String) -> Bool
 }
 
@@ -39,8 +40,7 @@ extension AuthenticationService {
         var lowerCaseCharater = false
         var upperCaseCharater = false
         var decimalCharater = false
-        password.utf16.forEach {
-            guard let character = Unicode.Scalar($0) else { return }
+        password.utf16.compactMap { Unicode.Scalar($0) }.forEach { character in
             if lowerCaseSet.contains(character) {
                 lowerCaseCharater = true
             } else if upperCaseSet.contains(character) {

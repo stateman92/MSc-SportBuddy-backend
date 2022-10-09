@@ -11,7 +11,7 @@ final class WebSocketClient {
     // MARK: Properties
 
     private let id: UUID
-    private let socket: WebSocket
+    private let socket: Socketable
     var isClosed: Bool {
         socket.isClosed
     }
@@ -21,14 +21,16 @@ final class WebSocketClient {
 
     // MARK: Initialization
 
-    init(id: UUID, socket: WebSocket) {
+    init(id: UUID, socket: Socketable) {
         self.id = id
         self.socket = socket
     }
 }
 
+// MARK: - Public methods
+
 extension WebSocketClient {
-    func close() -> EventLoopFuture<Void> {
+    func close() {
         socket.close()
     }
 

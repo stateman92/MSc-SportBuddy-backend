@@ -7,7 +7,7 @@
 
 import Vapor
 
-/// A common protocol for the service that is capable of email sending.
+/// A protocol for sending emails.
 protocol EmailService: Initable, AutoMockable {
     /// Setup the service.
     /// - Parameter app: the `Application` instance.
@@ -40,6 +40,6 @@ extension EmailService {
     /// - Parameter req: the request that the email will be sent on.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
     func sendPasswordRecoveryEmail(to toEmail: String, on req: Request) throws -> EventLoopFuture<Void> {
-        try sendEmail(to: toEmail, fromEmail: "csakugy202@gmail.com", subject: "Forgotten password on SportBuddy!", text: "Your password is forgotten. :(", on: req)
+        try sendEmail(to: toEmail, fromEmail: Environment.get(.sendgridEmail), subject: "Forgotten password on SportBuddy!", text: "Your password is forgotten. :(", on: req)
     }
 }

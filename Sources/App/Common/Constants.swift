@@ -22,6 +22,7 @@ enum Constants {
         case password
         case database
         case sendgrid
+        case sendgridEmail
 
         var key: String {
             switch self {

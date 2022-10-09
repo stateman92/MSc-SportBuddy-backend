@@ -1,8 +1,12 @@
-// Generated using Sourcery 1.7.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 1.9.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // swiftlint:disable all
 
+@testable import App
 import Foundation
+import Vapor
+import NIOCore
+import NIOWebSocket
 
 class AuthenticationServiceMock: AuthenticationService {
 

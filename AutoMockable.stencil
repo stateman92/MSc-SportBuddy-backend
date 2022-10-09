@@ -102,7 +102,11 @@
 // sourcery:file:{{ type.name }}+AutoMockable
 // swiftlint:disable all
 
+@testable import App
 import Foundation
+import Vapor
+import NIOCore
+import NIOWebSocket
 
 class {{ type.name }}Mock: {{ type.name }} {
 {% for variable in type.allVariables|!definedInExtension %}

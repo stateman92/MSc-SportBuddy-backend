@@ -12,6 +12,8 @@ import Foundation
 /// The representation of the initial migration of the database.
 struct InitialMigration: Initable { }
 
+// MARK: - Migration
+
 extension InitialMigration: Migration {
     /// Prepare the migration.
     /// - Parameter database: the database.
@@ -34,6 +36,8 @@ extension InitialMigration: Migration {
             .flatten(on: database.eventLoop)
     }
 }
+
+// MARK: - Private methods
 
 extension InitialMigration {
     /// Create the users schema.

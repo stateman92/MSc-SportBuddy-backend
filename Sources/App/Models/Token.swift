@@ -8,12 +8,17 @@
 import Foundation
 
 /// An object that represents a token of a user.
+/// Note: this implementation uses only integer seconds.
 struct Token {
+    // MARK: Properties
+
     /// The internal unique identifier of the token.
     let token: UUID
 
     /// The last time when the token is validated. Initially it's the generation's time.
     private var tokenGeneratedTime: Int
+
+    // MARK: Initialization
 
     /// Initialize a token.
     /// - Parameter token: the unique identifier. By default `.init()`.
@@ -31,6 +36,8 @@ struct Token {
     }
 }
 
+// MARK: - Public methods
+
 extension Token {
     /// Check if the token is valid at a given time.
     /// - Parameter validityDuration: the duration during the token is valid (measured from the generation's time / last time validation's time).
@@ -46,6 +53,8 @@ extension Token {
     }
 }
 
+// MARK: - Codable
+
 extension Token: Codable {
     /// A convenience accessor of the `String` encoded value of the token.
     var encoded: String {
@@ -58,5 +67,13 @@ extension Token: Codable {
     init?(from string: String) {
         guard let data = string.data(using: .utf8), let decoded = try? JSONDecoder().decode(Self.self, from: data) else { return nil }
         self.init(token: decoded.token, tokenGeneratedTime: decoded.tokenGeneratedTime)
+    }
+}
+
+// MARK: - Equatable
+
+extension Token: Equatable {
+    static func ==(lhs: Self, rhs: Self) -> Bool {
+        lhs.token == rhs.token
     }
 }

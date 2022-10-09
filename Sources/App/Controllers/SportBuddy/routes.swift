@@ -84,24 +84,6 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     let body = try request.content.decode(String.self)
     return try backend.chatPut(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatId: chatId, body: body, users: users)
   }
-  groupForBearer.on(.DELETE, "/exercise".asPathComponents) { (request: Request) -> EventLoopFuture<exerciseDeleteResponse> in
-    let exerciseIdOptional = try? request.query.get(UUID.self, at: "exerciseId")
-    guard let exerciseId = exerciseIdOptional else {
-      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter exerciseId")
-    }
-    return try backend.exerciseDelete(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), exerciseId: exerciseId)
-  }
-  groupForBearer.on(.GET, "/exercise".asPathComponents) { (request: Request) -> EventLoopFuture<exerciseGetResponse> in
-    return try backend.exerciseGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
-  }
-  groupForBearer.on(.POST, "/exercise".asPathComponents) { (request: Request) -> EventLoopFuture<exercisePostResponse> in
-    let body = try request.content.decode(ExerciseDTO.self)
-    return try backend.exercisePost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
-  }
-  groupForBearer.on(.PUT, "/exercise".asPathComponents) { (request: Request) -> EventLoopFuture<exercisePutResponse> in
-    let body = try request.content.decode(ExerciseDTO.self)
-    return try backend.exercisePut(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
-  }
   app.on(.POST, "/forgotPassword".asPathComponents) { (request: Request) -> EventLoopFuture<forgotPasswordPostResponse> in
     let emailOptional = try? request.query.get(String.self, at: "email")
     guard let email = emailOptional else {
@@ -191,24 +173,6 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     let users = try? request.query.get([UUID].self, at: "users")
     let body = try request.content.decode(String.self)
     return try backend.chatPut(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatId: chatId, body: body, users: users)
-  }
-  groupForBearer.on(.DELETE, "/exercise".asPathComponents) { (request: Request) -> EventLoopFuture<exerciseDeleteResponse> in
-    let exerciseIdOptional = try? request.query.get(UUID.self, at: "exerciseId")
-    guard let exerciseId = exerciseIdOptional else {
-      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter exerciseId")
-    }
-    return try backend.exerciseDelete(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), exerciseId: exerciseId)
-  }
-  groupForBearer.on(.GET, "/exercise".asPathComponents) { (request: Request) -> EventLoopFuture<exerciseGetResponse> in
-    return try backend.exerciseGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
-  }
-  groupForBearer.on(.POST, "/exercise".asPathComponents) { (request: Request) -> EventLoopFuture<exercisePostResponse> in
-    let body = try request.content.decode(ExerciseDTO.self)
-    return try backend.exercisePost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
-  }
-  groupForBearer.on(.PUT, "/exercise".asPathComponents) { (request: Request) -> EventLoopFuture<exercisePutResponse> in
-    let body = try request.content.decode(ExerciseDTO.self)
-    return try backend.exercisePut(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
   }
   app.on(.POST, "/forgotPassword".asPathComponents) { (request: Request) -> EventLoopFuture<forgotPasswordPostResponse> in
     let emailOptional = try? request.query.get(String.self, at: "email")
@@ -318,9 +282,6 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     let users = try? request.query.get([UUID].self, at: "users")
     let body = try request.content.decode(String.self)
     return try backend.chatPut(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), chatId: chatId, body: body, users: users)
-  }
-  groupForBearer.on(.GET, "/exercise".asPathComponents) { (request: Request) -> EventLoopFuture<exerciseGetResponse> in
-    return try backend.exerciseGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
   }
   app.on(.POST, "/forgotPassword".asPathComponents) { (request: Request) -> EventLoopFuture<forgotPasswordPostResponse> in
     let emailOptional = try? request.query.get(String.self, at: "email")

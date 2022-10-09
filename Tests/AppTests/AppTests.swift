@@ -6,16 +6,15 @@
 //
 
 @testable import App
-import XCTVapor
+import XCTest
 
-final class AppTests: XCTestCase {
-    override class func setUp() {
-        super.setUp()
-        DependencyInjector.registerDependencies()
-    }
-    
-    func testIsTesting() throws {
-        let isTesting = isTesting()
+final class AppTests: BaseTestCase { }
+
+// MARK: - Tests
+
+extension AppTests {
+    func testIsTesting() {
+        let isTesting = isTesting
         XCTAssert(isTesting)
     }
 }

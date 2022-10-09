@@ -9,6 +9,7 @@ import Vapor
 import Gatekeeper
 import FluentPostgresDriver
 import SendGrid
+import FluentSQLiteDriver
 
 extension Application {
     /// Setup the application.
@@ -16,7 +17,8 @@ extension Application {
         try setupDatabase()
         configureMiddlewares()
         try setupRoutes()
-        (DependencyInjector.resolve() as EmailService).setup(app: self)
+        @LazyInjected var emailService: EmailService
+        emailService.setup(app: self)
         reigsterRepositories()
     }
 }
@@ -26,20 +28,25 @@ extension Application {
     private func setupDatabase() throws {
         var tlsConfiguration: TLSConfiguration = .makeClientConfiguration()
         tlsConfiguration.certificateVerification = .none
-        databases.use(.postgres(hostname: Environment.get(.hostname),
-                                username: Environment.get(.username),
-                                password: Environment.get(.password),
-                                database: Environment.get(.database),
-                                tlsConfiguration: tlsConfiguration),
-                      as: .psql,
-                      isDefault: true)
+        if isTesting {
+            databases.use(.sqlite(.memory), as: .sqlite)
+        } else {
+            databases.use(.postgres(hostname: Environment.get(.hostname),
+                                    username: Environment.get(.username),
+                                    password: Environment.get(.password),
+                                    database: Environment.get(.database),
+                                    tlsConfiguration: tlsConfiguration),
+                          as: .psql,
+                          isDefault: true)
+        }
         try setupMigrations()
     }
 
     /// Setup the migrations.
     private func setupMigrations() throws {
-        migrations.add(DependencyInjector.resolve() as InitialMigration)
-        if !isTesting() {
+        @LazyInjected var initialMigration: InitialMigration
+        migrations.add(initialMigration)
+        if !isTesting {
             try autoMigrate().wait()
         }
 
@@ -52,7 +59,6 @@ extension Application {
         try User.deleteAll(on: database).wait()
         try ChatEntry.deleteAll(on: database).wait()
         try Chat.deleteAll(on: database).wait()
-        try Exercise.deleteAll(on: database).wait()
 
         let firstChatId = UUID()
         let firstUser = User(id: UUID(),
@@ -98,14 +104,6 @@ extension Application {
                         chatEntries: [firstChatEntry.id!,
                                       secondChatEntry.id!])
         try chat.create(on: database).wait()
-
-        let exercise = Exercise(id: UUID(),
-                                exerciseType: .running,
-                                previewImage: "previewImage",
-                                exerciseVideoUrl: "exerciseVideoUrl",
-                                fractions: [.init(time: .init(fromTime: 0, toTime: 1), motionType: .runningMotion1),
-                                            .init(time: .init(fromTime: 2, toTime: 3), motionType: .runningMotion3)])
-        try exercise.create(on: database).wait()
     }
 }
 
@@ -120,29 +118,29 @@ extension Application {
     private func configureRateLimiting() {
         caches.use(.memory)
         gatekeeper.config = Constants.gatekeeperConfig
-        if !isTesting() {
-            middleware.use(DependencyInjector.resolve() as GatekeeperMiddleware)
+        if !isTesting {
+            @LazyInjected var gatekeeperMiddleware: GatekeeperMiddleware
+            middleware.use(gatekeeperMiddleware)
         }
     }
 
     /// Setup the rate cors policy middleware.
     private func configureCorsPolicy() {
-        middleware.use(DependencyInjector.resolve() as CORSMiddleware, at: .beginning)
+        @LazyInjected var corsMiddleware: CORSMiddleware
+        middleware.use(corsMiddleware, at: .beginning)
     }
 }
 
 extension Application {
     /// Setup the repositories.
     private func reigsterRepositories() {
-        if isTesting() {
+        if isTesting {
             repositories.register(.chats) { MockRepository<Chat>(req: $0) }
             repositories.register(.chatEntries) { MockRepository<ChatEntry>(req: $0) }
-            repositories.register(.exercises) { MockRepository<Exercise>(req: $0) }
             repositories.register(.users) { MockRepository<User>(req: $0) }
         } else {
             repositories.register(.chats) { RepositoryImpl<Chat>(req: $0) }
             repositories.register(.chatEntries) { RepositoryImpl<ChatEntry>(req: $0) }
-            repositories.register(.exercises) { RepositoryImpl<Exercise>(req: $0) }
             repositories.register(.users) { RepositoryImpl<User>(req: $0) }
         }
     }
@@ -151,9 +149,9 @@ extension Application {
 extension Application {
     /// Setup the routes.
     private func setupRoutes() throws {
-        try App.routes(self,
-                       backend: DependencyInjector.resolve() as SportBuddyController,
-                       authForBearer: DependencyInjector.resolve() as AuthorizationService)
+        @LazyInjected var authorizationService: any AuthorizationService
+        @LazyInjected var sportBuddyController: SportBuddyController
+        try App.routes(self, backend: sportBuddyController, authForBearer: authorizationService)
         setupWebSocket()
     }
 

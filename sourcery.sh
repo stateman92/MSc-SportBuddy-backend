@@ -1,1 +1,1 @@
-sourcery --sources Sources --templates AutoMockable.stencil --output Tests/Generated/
+sourcery --sources Sources --templates AutoMockable.stencil --output Tests/AppTests/Generated

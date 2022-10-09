@@ -10,6 +10,8 @@ import Vapor
 /// A mock middleware that acts as a rate limiter.
 final class MockGatekeeperMiddleware: Initable { }
 
+// MARK: - Middleware
+
 extension MockGatekeeperMiddleware: Middleware {
     /// Respond to the given request.
     /// - Parameter req: the request.

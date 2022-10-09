@@ -8,10 +8,8 @@
 import SendGrid
 import Vapor
 
-struct EmailServiceImpl {
-    /// Initialize the object.
-    init() { }
-}
+/// A struct for sending emails.
+struct EmailServiceImpl { }
 
 // MARK: - EmailService
 
@@ -37,7 +35,7 @@ extension EmailServiceImpl: EmailService {
 
         return try req.application.sendgrid.client.send(email: email, on: req.eventLoop).flatMapError { error in
             if let sendgridError = error as? SendGridError {
-                req.logger.error("\(sendgridError)")
+                req.logger.error("SendGridError: \(sendgridError), \(sendgridError.localizedDescription), \(String(describing: sendgridError.errors))")
             }
             return req.eventLoop.makeSucceededVoidFuture()
         }
