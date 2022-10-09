@@ -9,7 +9,6 @@ import Vapor
 import Gatekeeper
 import FluentPostgresDriver
 import SendGrid
-import FluentSQLiteDriver
 
 extension Application {
     /// Setup the application.
@@ -28,17 +27,13 @@ extension Application {
     private func setupDatabase() throws {
         var tlsConfiguration: TLSConfiguration = .makeClientConfiguration()
         tlsConfiguration.certificateVerification = .none
-        if isTesting {
-            databases.use(.sqlite(.memory), as: .sqlite)
-        } else {
-            databases.use(.postgres(hostname: Environment.get(.hostname),
-                                    username: Environment.get(.username),
-                                    password: Environment.get(.password),
-                                    database: Environment.get(.database),
-                                    tlsConfiguration: tlsConfiguration),
-                          as: .psql,
-                          isDefault: true)
-        }
+        databases.use(.postgres(hostname: Environment.get(.hostname),
+                                username: Environment.get(.username),
+                                password: Environment.get(.password),
+                                database: Environment.get(.database),
+                                tlsConfiguration: tlsConfiguration),
+                      as: .psql,
+                      isDefault: true)
         try setupMigrations()
     }
 

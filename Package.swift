@@ -7,7 +7,6 @@ let package = Package(
        .macOS(.v10_15)
     ],
     dependencies: [
-        // 💧 A server-side Swift web framework.
         .package(url: "https://github.com/vapor/vapor.git", exact: .init(4, 65, 2)),
         .package(url: "https://github.com/vapor/fluent.git", exact: .init(4, 4, 0)),
         .package(url: "https://github.com/vapor/postgres-kit.git", exact: .init(2, 5, 1)),
@@ -15,8 +14,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent-postgres-driver.git", exact: .init(2, 2, 4)),
         .package(url: "https://github.com/nodes-vapor/gatekeeper.git", exact: .init(4, 2, 0)),
         .package(url: "https://github.com/vapor-community/sendgrid.git", exact: .init(4, 0, 0)),
-        .package(url: "https://github.com/hmlongco/Resolver.git", exact: .init(1, 3, 0)),
-        .package(url: "https://github.com/vapor/fluent-sqlite-driver.git", exact: .init(4, 2, 0))
+        .package(url: "https://github.com/hmlongco/Resolver.git", exact: .init(1, 3, 0))
     ],
     targets: [
         .target(
@@ -27,13 +25,9 @@ let package = Package(
                 .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
                 .product(name: "Gatekeeper", package: "gatekeeper"),
                 .product(name: "SendGrid", package: "sendgrid"),
-                .product(name: "Resolver", package: "Resolver"),
-                .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver")
+                .product(name: "Resolver", package: "Resolver")
             ],
             swiftSettings: [
-                // Enable better optimizations when building in Release configuration. Despite the use of
-                // the `.unsafeFlags` construct required by SwiftPM, this flag is recommended for Release
-                // builds. See <https://github.com/swift-server/guides/blob/main/docs/building.md#building-for-production> for details.
                 .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release))
             ]
         ),
