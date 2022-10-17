@@ -54,7 +54,7 @@ extension TokenTests {
 
         // Then
 
-        XCTAssert(isValid == false, "The token must be valid for 0.4 seconds!")
+        XCTAssert(isValid == false, "The token must be valid for 1 seconds!")
     }
 
     func testCheckValidityWithRefresh() {
@@ -72,6 +72,6 @@ extension TokenTests {
 
         // Then
 
-        XCTAssert(isValid == true, "The token must be valid for 0.5 + 0.9 seconds!")
+        XCTAssert(isValid == true, "The token must be valid for 2 + 3 seconds!")
     }
 }
