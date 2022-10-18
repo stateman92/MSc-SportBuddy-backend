@@ -9,12 +9,20 @@ import FluentPostgresDriver
 import Foundation
 
 final class Chat {
+    enum Keys: String {
+        case image
+        case users
+        case chatEntries
+        case createdAt
+        case updatedAt
+    }
+
     @ID(key: .id) var id: UUID?
-    @Field(key: "image") var image: String
-    @Field(key: "users") var users: [UUID]
-    @Field(key: "chatEntries") var chatEntries: [UUID]
-    @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?
-    @Timestamp(key: "updatedAt", on: .update, format: .iso8601) var updatedAt: Date?
+    @Field(Keys.image) var image: String
+    @Field(Keys.users) var users: [UUID]
+    @Field(Keys.chatEntries) var chatEntries: [UUID]
+    @Timestamp(Keys.createdAt, on: .create) var createdAt: Date?
+    @Timestamp(Keys.updatedAt, on: .update) var updatedAt: Date?
 
     /// Initialize an object.
     /// - Parameter id: the identifier.

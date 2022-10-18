@@ -121,6 +121,64 @@ public enum chatPutResponse: ResponseEncodable {
 }
 
 
+public enum clearDatabasePostResponse: ResponseEncodable {
+  case http200
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 200)
+      return request.eventLoop.makeSucceededFuture(response)
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
+public enum deleteExerciseModelPostResponse: ResponseEncodable {
+  case http200
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 200)
+      return request.eventLoop.makeSucceededFuture(response)
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
+public enum exerciseModelsGetResponse: ResponseEncodable {
+  case http200([ExerciseModelDTO])
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200(let content):
+      return content.encodeResponse(for: request).map { (response: Response) -> (Response) in
+        response.status = HTTPStatus(statusCode: 200)
+        return response
+      }
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
 public enum forgotPasswordPostResponse: ResponseEncodable {
   case http200
   case http400
@@ -238,6 +296,44 @@ public enum registerPostResponse: ResponseEncodable {
 }
 
 
+public enum resetDatabasePostResponse: ResponseEncodable {
+  case http200
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 200)
+      return request.eventLoop.makeSucceededFuture(response)
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
+public enum saveNewPasswordPostResponse: ResponseEncodable {
+  case http200
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 200)
+      return request.eventLoop.makeSucceededFuture(response)
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
 public enum searchUserPostResponse: ResponseEncodable {
   case http200([UserDTO])
   case http400
@@ -277,8 +373,47 @@ public enum testGetResponse: ResponseEncodable {
 }
 
 
+public enum uploadExerciseModelPostResponse: ResponseEncodable {
+  case http200
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 200)
+      return request.eventLoop.makeSucceededFuture(response)
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
 public enum userImageGetResponse: ResponseEncodable {
   case http200(String)
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200(let content):
+      return content.encodeResponse(for: request).map { (response: Response) -> (Response) in
+        response.status = HTTPStatus(statusCode: 200)
+        return response
+      }
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
+public enum usersGetResponse: ResponseEncodable {
+  case http200([UserDB])
   case http400
 
   public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
@@ -323,6 +458,18 @@ public protocol BackendApiDelegate {
   Update a chat */
   func chatPut(with req: Request, asAuthenticated user: AuthType, chatId: UUID, body: String?, users: [UUID]?) throws -> EventLoopFuture<chatPutResponse>
   /**
+  POST /clearDatabase
+  Clear the database, but leave the initial data in it */
+  func clearDatabasePost(with req: Request, asAuthenticated user: AuthType) throws -> EventLoopFuture<clearDatabasePostResponse>
+  /**
+  POST /deleteExerciseModel
+  Delete an exercise */
+  func deleteExerciseModelPost(with req: Request, asAuthenticated user: AuthType, primaryId: UUID) throws -> EventLoopFuture<deleteExerciseModelPostResponse>
+  /**
+  GET /exerciseModels
+  Get all exercises' information */
+  func exerciseModelsGet(with req: Request, asAuthenticated user: AuthType) throws -> EventLoopFuture<exerciseModelsGetResponse>
+  /**
   POST /forgotPassword
   Send a recovery email to an existing user of the application or an admin */
   func forgotPasswordPost(with req: Request, email: String) throws -> EventLoopFuture<forgotPasswordPostResponse>
@@ -347,6 +494,14 @@ public protocol BackendApiDelegate {
   Register a new user in the application */
   func registerPost(with req: Request, name: String, email: String, password: String) throws -> EventLoopFuture<registerPostResponse>
   /**
+  POST /resetDatabase
+  Reset the database, clear everything except admin user */
+  func resetDatabasePost(with req: Request, asAuthenticated user: AuthType) throws -> EventLoopFuture<resetDatabasePostResponse>
+  /**
+  POST /saveNewPassword
+  Reset a forgotten pasword */
+  func saveNewPasswordPost(with req: Request, asAuthenticated user: AuthType, requestId: UUID, newPassword: String) throws -> EventLoopFuture<saveNewPasswordPostResponse>
+  /**
   POST /searchUser
   Search a user */
   func searchUserPost(with req: Request, asAuthenticated user: AuthType, name: String) throws -> EventLoopFuture<searchUserPostResponse>
@@ -355,7 +510,15 @@ public protocol BackendApiDelegate {
   Test */
   func testGet(with req: Request) throws -> EventLoopFuture<testGetResponse>
   /**
+  POST /uploadExerciseModel
+  Upload a new exercise */
+  func uploadExerciseModelPost(with req: Request, asAuthenticated user: AuthType, body: ExerciseModelDTO) throws -> EventLoopFuture<uploadExerciseModelPostResponse>
+  /**
   GET /userImage
   Image gathering of a chat (user) */
   func userImageGet(with req: Request, asAuthenticated user: AuthType, chatId: String) throws -> EventLoopFuture<userImageGetResponse>
+  /**
+  GET /users
+  Get all users' information */
+  func usersGet(with req: Request, asAuthenticated user: AuthType) throws -> EventLoopFuture<usersGetResponse>
 }

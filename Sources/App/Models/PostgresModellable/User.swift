@@ -10,13 +10,27 @@ import FluentPostgresDriver
 import Foundation
 
 final class User {
+    enum Keys: String {
+        case name
+        case email
+        case password
+        case profileImage
+        case bio
+        case isAdmin
+        case token
+        case chats
+        case createdAt
+        case updatedAt
+    }
+
     @ID(key: .id) var id: UUID?
-    @Field(key: "name") var name: String
-    @Field(key: "email") var email: String
-    @Field(key: "password") var password: String
-    @Field(key: "profileImage") var profileImage: String
-    @Field(key: "bio") var bio: String
-    @Field(key: "token") private var _token: String
+    @Field(Keys.name) var name: String
+    @Field(Keys.email) var email: String
+    @Field(Keys.password) var password: String
+    @Field(Keys.profileImage) var profileImage: String
+    @Field(Keys.bio) var bio: String
+    @Field(Keys.isAdmin) var isAdmin: Bool
+    @Field(Keys.token) private var _token: String
     var token: Token? {
         get {
             Token(from: _token)
@@ -25,9 +39,9 @@ final class User {
             _token = newValue?.encoded ?? .init()
         }
     }
-    @Field(key: "chats") var chats: [UUID]
-    @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?
-    @Timestamp(key: "updatedAt", on: .update, format: .iso8601) var updatedAt: Date?
+    @Field(Keys.chats) var chats: [UUID]
+    @Timestamp(Keys.createdAt, on: .create) var createdAt: Date?
+    @Timestamp(Keys.updatedAt, on: .update) var updatedAt: Date?
 
     /// Initialize an object.
     /// - Parameter id: the identifier.
@@ -36,15 +50,17 @@ final class User {
     /// - Parameter password: the (hashed) password of the user.
     /// - Parameter profileImage: the profile image of the user.
     /// - Parameter bio: the bio of the user.
+    /// - Parameter isAdmin: whether the user is admin.
     /// - Parameter token: the token of the user.
     /// - Parameter chats: the chats which the user participants in.
-    init(id: UUID?, name: String, email: String, password: String, profileImage: String, bio: String, token: Token?, chats: [UUID]) {
+    init(id: UUID?, name: String, email: String, password: String, profileImage: String, bio: String, isAdmin: Bool, token: Token?, chats: [UUID]) {
         self.id = id
         self.name = name
         self.email = email
         self.password = password
         self.profileImage = profileImage
         self.bio = bio
+        self.isAdmin = isAdmin
         self.token = token
         self.chats = chats
     }
@@ -58,13 +74,13 @@ extension User: PostgresModellable {
 
     /// Initialize an empty object for a new record in the schema.
     convenience init() {
-        self.init(id: .init(), name: .init(), email: .init(), password: .init(), profileImage: .init(), bio: .init(), token: nil, chats: .init())
+        self.init(id: .init(), name: .init(), email: .init(), password: .init(), profileImage: .init(), bio: .init(), isAdmin: false, token: nil, chats: .init())
     }
 
     /// Initialize the object from a DTO object.
     /// - Parameter dto: the DTO object.
     convenience init(from dto: UserDTO) {
-        self.init(id: dto.primaryId, name: dto.name, email: dto.email, password: .init(), profileImage: dto.profileImage ?? .init(), bio: dto.bio ?? .init(), token: nil, chats: dto.chats)
+        self.init(id: dto.primaryId, name: dto.name, email: dto.email, password: .init(), profileImage: dto.profileImage ?? .init(), bio: dto.bio ?? .init(), isAdmin: false, token: nil, chats: dto.chats)
     }
 
     /// Get the object as a DTO object.

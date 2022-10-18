@@ -29,7 +29,7 @@ extension UserControllerImpl: UserController {
                     return req.eventLoop.future(.http400)
                 }
                 let token = Token()
-                let user = User(id: UUID(), name: name, email: email, password: hashedPassword, profileImage: .init(), bio: .init(), token: token, chats: .init())
+                let user = User(id: UUID(), name: name, email: email, password: hashedPassword, profileImage: .init(), bio: .init(), isAdmin: false, token: token, chats: .init())
                 return req.repositories.users.create(user, transformTo: .http200(UserResponseDTO(token: token.token, user: user.dto)))
             }
     }

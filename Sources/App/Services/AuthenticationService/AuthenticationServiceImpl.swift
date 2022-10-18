@@ -16,8 +16,8 @@ extension AuthenticationServiceImpl: AuthenticationService {
     /// Hash a password.
     /// - Parameter password: the plain text password.
     /// - Returns: The hashed password.
-    func hash(password: String?) -> String? {
-        guard let password, isValid(password: password) else { return nil }
+    func forceHash(password: String?) -> String? {
+        guard let password else { return nil }
         return try? Bcrypt.hash(password)
     }
 

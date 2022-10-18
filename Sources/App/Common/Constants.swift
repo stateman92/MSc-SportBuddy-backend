@@ -11,7 +11,7 @@ import Gatekeeper
 enum Constants {
     enum Schema: String, CaseIterable {
         case users
-        case exercises
+        case exerciseModels
         case chats
         case chatEntries
     }

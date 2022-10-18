@@ -10,6 +10,7 @@ extension DependencyInjector {
     static func registerControllers() {
         resolver.register { SportBuddyController() }
 
+        resolver.register(AdminController.self) { AdminControllerImpl() }
         resolver.register(ChatController.self) { ChatControllerImpl() }
         resolver.register(ChatEntriesController.self) { ChatEntriesControllerImpl() }
         resolver.register(SearchController.self) { SearchControllerImpl() }

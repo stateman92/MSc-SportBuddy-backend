@@ -22,7 +22,7 @@ extension InitialMigration: Migration {
         createUsers(on: database)
             .transform(to: createChatEntries(on: database))
             .transform(to: createChats(on: database))
-            .transform(to: createExercises(on: database))
+            .transform(to: createExerciseModels(on: database))
     }
 
     /// Revert the migration.
@@ -46,15 +46,16 @@ extension InitialMigration {
     private func createUsers(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.users)
             .id()
-            .field("name", .string)
-            .field("email", .string)
-            .field("password", .string)
-            .field("profileImage", .string)
-            .field("bio", .string)
-            .field("token", .string)
-            .field("chats", .array(of: .uuid))
-            .field("createdAt", .string)
-            .field("updatedAt", .string)
+            .field(User.Keys.name, .string)
+            .field(User.Keys.email, .string)
+            .field(User.Keys.password, .string)
+            .field(User.Keys.profileImage, .string)
+            .field(User.Keys.bio, .string)
+            .field(User.Keys.isAdmin, .bool)
+            .field(User.Keys.token, .string)
+            .field(User.Keys.chats, .array(of: .uuid))
+            .field(User.Keys.createdAt, .string)
+            .field(User.Keys.updatedAt, .string)
             .create()
     }
 
@@ -64,12 +65,12 @@ extension InitialMigration {
     private func createChatEntries(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.chatEntries)
             .id()
-            .field("message", .string)
-            .field("timestamp", .int)
-            .field("sender", .uuid)
-            .field("deleted", .bool)
-            .field("createdAt", .string)
-            .field("updatedAt", .string)
+            .field(ChatEntry.Keys.message, .string)
+            .field(ChatEntry.Keys.timestamp, .int)
+            .field(ChatEntry.Keys.sender, .uuid)
+            .field(ChatEntry.Keys.deleted, .bool)
+            .field(ChatEntry.Keys.createdAt, .string)
+            .field(ChatEntry.Keys.updatedAt, .string)
             .create()
     }
 
@@ -79,26 +80,25 @@ extension InitialMigration {
     private func createChats(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.chats)
             .id()
-            .field("image", .string)
-            .field("users", .array(of: .uuid))
-            .field("chatEntries", .array(of: .uuid))
-            .field("createdAt", .string)
-            .field("updatedAt", .string)
+            .field(Chat.Keys.image, .string)
+            .field(Chat.Keys.users, .array(of: .uuid))
+            .field(Chat.Keys.chatEntries, .array(of: .uuid))
+            .field(Chat.Keys.createdAt, .string)
+            .field(Chat.Keys.updatedAt, .string)
             .create()
     }
 
-    /// Create the exercises schema.
+    /// Create the exerciseModels schema.
     /// - Parameter database: the database.
     /// - Returns: An `EventLoopFuture`, which is a holder for a result that will be provided later.
-    private func createExercises(on database: Database) -> EventLoopFuture<Void> {
-        database.schema(.exercises)
+    private func createExerciseModels(on database: Database) -> EventLoopFuture<Void> {
+        database.schema(.exerciseModels)
             .id()
-            .field("exerciseType", .string)
-            .field("previewImage", .string)
-            .field("exerciseVideoUrl", .string)
-            .field("fractions", .array(of: .string))
-            .field("createdAt", .string)
-            .field("updatedAt", .string)
+            .field(ExerciseModel.Keys.sequence, .array(of: .custom(ExerciseMoment.self)))
+            .field(ExerciseModel.Keys.sequenceCount, .int32)
+            .field(ExerciseModel.Keys.delay, .double)
+            .field(ExerciseModel.Keys.createdAt, .string)
+            .field(ExerciseModel.Keys.updatedAt, .string)
             .create()
     }
 }

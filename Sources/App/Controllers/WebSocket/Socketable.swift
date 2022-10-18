@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Socketable.swift
 //  
 //
 //  Created by Kristof Kalai on 2022. 10. 09..

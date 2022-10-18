@@ -9,13 +9,22 @@ import FluentPostgresDriver
 import Foundation
 
 final class ChatEntry {
+    enum Keys: String {
+        case message
+        case timestamp
+        case sender
+        case deleted
+        case createdAt
+        case updatedAt
+    }
+
     @ID(key: .id) var id: UUID?
-    @Field(key: "message") var message: String
-    @Field(key: "timestamp") var timestamp: Int
-    @Field(key: "sender") var sender: UUID
-    @Field(key: "deleted") var deleted: Bool
-    @Timestamp(key: "createdAt", on: .create, format: .iso8601) var createdAt: Date?
-    @Timestamp(key: "updatedAt", on: .update, format: .iso8601) var updatedAt: Date?
+    @Field(Keys.message) var message: String
+    @Field(Keys.timestamp) var timestamp: Int
+    @Field(Keys.sender) var sender: UUID
+    @Field(Keys.deleted) var deleted: Bool
+    @Timestamp(Keys.createdAt, on: .create) var createdAt: Date?
+    @Timestamp(Keys.updatedAt, on: .update) var updatedAt: Date?
 
     /// Initialize an object.
     /// - Parameter id: the identifier.

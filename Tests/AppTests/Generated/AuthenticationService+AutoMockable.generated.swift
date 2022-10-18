@@ -10,22 +10,22 @@ import NIOWebSocket
 
 class AuthenticationServiceMock: AuthenticationService {
 
-    //MARK: - hash
+    //MARK: - forceHash
 
-    var hashPasswordCallsCount = 0
-    var hashPasswordCalled: Bool {
-        return hashPasswordCallsCount > 0
+    var forceHashPasswordCallsCount = 0
+    var forceHashPasswordCalled: Bool {
+        return forceHashPasswordCallsCount > 0
     }
-    var hashPasswordReceivedPassword: String?
-    var hashPasswordReceivedInvocations: [String?] = []
-    var hashPasswordReturnValue: String?
-    var hashPasswordClosure: ((String?) -> String?)?
+    var forceHashPasswordReceivedPassword: String?
+    var forceHashPasswordReceivedInvocations: [String?] = []
+    var forceHashPasswordReturnValue: String?
+    var forceHashPasswordClosure: ((String?) -> String?)?
 
-    func hash(password: String?) -> String? {
-        hashPasswordCallsCount += 1
-        hashPasswordReceivedPassword = password
-        hashPasswordReceivedInvocations.append(password)
-        return hashPasswordClosure.map({ $0(password) }) ?? hashPasswordReturnValue
+    func forceHash(password: String?) -> String? {
+        forceHashPasswordCallsCount += 1
+        forceHashPasswordReceivedPassword = password
+        forceHashPasswordReceivedInvocations.append(password)
+        return forceHashPasswordClosure.map({ $0(password) }) ?? forceHashPasswordReturnValue
     }
 
     //MARK: - isValid

@@ -12,7 +12,7 @@ protocol AuthenticationService: Initable, AutoMockable {
     /// Hash a password.
     /// - Parameter password: the plain text password.
     /// - Returns: The hashed password.
-    func hash(password: String?) -> String?
+    func forceHash(password: String?) -> String?
 
     /// Check if the given password is correct based on the hashed password.
     /// - Parameter password: the plain text password.
@@ -50,5 +50,13 @@ extension AuthenticationService {
             }
         }
         return password.count > 7 && upperCaseCharater && lowerCaseCharater && decimalCharater
+    }
+
+    /// Hash a password.
+    /// - Parameter password: the plain text password.
+    /// - Returns: The hashed password.
+    func hash(password: String?) -> String? {
+        guard let password, isValid(password: password) else { return nil }
+        return forceHash(password: password)
     }
 }

@@ -8,6 +8,7 @@
 import Vapor
 
 final class SportBuddyController: BackendApiDelegate {
+    @LazyInjected private var adminController: AdminController
     @LazyInjected private var chatController: ChatController
     @LazyInjected private var chatEntriesController: ChatEntriesController
     @LazyInjected private var searchController: SearchController
@@ -89,5 +90,37 @@ extension SportBuddyController {
 
     func userImageGet(with req: Request, asAuthenticated user: User, chatId: String) throws -> EventLoopFuture<userImageGetResponse> {
         try userController.userImageGet(with: req, asAuthenticated: user, chatId: chatId)
+    }
+}
+
+// MARK: - AdminController
+
+extension SportBuddyController {
+    func clearDatabasePost(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<clearDatabasePostResponse> {
+        try adminController.clearDatabasePost(with: req, asAuthenticated: user)
+    }
+
+    func deleteExerciseModelPost(with req: Request, asAuthenticated user: User, primaryId: UUID) throws -> EventLoopFuture<deleteExerciseModelPostResponse> {
+        try adminController.deleteExerciseModelPost(with: req, asAuthenticated: user, primaryId: primaryId)
+    }
+
+    func exerciseModelsGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<exerciseModelsGetResponse> {
+        try adminController.exerciseModelsGet(with: req, asAuthenticated: user)
+    }
+
+    func resetDatabasePost(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<resetDatabasePostResponse> {
+        try adminController.resetDatabasePost(with: req, asAuthenticated: user)
+    }
+
+    func saveNewPasswordPost(with req: Request, asAuthenticated user: User, requestId: UUID, newPassword: String) throws -> EventLoopFuture<saveNewPasswordPostResponse> {
+        try adminController.saveNewPasswordPost(with: req, asAuthenticated: user, requestId: requestId, newPassword: newPassword)
+    }
+
+    func uploadExerciseModelPost(with req: Request, asAuthenticated user: User, body: ExerciseModelDTO) throws -> EventLoopFuture<uploadExerciseModelPostResponse> {
+        try adminController.uploadExerciseModelPost(with: req, asAuthenticated: user, body: body)
+    }
+
+    func usersGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<usersGetResponse> {
+        try adminController.usersGet(with: req, asAuthenticated: user)
     }
 }
