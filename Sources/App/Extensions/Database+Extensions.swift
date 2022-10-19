@@ -34,6 +34,7 @@ extension Database {
         User.deleteAll(on: self)
             .flatMap { _ in ChatEntry.deleteAll(on: self) }
             .flatMap { _ in Chat.deleteAll(on: self) }
+            .flatMap { _ in ExerciseModel.deleteAll(on: self) }
     }
 
     /// Add the initial data.
@@ -79,12 +80,123 @@ extension Database {
                                 thirdUser.id!],
                         chatEntries: [firstChatEntry.id!,
                                       secondChatEntry.id!])
+
+        let firstExerciseModel = ExerciseModel(
+            id: .init(),
+            sequence: [
+                .init(
+                    armCharacteristics: .init(
+                        firstHalfPositionType: .around90,
+                        firstFullPositionType: .around90,
+                        secondFullPositionType: .around90,
+                        secondHalfPositionType: .around90,
+                        distanceType: .around1,
+                        type: .arms
+                    ),
+                    legCharacteristics: .init(
+                        firstHalfPositionType: .around180,
+                        firstFullPositionType: .around90,
+                        secondFullPositionType: .around90,
+                        secondHalfPositionType: .around180,
+                        distanceType: .around0,
+                        type: .legs
+                    ),
+                    errors: [
+                        .init(
+                            characteristics: .init(
+                                distanceType: .around1,
+                                type: .legs
+                            ),
+                            error: "Tedd összébb a lábakat!"
+                        ),
+                        .init(
+                            characteristics: .init(
+                                distanceType: .around0,
+                                type: .arms
+                            ),
+                            error: "Tedd szét a kezeket!"
+                        )
+                    ]
+                )
+            ],
+            sequenceCount: 20,
+            delay: 1,
+            videoId: "")
+
+        let secondExerciseModel = ExerciseModel(
+            id: .init(),
+            sequence: [
+                .init(
+                    armCharacteristics: .init(
+                        firstHalfPositionType: .around90,
+                        firstFullPositionType: .around180,
+                        secondFullPositionType: .around180,
+                        secondHalfPositionType: .around90,
+                        distanceType: .around1,
+                        type: .arms
+                    ),
+                    legCharacteristics: .init(
+                        firstHalfPositionType: .around180,
+                        firstFullPositionType: .around90,
+                        secondFullPositionType: .around90,
+                        secondHalfPositionType: .around180,
+                        distanceType: .around1,
+                        type: .legs
+                    ),
+                    errors: []
+                ),
+                .init(
+                    armCharacteristics: .init(
+                        firstHalfPositionType: .around135,
+                        firstFullPositionType: .around180,
+                        secondFullPositionType: .around180,
+                        secondHalfPositionType: .around135,
+                        distanceType: .around1,
+                        type: .arms
+                    ),
+                    legCharacteristics: .init(
+                        firstHalfPositionType: .around180,
+                        firstFullPositionType: .around90,
+                        secondFullPositionType: .around90,
+                        secondHalfPositionType: .around180,
+                        distanceType: .around1,
+                        type: .legs
+                    ),
+                    errors: []
+                ),
+                .init(
+                    armCharacteristics: .init(
+                        firstHalfPositionType: .around180,
+                        firstFullPositionType: .around180,
+                        secondFullPositionType: .around180,
+                        secondHalfPositionType: .around180,
+                        distanceType: .around1,
+                        type: .arms
+                    ),
+                    legCharacteristics: .init(
+                        firstHalfPositionType: .around180,
+                        firstFullPositionType: .around90,
+                        secondFullPositionType: .around90,
+                        secondHalfPositionType: .around180,
+                        distanceType: .around1,
+                        type: .legs
+                    ),
+                    errors: []
+                )
+            ],
+            sequenceCount: 20,
+            delay: 1,
+            videoId: "")
+
+
         return firstUser.create(on: self)
             .flatMap { _ in secondUser.create(on: self) }
             .flatMap { _ in thirdUser.create(on: self) }
             .flatMap { _ in firstChatEntry.create(on: self) }
             .flatMap { _ in secondChatEntry.create(on: self) }
             .flatMap { _ in chat.create(on: self) }
+            .flatMap { _ in firstExerciseModel.create(on: self) }
+            .flatMap { _ in secondExerciseModel.create(on: self) }
     }
 
     /// Add the admin user.

@@ -14,12 +14,23 @@ final class ExerciseModel: Codable {
         case delay
         case createdAt
         case updatedAt
+        case videoId
     }
 
+    @LazyInjected private var coderService: CoderService
     @ID(key: .id) var id: UUID?
-    @Field(Keys.sequence) var sequence: [ExerciseMoment]
+    @Field(Keys.sequence) private var _sequence: String
+    var sequence: [ExerciseMoment] {
+        get {
+            coderService.decode(string: _sequence) ?? .init()
+        }
+        set {
+            _sequence = coderService.encode(object: newValue) ?? .init()
+        }
+    }
     @Field(Keys.sequenceCount) var sequenceCount: Int
     @Field(Keys.delay) var delay: TimeInterval
+    @Field(Keys.videoId) var videoId: String
     @Timestamp(Keys.createdAt, on: .create) var createdAt: Date?
     @Timestamp(Keys.updatedAt, on: .update) var updatedAt: Date?
 
@@ -38,11 +49,13 @@ final class ExerciseModel: Codable {
     /// - Parameter sequence: the exercise moments.
     /// - Parameter sequenceCount: the number of sequences.
     /// - Parameter delay: the delay between the moments.
-    init(id: UUID?, sequence: [ExerciseMoment], sequenceCount: Int, delay: TimeInterval) {
+    /// - Parameter videoId: the youtube id of the video.
+    init(id: UUID?, sequence: [ExerciseMoment], sequenceCount: Int, delay: TimeInterval, videoId: String) {
         self.id = id
         self.sequence = sequence
         self.sequenceCount = sequenceCount
         self.delay = delay
+        self.videoId = videoId
     }
 }
 
@@ -54,7 +67,7 @@ extension ExerciseModel: PostgresModellable {
 
     /// Initialize an empty object for a new record in the schema.
     convenience init() {
-        self.init(id: .init(), sequence: .init(), sequenceCount: .zero, delay: .zero)
+        self.init(id: .init(), sequence: .init(), sequenceCount: .zero, delay: .zero, videoId: .init())
     }
 
     /// Initialize the object from a DTO object.
@@ -71,12 +84,14 @@ extension ExerciseModel: PostgresModellable {
                     })
             },
             sequenceCount: dto.sequenceCount,
-            delay: dto.delay)
+            delay: dto.delay,
+            videoId: dto.videoId)
     }
 
     /// Get the object as a DTO object.
     var dto: ExerciseModelDTO {
         .init(
+            id: id ?? .init(),
             sequence: sequence.map {
                 .init(
                     armCharacteristics: $0.armCharacteristics.dto,
@@ -86,6 +101,7 @@ extension ExerciseModel: PostgresModellable {
                     })
             },
             sequenceCount: sequenceCount,
-            delay: delay)
+            delay: delay,
+            videoId: videoId)
     }
 }

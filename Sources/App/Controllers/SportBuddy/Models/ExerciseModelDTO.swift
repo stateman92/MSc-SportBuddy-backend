@@ -10,13 +10,18 @@ import Vapor
 
 public final class ExerciseModelDTO: Content {
 
+    public var `id`: UUID
     public var sequence: [ExerciseMomentDTO]
     public var sequenceCount: Int
     public var delay: Double
+    /** the 11 character long id of the YouTube video */
+    public var videoId: String
 
-    public init(sequence: [ExerciseMomentDTO], sequenceCount: Int, delay: Double) { 
+    public init(`id`: UUID, sequence: [ExerciseMomentDTO], sequenceCount: Int, delay: Double, videoId: String) { 
+        self.`id` = `id`
         self.sequence = sequence
         self.sequenceCount = sequenceCount
         self.delay = delay
+        self.videoId = videoId
     }
 }

@@ -16,27 +16,27 @@ extension AdminControllerImpl: AdminController {
         fatalError()
     }
     
-    func deleteExerciseModelPost(with req: Vapor.Request, asAuthenticated user: User, primaryId: UUID) throws -> NIOCore.EventLoopFuture<deleteExerciseModelPostResponse> {
+    func deleteExerciseModelPost(with req: Request, asAuthenticated user: User, primaryId: UUID) throws -> NIOCore.EventLoopFuture<deleteExerciseModelPostResponse> {
         fatalError()
     }
     
-    func exerciseModelsGet(with req: Vapor.Request, asAuthenticated user: User) throws -> NIOCore.EventLoopFuture<exerciseModelsGetResponse> {
+    func exerciseModelsGet(with req: Request, asAuthenticated user: User) throws -> NIOCore.EventLoopFuture<exerciseModelsGetResponse> {
         fatalError()
     }
     
-    func resetDatabasePost(with req: Vapor.Request, asAuthenticated user: User) throws -> NIOCore.EventLoopFuture<resetDatabasePostResponse> {
+    func resetDatabasePost(with req: Request, asAuthenticated user: User) throws -> NIOCore.EventLoopFuture<resetDatabasePostResponse> {
         fatalError()
     }
     
-    func saveNewPasswordPost(with req: Vapor.Request, asAuthenticated user: User, requestId: UUID, newPassword: String) throws -> NIOCore.EventLoopFuture<saveNewPasswordPostResponse> {
+    func saveNewPasswordPost(with req: Request, asAuthenticated user: User, requestId: UUID, newPassword: String) throws -> NIOCore.EventLoopFuture<saveNewPasswordPostResponse> {
         fatalError()
     }
     
-    func uploadExerciseModelPost(with req: Vapor.Request, asAuthenticated user: User, body: ExerciseModelDTO) throws -> NIOCore.EventLoopFuture<uploadExerciseModelPostResponse> {
+    func uploadExerciseModelPost(with req: Request, asAuthenticated user: User, body: ExerciseModelDTO) throws -> NIOCore.EventLoopFuture<uploadExerciseModelPostResponse> {
         fatalError()
     }
     
-    func usersGet(with req: Vapor.Request, asAuthenticated user: User) throws -> NIOCore.EventLoopFuture<usersGetResponse> {
+    func usersGet(with req: Request, asAuthenticated user: User) throws -> NIOCore.EventLoopFuture<usersGetResponse> {
         fatalError()
     }
 }

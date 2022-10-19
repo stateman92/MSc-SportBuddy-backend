@@ -94,11 +94,12 @@ extension InitialMigration {
     private func createExerciseModels(on database: Database) -> EventLoopFuture<Void> {
         database.schema(.exerciseModels)
             .id()
-            .field(ExerciseModel.Keys.sequence, .array(of: .custom(ExerciseMoment.self)))
+            .field(ExerciseModel.Keys.sequence, .string)
             .field(ExerciseModel.Keys.sequenceCount, .int32)
             .field(ExerciseModel.Keys.delay, .double)
             .field(ExerciseModel.Keys.createdAt, .string)
             .field(ExerciseModel.Keys.updatedAt, .string)
+            .field(ExerciseModel.Keys.videoId, .string)
             .create()
     }
 }
