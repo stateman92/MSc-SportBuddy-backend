@@ -7,7 +7,7 @@
 
 import Vapor
 
-struct SearchControllerImpl { }
+final class SearchControllerImpl { }
 
 // MARK: - SearchController
 

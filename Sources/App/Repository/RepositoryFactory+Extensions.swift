@@ -32,4 +32,9 @@ extension RepositoryFactory {
     var users: RepositoryImpl<User> {
         repository(schema: .users)
     }
+
+    /// The repository of the `ExerciseModel` objects.
+    var exerciseModels: RepositoryImpl<ExerciseModel> {
+        repository(schema: .exerciseModels)
+    }
 }

@@ -16,12 +16,18 @@ public final class ExerciseModelDTO: Content {
     public var delay: Double
     /** the 11 character long id of the YouTube video */
     public var videoId: String
+    /** the identifier of the client side text */
+    public var name: String
+    /** the identifier of the client side text */
+    public var details: String?
 
-    public init(`id`: UUID, sequence: [ExerciseMomentDTO], sequenceCount: Int, delay: Double, videoId: String) { 
+    public init(`id`: UUID, sequence: [ExerciseMomentDTO], sequenceCount: Int, delay: Double, videoId: String, name: String, details: String?) { 
         self.`id` = `id`
         self.sequence = sequence
         self.sequenceCount = sequenceCount
         self.delay = delay
         self.videoId = videoId
+        self.name = name
+        self.details = details
     }
 }

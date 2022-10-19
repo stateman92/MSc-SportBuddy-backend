@@ -11,6 +11,7 @@ import Vapor
 public final class ExerciseErrorDTO: Content {
 
     public var characteristics: CharacteristicsDTO
+    /** the identifier of the client side text */
     public var error: String
 
     public init(characteristics: CharacteristicsDTO, error: String) { 

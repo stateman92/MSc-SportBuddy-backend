@@ -121,7 +121,9 @@ extension Database {
             ],
             sequenceCount: 20,
             delay: 1,
-            videoId: "")
+            videoId: "videoId",
+            name: "name",
+            details: "details")
 
         let secondExerciseModel = ExerciseModel(
             id: .init(),
@@ -186,7 +188,9 @@ extension Database {
             ],
             sequenceCount: 20,
             delay: 1,
-            videoId: "")
+            videoId: "videoId2",
+            name: "name2",
+            details: "details2")
 
 
         return firstUser.create(on: self)

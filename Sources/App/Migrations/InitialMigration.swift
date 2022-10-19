@@ -97,9 +97,11 @@ extension InitialMigration {
             .field(ExerciseModel.Keys.sequence, .string)
             .field(ExerciseModel.Keys.sequenceCount, .int32)
             .field(ExerciseModel.Keys.delay, .double)
+            .field(ExerciseModel.Keys.videoId, .string)
+            .field(ExerciseModel.Keys.name, .string)
+            .field(ExerciseModel.Keys.details, .string)
             .field(ExerciseModel.Keys.createdAt, .string)
             .field(ExerciseModel.Keys.updatedAt, .string)
-            .field(ExerciseModel.Keys.videoId, .string)
             .create()
     }
 }

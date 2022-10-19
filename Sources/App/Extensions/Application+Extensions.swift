@@ -86,10 +86,12 @@ extension Application {
             repositories.register(.chats) { MockRepository<Chat>(req: $0) }
             repositories.register(.chatEntries) { MockRepository<ChatEntry>(req: $0) }
             repositories.register(.users) { MockRepository<User>(req: $0) }
+            repositories.register(.exerciseModels) { MockRepository<ExerciseModel>(req: $0) }
         } else {
             repositories.register(.chats) { RepositoryImpl<Chat>(req: $0) }
             repositories.register(.chatEntries) { RepositoryImpl<ChatEntry>(req: $0) }
             repositories.register(.users) { RepositoryImpl<User>(req: $0) }
+            repositories.register(.exerciseModels) { RepositoryImpl<ExerciseModel>(req: $0) }
         }
     }
 }

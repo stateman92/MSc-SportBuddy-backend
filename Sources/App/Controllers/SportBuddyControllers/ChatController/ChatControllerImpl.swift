@@ -7,7 +7,7 @@
 
 import Vapor
 
-struct ChatControllerImpl { }
+final class ChatControllerImpl { }
 
 // MARK: - ChatController
 
