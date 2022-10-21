@@ -1,14 +1,14 @@
-name: Build and Analyze
+name: Building
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build and analyse project
     runs-on: macos-12
 
     steps:
