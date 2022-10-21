@@ -1,6 +1,8 @@
 # SportBuddy-backend
 SportBuddy backend app
 
+[![Building](https://github.com/stateman92/MSc-SportBuddy-backend/actions/workflows/main.yml/badge.svg)](https://github.com/stateman92/MSc-SportBuddy-backend/actions/workflows/main.yml)
+
 ## Issues
 
 [Resolver issue #148](https://github.com/hmlongco/Resolver/issues/148)
@@ -9,7 +11,7 @@ SportBuddy backend app
 
 - Checkout repo
 
-- Make sure you've installed Xcode in the range 13.1-13.3
+- Make sure you've installed Xcode 14.0.0 (Swift 5.7)
 
 - Open Package.swift and hit run
 
