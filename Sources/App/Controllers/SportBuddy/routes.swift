@@ -36,6 +36,17 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
   {
   let groupForBearer = app.grouped([authForBearer])
   //for backend
+  app.on(.POST, "/adminLogin".asPathComponents) { (request: Request) -> EventLoopFuture<adminLoginPostResponse> in
+    let emailOptional = try? request.query.get(String.self, at: "email")
+    guard let email = emailOptional else {
+      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter email")
+    }
+    let passwordOptional = try? request.query.get(String.self, at: "password")
+    guard let password = passwordOptional else {
+      throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter password")
+    }
+    return try backend.adminLoginPost(with: request, email: email, password: password)
+  }
   groupForBearer.on(.DELETE, "/chatEntries".asPathComponents) { (request: Request) -> EventLoopFuture<chatEntriesDeleteResponse> in
     let chatEntryDTOIdOptional = try? request.query.get(UUID.self, at: "chatEntryDTOId")
     guard let chatEntryDTOId = chatEntryDTOIdOptional else {

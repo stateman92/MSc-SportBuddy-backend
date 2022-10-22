@@ -72,6 +72,10 @@ extension SportBuddyController {
         try userController.loginPost(with: req, email: email, password: password)
     }
 
+    func adminLoginPost(with req: Request, email: String, password: String) throws -> EventLoopFuture<adminLoginPostResponse> {
+        try userController.adminLoginPost(with: req, email: email, password: password)
+    }
+
     func refreshTokenPost(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<refreshTokenPostResponse> {
         req.eventLoop.future(.http200)
     }

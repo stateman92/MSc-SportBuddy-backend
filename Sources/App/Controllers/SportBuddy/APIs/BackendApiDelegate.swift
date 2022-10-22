@@ -6,6 +6,26 @@ import Vapor
 // Template Input: /APIs.Backend
 
 
+public enum adminLoginPostResponse: ResponseEncodable {
+  case http200(UserResponseDTO)
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200(let content):
+      return content.encodeResponse(for: request).map { (response: Response) -> (Response) in
+        response.status = HTTPStatus(statusCode: 200)
+        return response
+      }
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
 public enum chatEntriesDeleteResponse: ResponseEncodable {
   case http200
   case http400
@@ -434,6 +454,10 @@ public enum usersGetResponse: ResponseEncodable {
 public protocol BackendApiDelegate {
   associatedtype AuthType
   /**
+  POST /adminLogin
+  Login an existing admin of the application */
+  func adminLoginPost(with req: Request, email: String, password: String) throws -> EventLoopFuture<adminLoginPostResponse>
+  /**
   DELETE /chatEntries
   Delete a chat message */
   func chatEntriesDelete(with req: Request, asAuthenticated user: AuthType, chatEntryDTOId: UUID) throws -> EventLoopFuture<chatEntriesDeleteResponse>
@@ -479,7 +503,7 @@ public protocol BackendApiDelegate {
   func imagePost(with req: Request, asAuthenticated user: AuthType, body: String?) throws -> EventLoopFuture<imagePostResponse>
   /**
   POST /login
-  Login an existing user of the application or an admin */
+  Login an existing user or an admin of the application */
   func loginPost(with req: Request, email: String, password: String) throws -> EventLoopFuture<loginPostResponse>
   /**
   POST /logout

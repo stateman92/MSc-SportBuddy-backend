@@ -17,7 +17,7 @@ public final class CharacteristicsDTO: Content {
     public var distanceType: DistanceTypeDTO?
     public var type: CharacteristicsTypeDTO
 
-    public init(firstHalfPositionType: HalfPositionTypeDTO?, firstFullPositionType: FullPositionTypeDTO?, secondFullPositionType: FullPositionTypeDTO?, secondHalfPositionType: HalfPositionTypeDTO?, distanceType: DistanceTypeDTO?, type: CharacteristicsTypeDTO) {
+    public init(firstHalfPositionType: HalfPositionTypeDTO?, firstFullPositionType: FullPositionTypeDTO?, secondFullPositionType: FullPositionTypeDTO?, secondHalfPositionType: HalfPositionTypeDTO?, distanceType: DistanceTypeDTO?, type: CharacteristicsTypeDTO) { 
         self.firstHalfPositionType = firstHalfPositionType
         self.firstFullPositionType = firstFullPositionType
         self.secondFullPositionType = secondFullPositionType

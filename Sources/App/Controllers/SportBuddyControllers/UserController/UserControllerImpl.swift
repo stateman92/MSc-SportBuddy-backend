@@ -56,6 +56,28 @@ extension UserControllerImpl: UserController {
             }
     }
 
+    func adminLoginPost(with req: Request, email: String, password: String) throws -> EventLoopFuture<adminLoginPostResponse> {
+        req
+            .repositories
+            .users
+            .queryAll()
+            .flatMap {
+                if let user = $0.first(where: { $0.email == email && $0.isAdmin }),
+                   self.authenticationService.isValid(password: password, hashedPassword: user.password) {
+                    if var token = user.token, token.isValid(validityDuration: Constants.tokenValidityInterval) {
+                        token.refresh()
+                        user.token = token
+                        return req.repositories.users.update(user, transformTo: .http200(.init(token: token.token, user: user.dto)))
+                    } else {
+                        let token = Token()
+                        user.token = token
+                        return req.repositories.users.update(user, transformTo: .http200(.init(token: token.token, user: user.dto)))
+                    }
+                }
+                return req.eventLoop.future(.http400)
+            }
+    }
+
     func forgotPasswordPost(with req: Request, email: String) throws -> EventLoopFuture<forgotPasswordPostResponse> {
         try emailService
             .sendPasswordRecoveryEmail(to: email, on: req)

@@ -10,6 +10,7 @@ import Vapor
 protocol UserController {
     func registerPost(with req: Request, name: String, email: String, password: String) throws -> EventLoopFuture<registerPostResponse>
     func loginPost(with req: Request, email: String, password: String) throws -> EventLoopFuture<loginPostResponse>
+    func adminLoginPost(with req: Request, email: String, password: String) throws -> EventLoopFuture<adminLoginPostResponse>
     func forgotPasswordPost(with req: Request, email: String) throws -> EventLoopFuture<forgotPasswordPostResponse>
     func logoutPost(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<logoutPostResponse>
     func imagePost(with req: Request, asAuthenticated user: User, body: String?) throws -> EventLoopFuture<imagePostResponse>
