@@ -19,7 +19,7 @@ extension AdminControllerImpl: AdminController {
     func clearDatabasePost(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<clearDatabasePostResponse> {
         req
             .db
-            .clear()
+            .clear(leaveAdminWithToken: user.token?.token)
             .map { .http200 }
     }
     
@@ -67,7 +67,7 @@ extension AdminControllerImpl: AdminController {
     func resetDatabasePost(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<resetDatabasePostResponse> {
         req
             .db
-            .reset()
+            .reset(leaveAdminWithToken: user.token?.token)
             .map { .http200 }
     }
     

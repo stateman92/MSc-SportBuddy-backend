@@ -17,16 +17,16 @@ extension Database {
     }
 
     /// Remove all data, and store the admin user.
-    func reset() -> EventLoopFuture<Void> {
+    func reset(leaveAdminWithToken token: UUID? = nil) -> EventLoopFuture<Void> {
         removeAllData()
-            .flatMap { addAdmin() }
+            .flatMap { addAdmin(token: token) }
     }
 
     /// Remove all data, and store the initial data.
-    func clear() -> EventLoopFuture<Void> {
+    func clear(leaveAdminWithToken token: UUID? = nil) -> EventLoopFuture<Void> {
         removeAllData()
             .flatMap { _ in addInitialData() }
-            .flatMap { addAdmin() }
+            .flatMap { addAdmin(token: token) }
     }
 
     /// Remove all data.
@@ -204,7 +204,7 @@ extension Database {
     }
 
     /// Add the admin user.
-    private func addAdmin() -> EventLoopFuture<Void> {
+    private func addAdmin(token: UUID?) -> EventLoopFuture<Void> {
         @LazyInjected var authenticationService: AuthenticationService
         return User(id: .init(), name: "Admin",
                     email: "admin@admin.com",
@@ -212,7 +212,7 @@ extension Database {
                     profileImage: .init(),
                     bio: .init(),
                     isAdmin: true,
-                    token: .init(),
+                    token: .init(token: token ?? .init()),
                     chats: .init())
         .save(on: self)
     }
