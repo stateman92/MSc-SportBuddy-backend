@@ -48,7 +48,8 @@ extension Database {
                              bio: "bio 1",
                              isAdmin: false,
                              token: Token(),
-                             chats: [firstChatId])
+                             chats: [firstChatId],
+                             resetPasswordToken: nil)
 
         let secondUser = User(id: UUID(),
                               name: "name2 name2",
@@ -58,7 +59,8 @@ extension Database {
                               bio: "bio 2",
                               isAdmin: false,
                               token: Token(),
-                              chats: [firstChatId])
+                              chats: [firstChatId],
+                              resetPasswordToken: nil)
 
         let thirdUser = User(id: UUID(),
                              name: "name3 name3",
@@ -68,7 +70,8 @@ extension Database {
                              bio: "bio 3",
                              isAdmin: false,
                              token: Token(),
-                             chats: [])
+                             chats: [],
+                             resetPasswordToken: nil)
 
         let firstChatEntry = ChatEntry(id: UUID(), message: "Hello!", timestamp: Date().secondsSince1970, sender: firstUser.id!, deleted: false)
         let secondChatEntry = ChatEntry(id: UUID(), message: "Hello there!", timestamp: Date().secondsSince1970, sender: secondUser.id!, deleted: false)
@@ -213,7 +216,8 @@ extension Database {
                     bio: .init(),
                     isAdmin: true,
                     token: .init(token: token ?? .init()),
-                    chats: .init())
+                    chats: .init(),
+                    resetPasswordToken: nil)
         .save(on: self)
     }
 }

@@ -19,6 +19,7 @@ final class User {
         case isAdmin
         case token
         case chats
+        case resetPasswordToken
         case createdAt
         case updatedAt
     }
@@ -40,6 +41,15 @@ final class User {
         }
     }
     @Field(Keys.chats) var chats: [UUID]
+    @Field(Keys.resetPasswordToken) private var _resetPasswordToken: String
+    var resetPasswordToken: Token? {
+        get {
+            Token(from: _resetPasswordToken)
+        }
+        set {
+            _resetPasswordToken = newValue?.encoded ?? .init()
+        }
+    }
     @Timestamp(Keys.createdAt, on: .create) var createdAt: Date?
     @Timestamp(Keys.updatedAt, on: .update) var updatedAt: Date?
 
@@ -53,7 +63,8 @@ final class User {
     /// - Parameter isAdmin: whether the user is admin.
     /// - Parameter token: the token of the user.
     /// - Parameter chats: the chats which the user participants in.
-    init(id: UUID?, name: String, email: String, password: String, profileImage: String, bio: String, isAdmin: Bool, token: Token?, chats: [UUID]) {
+    /// - Parameter resetPasswordToken: the reset token of the user.
+    init(id: UUID?, name: String, email: String, password: String, profileImage: String, bio: String, isAdmin: Bool, token: Token?, chats: [UUID], resetPasswordToken: Token?) {
         self.id = id
         self.name = name
         self.email = email
@@ -63,6 +74,7 @@ final class User {
         self.isAdmin = isAdmin
         self.token = token
         self.chats = chats
+        self.resetPasswordToken = resetPasswordToken
     }
 }
 
@@ -74,13 +86,13 @@ extension User: PostgresModellable {
 
     /// Initialize an empty object for a new record in the schema.
     convenience init() {
-        self.init(id: .init(), name: .init(), email: .init(), password: .init(), profileImage: .init(), bio: .init(), isAdmin: false, token: nil, chats: .init())
+        self.init(id: .init(), name: .init(), email: .init(), password: .init(), profileImage: .init(), bio: .init(), isAdmin: false, token: nil, chats: .init(), resetPasswordToken: nil)
     }
 
     /// Initialize the object from a DTO object.
     /// - Parameter dto: the DTO object.
     convenience init(from dto: UserDTO) {
-        self.init(id: dto.primaryId, name: dto.name, email: dto.email, password: .init(), profileImage: dto.profileImage ?? .init(), bio: dto.bio ?? .init(), isAdmin: false, token: nil, chats: dto.chats)
+        self.init(id: dto.primaryId, name: dto.name, email: dto.email, password: .init(), profileImage: dto.profileImage ?? .init(), bio: dto.bio ?? .init(), isAdmin: false, token: nil, chats: dto.chats, resetPasswordToken: nil)
     }
 
     /// Get the object as a DTO object.

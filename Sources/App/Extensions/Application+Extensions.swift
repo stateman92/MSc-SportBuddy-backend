@@ -8,7 +8,6 @@
 import Vapor
 import Gatekeeper
 import FluentPostgresDriver
-import SendGrid
 
 extension Application {
     /// Setup the application.

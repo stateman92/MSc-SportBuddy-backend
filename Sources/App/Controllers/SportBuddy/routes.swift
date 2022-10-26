@@ -154,7 +154,7 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
   groupForBearer.on(.POST, "/resetDatabase".asPathComponents) { (request: Request) -> EventLoopFuture<resetDatabasePostResponse> in
     return try backend.resetDatabasePost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
   }
-  groupForBearer.on(.POST, "/saveNewPassword".asPathComponents) { (request: Request) -> EventLoopFuture<saveNewPasswordPostResponse> in
+  app.on(.POST, "/saveNewPassword".asPathComponents) { (request: Request) -> EventLoopFuture<saveNewPasswordPostResponse> in
     let requestIdOptional = try? request.query.get(UUID.self, at: "requestId")
     guard let requestId = requestIdOptional else {
       throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter requestId")
@@ -163,7 +163,7 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     guard let newPassword = newPasswordOptional else {
       throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter newPassword")
     }
-    return try backend.saveNewPasswordPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), requestId: requestId, newPassword: newPassword)
+    return try backend.saveNewPasswordPost(with: request, requestId: requestId, newPassword: newPassword)
   }
   groupForBearer.on(.POST, "/searchUser".asPathComponents) { (request: Request) -> EventLoopFuture<searchUserPostResponse> in
     let nameOptional = try? request.query.get(String.self, at: "name")

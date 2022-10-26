@@ -29,24 +29,24 @@ class EmailServiceMock: EmailService {
 
     //MARK: - sendEmail
 
-    var sendEmailToFromEmailSubjectTextOnThrowableError: Error?
-    var sendEmailToFromEmailSubjectTextOnCallsCount = 0
-    var sendEmailToFromEmailSubjectTextOnCalled: Bool {
-        return sendEmailToFromEmailSubjectTextOnCallsCount > 0
+    var sendEmailToSubjectTextOnThrowableError: Error?
+    var sendEmailToSubjectTextOnCallsCount = 0
+    var sendEmailToSubjectTextOnCalled: Bool {
+        return sendEmailToSubjectTextOnCallsCount > 0
     }
-    var sendEmailToFromEmailSubjectTextOnReceivedArguments: (toEmail: String, fromEmail: String, subject: String?, text: String, req: Request)?
-    var sendEmailToFromEmailSubjectTextOnReceivedInvocations: [(toEmail: String, fromEmail: String, subject: String?, text: String, req: Request)] = []
-    var sendEmailToFromEmailSubjectTextOnReturnValue: EventLoopFuture<Void>!
-    var sendEmailToFromEmailSubjectTextOnClosure: ((String, String, String?, String, Request) throws -> EventLoopFuture<Void>)?
+    var sendEmailToSubjectTextOnReceivedArguments: (toEmail: String, subject: String?, text: String, req: Request)?
+    var sendEmailToSubjectTextOnReceivedInvocations: [(toEmail: String, subject: String?, text: String, req: Request)] = []
+    var sendEmailToSubjectTextOnReturnValue: EventLoopFuture<Void>!
+    var sendEmailToSubjectTextOnClosure: ((String, String?, String, Request) throws -> EventLoopFuture<Void>)?
 
-    func sendEmail(to toEmail: String, fromEmail: String, subject: String?, text: String, on req: Request) throws -> EventLoopFuture<Void> {
-        if let error = sendEmailToFromEmailSubjectTextOnThrowableError {
+    func sendEmail(to toEmail: String, subject: String?, text: String, on req: Request) throws -> EventLoopFuture<Void> {
+        if let error = sendEmailToSubjectTextOnThrowableError {
             throw error
         }
-        sendEmailToFromEmailSubjectTextOnCallsCount += 1
-        sendEmailToFromEmailSubjectTextOnReceivedArguments = (toEmail: toEmail, fromEmail: fromEmail, subject: subject, text: text, req: req)
-        sendEmailToFromEmailSubjectTextOnReceivedInvocations.append((toEmail: toEmail, fromEmail: fromEmail, subject: subject, text: text, req: req))
-        return try sendEmailToFromEmailSubjectTextOnClosure.map({ try $0(toEmail, fromEmail, subject, text, req) }) ?? sendEmailToFromEmailSubjectTextOnReturnValue
+        sendEmailToSubjectTextOnCallsCount += 1
+        sendEmailToSubjectTextOnReceivedArguments = (toEmail: toEmail, subject: subject, text: text, req: req)
+        sendEmailToSubjectTextOnReceivedInvocations.append((toEmail: toEmail, subject: subject, text: text, req: req))
+        return try sendEmailToSubjectTextOnClosure.map({ try $0(toEmail, subject, text, req) }) ?? sendEmailToSubjectTextOnReturnValue
     }
 
     //MARK: - init

@@ -54,6 +54,7 @@ extension InitialMigration {
             .field(User.Keys.isAdmin, .bool)
             .field(User.Keys.token, .string)
             .field(User.Keys.chats, .array(of: .uuid))
+            .field(User.Keys.resetPasswordToken, .string)
             .field(User.Keys.createdAt, .string)
             .field(User.Keys.updatedAt, .string)
             .create()

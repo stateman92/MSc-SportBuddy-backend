@@ -116,8 +116,8 @@ extension SportBuddyController {
         try adminController.resetDatabasePost(with: req, asAuthenticated: user)
     }
 
-    func saveNewPasswordPost(with req: Request, asAuthenticated user: User, requestId: UUID, newPassword: String) throws -> EventLoopFuture<saveNewPasswordPostResponse> {
-        try adminController.saveNewPasswordPost(with: req, asAuthenticated: user, requestId: requestId, newPassword: newPassword)
+    func saveNewPasswordPost(with req: Request, requestId: UUID, newPassword: String) throws -> EventLoopFuture<saveNewPasswordPostResponse> {
+        try adminController.saveNewPasswordPost(with: req, requestId: requestId, newPassword: newPassword)
     }
 
     func uploadExerciseModelPost(with req: Request, asAuthenticated user: User, body: ExerciseModelDTO) throws -> EventLoopFuture<uploadExerciseModelPostResponse> {

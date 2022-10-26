@@ -71,17 +71,25 @@ extension AdminControllerImpl: AdminController {
             .map { .http200 }
     }
     
-    func saveNewPasswordPost(with req: Request, asAuthenticated user: User, requestId: UUID, newPassword: String) throws -> EventLoopFuture<saveNewPasswordPostResponse> {
+    func saveNewPasswordPost(with req: Request, requestId: UUID, newPassword: String) throws -> EventLoopFuture<saveNewPasswordPostResponse> {
         guard let hashedPassword = authenticationService.hash(password: newPassword) else {
             return req.eventLoop.future().map { .http400 }
         }
         return req
             .repositories
             .users
-            .findOrAbort(user.id)
+            .queryAll()
+            .map {
+                $0.first { $0.resetPasswordToken?.token == requestId }
+            }
+            .unwrapOrAbort()
             .flatMap {
-                $0.password = hashedPassword
-                return req.repositories.users.update($0)
+                if $0.token?.isValid(validityDuration: Constants.resetTokenValidityInterval) == true {
+                    $0.password = hashedPassword
+                    return req.repositories.users.update($0)
+                } else {
+                    return req.eventLoop.future()
+                }
             }
             .map { .http200 }
     }

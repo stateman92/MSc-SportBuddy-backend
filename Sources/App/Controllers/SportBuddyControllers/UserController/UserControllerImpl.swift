@@ -29,7 +29,16 @@ extension UserControllerImpl: UserController {
                     return req.eventLoop.future(.http400)
                 }
                 let token = Token()
-                let user = User(id: UUID(), name: name, email: email, password: hashedPassword, profileImage: .init(), bio: .init(), isAdmin: false, token: token, chats: .init())
+                let user = User(id: UUID(),
+                                name: name,
+                                email: email,
+                                password: hashedPassword,
+                                profileImage: .init(),
+                                bio: .init(),
+                                isAdmin: false,
+                                token: token,
+                                chats: .init(),
+                                resetPasswordToken: nil)
                 return req.repositories.users.create(user, transformTo: .http200(UserResponseDTO(token: token.token, user: user.dto)))
             }
     }
@@ -79,9 +88,26 @@ extension UserControllerImpl: UserController {
     }
 
     func forgotPasswordPost(with req: Request, email: String) throws -> EventLoopFuture<forgotPasswordPostResponse> {
-        try emailService
-            .sendPasswordRecoveryEmail(to: email, on: req)
-            .transform(to: .http200)
+        let id = UUID()
+        return req
+            .repositories
+            .users
+            .queryAll {
+                $0.first { $0.email == email }
+            }
+            .unwrapOrAbort()
+            .flatMap { user in
+                user.resetPasswordToken = .init(token: id)
+                return req
+                    .repositories
+                    .users
+                    .update(user)
+                    .transform(to: user)
+            }
+            .tryFlatMap { (user: User) in
+                try self.emailService.sendPasswordRecoveryEmail(to: user.name, email: email, id: id, on: req)
+            }
+            .map { .http200 }
     }
 
     func logoutPost(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<logoutPostResponse> {

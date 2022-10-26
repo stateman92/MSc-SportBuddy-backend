@@ -10,7 +10,7 @@ extension DependencyInjector {
     static func registerServices() {
         resolver.register { AuthorizationServiceImpl() }.implements((any AuthorizationService).self)
         resolver.register { AuthenticationServiceImpl() }.implements(AuthenticationService.self)
-        resolver.register { EmailServiceImpl() }.implements(EmailService.self)
+        resolver.register { MailGunEmailServiceImpl() }.implements(EmailService.self)
         resolver.register { CoderServiceImpl() }.implements(CoderService.self)
     }
 }

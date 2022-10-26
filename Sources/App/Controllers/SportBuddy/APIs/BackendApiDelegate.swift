@@ -524,7 +524,7 @@ public protocol BackendApiDelegate {
   /**
   POST /saveNewPassword
   Reset a forgotten pasword */
-  func saveNewPasswordPost(with req: Request, asAuthenticated user: AuthType, requestId: UUID, newPassword: String) throws -> EventLoopFuture<saveNewPasswordPostResponse>
+  func saveNewPasswordPost(with req: Request, requestId: UUID, newPassword: String) throws -> EventLoopFuture<saveNewPasswordPostResponse>
   /**
   POST /searchUser
   Search a user */
