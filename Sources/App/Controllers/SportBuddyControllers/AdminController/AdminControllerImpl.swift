@@ -84,14 +84,19 @@ extension AdminControllerImpl: AdminController {
             }
             .unwrapOrAbort()
             .flatMap {
-                if $0.token?.isValid(validityDuration: Constants.resetTokenValidityInterval) == true {
+                if $0.resetPasswordToken?.isValid(validityDuration: Constants.resetTokenValidityInterval) == true {
                     $0.password = hashedPassword
-                    return req.repositories.users.update($0)
+                    $0.resetPasswordToken = nil
+                    return req
+                        .repositories
+                        .users
+                        .update($0)
+                        .transform(to: true)
                 } else {
-                    return req.eventLoop.future()
+                    return req.eventLoop.future().transform(to: false)
                 }
             }
-            .map { .http200 }
+            .map { $0 ? .http200 : .http400 }
     }
     
     func uploadExerciseModelPost(with req: Request, asAuthenticated user: User, body: ExerciseModelDTO) throws -> EventLoopFuture<uploadExerciseModelPostResponse> {

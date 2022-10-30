@@ -58,7 +58,7 @@ We've received a request to reset the password for the SportBuddy account associ
 You can reset your password by clicking the button below:
 <br/>
 <br/>
-<button style="border-radius: 12px;padding: 8px 16px;font-size: 18px;background-color: #e7e7e7;color: #353535;border: none;">
+<button style="border-radius: 12px;padding: 8px 16px;font-size: 18px;background-color: navy;color: white;border: none;">
 <a href="{{url}}{{token}}"
    target="_blank"
    rel="noopener"
