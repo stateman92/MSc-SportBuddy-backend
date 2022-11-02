@@ -374,25 +374,6 @@ public enum searchUserPostResponse: ResponseEncodable {
 }
 
 
-public enum testGetResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
 public enum uploadExerciseModelPostResponse: ResponseEncodable {
   case http200
   case http400
@@ -434,6 +415,26 @@ public enum userImageGetResponse: ResponseEncodable {
 
 public enum usersGetResponse: ResponseEncodable {
   case http200([UserDB])
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200(let content):
+      return content.encodeResponse(for: request).map { (response: Response) -> (Response) in
+        response.status = HTTPStatus(statusCode: 200)
+        return response
+      }
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
+public enum versionGetResponse: ResponseEncodable {
+  case http200(String)
   case http400
 
   public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
@@ -530,10 +531,6 @@ public protocol BackendApiDelegate {
   Search a user */
   func searchUserPost(with req: Request, asAuthenticated user: AuthType, name: String) throws -> EventLoopFuture<searchUserPostResponse>
   /**
-  GET /test
-  Test */
-  func testGet(with req: Request) throws -> EventLoopFuture<testGetResponse>
-  /**
   POST /uploadExerciseModel
   Upload a new exercise */
   func uploadExerciseModelPost(with req: Request, asAuthenticated user: AuthType, body: ExerciseModelDTO) throws -> EventLoopFuture<uploadExerciseModelPostResponse>
@@ -545,4 +542,8 @@ public protocol BackendApiDelegate {
   GET /users
   Get all users' information */
   func usersGet(with req: Request, asAuthenticated user: AuthType) throws -> EventLoopFuture<usersGetResponse>
+  /**
+  GET /version
+  Get the version of the backend. It serves as a test endpoint too */
+  func versionGet(with req: Request) throws -> EventLoopFuture<versionGetResponse>
 }

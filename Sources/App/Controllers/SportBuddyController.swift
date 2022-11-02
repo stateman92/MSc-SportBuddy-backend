@@ -16,8 +16,8 @@ final class SportBuddyController: BackendApiDelegate {
 }
 
 extension SportBuddyController {
-    func testGet(with req: Request) throws -> EventLoopFuture<testGetResponse> {
-        req.eventLoop.makeSucceededFuture(.http200)
+    func versionGet(with req: Request) throws -> EventLoopFuture<versionGetResponse> {
+        req.eventLoop.makeSucceededFuture(.http200(Constants.version))
     }
 }
 

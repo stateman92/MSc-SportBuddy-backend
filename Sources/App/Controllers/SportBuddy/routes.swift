@@ -172,9 +172,6 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
     }
     return try backend.searchUserPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), name: name)
   }
-  app.on(.GET, "/test".asPathComponents) { (request: Request) -> EventLoopFuture<testGetResponse> in
-    return try backend.testGet(with: request)
-  }
   groupForBearer.on(.POST, "/uploadExerciseModel".asPathComponents) { (request: Request) -> EventLoopFuture<uploadExerciseModelPostResponse> in
     let body = try request.content.decode(ExerciseModelDTO.self)
     return try backend.uploadExerciseModelPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
@@ -188,6 +185,9 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
   }
   groupForBearer.on(.GET, "/users".asPathComponents) { (request: Request) -> EventLoopFuture<usersGetResponse> in
     return try backend.usersGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
+  }
+  app.on(.GET, "/version".asPathComponents) { (request: Request) -> EventLoopFuture<versionGetResponse> in
+    return try backend.versionGet(with: request)
   }
 }
 

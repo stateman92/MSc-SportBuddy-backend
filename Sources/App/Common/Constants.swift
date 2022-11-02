@@ -35,6 +35,7 @@ enum Constants {
         }
     }
 
+    static let version = "1.0.5"
     static let tokenValidityInterval: TimeInterval = .minutes(30)
     private static let resetTokenValidityMinutes = 60
     static let resetTokenValidityInterval: TimeInterval = .minutes(resetTokenValidityMinutes)
