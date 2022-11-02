@@ -8,6 +8,7 @@
 import Foundation
 
 struct ExerciseMoment: Codable {
+    let id: UUID
     let armCharacteristics: Characteristics
     let legCharacteristics: Characteristics
     let errors: [ExerciseError]

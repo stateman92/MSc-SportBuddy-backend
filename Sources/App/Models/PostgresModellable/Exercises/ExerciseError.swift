@@ -8,6 +8,7 @@
 import Foundation
 
 struct ExerciseError: Codable {
+    let id: UUID
     let characteristics: Characteristics
     let error: String
 }

@@ -85,10 +85,11 @@ extension ExerciseModel: PostgresModellable {
             id: .init(),
             sequence: dto.sequence.map {
                 .init(
+                    id: $0.id,
                     armCharacteristics: .init(from: $0.armCharacteristics),
                     legCharacteristics: .init(from: $0.legCharacteristics),
                     errors: $0.errors.map {
-                        .init(characteristics: .init(from: $0.characteristics), error: $0.error)
+                        .init(id: .init(), characteristics: .init(from: $0.characteristics), error: $0.error)
                     })
             },
             sequenceCount: dto.sequenceCount,
@@ -104,10 +105,11 @@ extension ExerciseModel: PostgresModellable {
             id: id ?? .init(),
             sequence: sequence.map {
                 .init(
+                    id: $0.id,
                     armCharacteristics: $0.armCharacteristics.dto,
                     legCharacteristics: $0.legCharacteristics.dto,
                     errors: $0.errors.map {
-                        .init(characteristics: $0.characteristics.dto, error: $0.error)
+                        .init(id: .init(), characteristics: $0.characteristics.dto, error: $0.error)
                     })
             },
             sequenceCount: sequenceCount,

@@ -19,7 +19,7 @@ SportBuddy backend app
 
 #### Update openapi generated files
 
-- Make sure you've downloaded [Vapor server codegen](https://github.com/thecheatah/vapor-server-codegen) - if not, download it via [Download link](https://github.com/thecheatah/vapor-server-codegen/archive/refs/heads/4.zip)
+- Make sure you've downloaded [Vapor server codegen](https://github.com/thecheatah/vapor-server-codegen) [this commit, 4.0.0](https://github.com/thecheatah/vapor-server-codegen/commit/59f6a580ac618782d1c51a0a4ded8fa1779e6de7) - if not, download it via [Download link](https://github.com/thecheatah/vapor-server-codegen/archive/refs/heads/4.zip)
 
 - Run `cd path/to/vapor-server-codegen/target && java --add-opens=java.base/java.util=ALL-UNNAMED -cp vapor-server-codegen-4.0.0.jar:swagger-codegen-cli-3.0.14.jar io.swagger.codegen.v3.cli.SwaggerCodegen generate -l SwiftVapor4 -i path/to/swagger.yaml -o ./output/SwaggerOutput --additional-properties projectName=SportBuddy` in the terminal
 

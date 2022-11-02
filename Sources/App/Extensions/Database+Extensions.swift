@@ -88,6 +88,7 @@ extension Database {
             id: .init(),
             sequence: [
                 .init(
+                    id: .init(),
                     armCharacteristics: .init(
                         firstHalfPositionType: .around90,
                         firstFullPositionType: .around90,
@@ -106,6 +107,7 @@ extension Database {
                     ),
                     errors: [
                         .init(
+                            id: .init(),
                             characteristics: .init(
                                 distanceType: .around1,
                                 type: .legs
@@ -113,6 +115,7 @@ extension Database {
                             error: "Tedd összébb a lábakat!"
                         ),
                         .init(
+                            id: .init(),
                             characteristics: .init(
                                 distanceType: .around0,
                                 type: .arms
@@ -132,6 +135,7 @@ extension Database {
             id: .init(),
             sequence: [
                 .init(
+                    id: .init(),
                     armCharacteristics: .init(
                         firstHalfPositionType: .around90,
                         firstFullPositionType: .around180,
@@ -151,6 +155,7 @@ extension Database {
                     errors: []
                 ),
                 .init(
+                    id: .init(),
                     armCharacteristics: .init(
                         firstHalfPositionType: .around135,
                         firstFullPositionType: .around180,
@@ -170,6 +175,7 @@ extension Database {
                     errors: []
                 ),
                 .init(
+                    id: .init(),
                     armCharacteristics: .init(
                         firstHalfPositionType: .around180,
                         firstFullPositionType: .around180,

@@ -10,11 +10,13 @@ import Vapor
 
 public final class ExerciseErrorDTO: Content {
 
+    public var `id`: UUID
     public var characteristics: CharacteristicsDTO
     /** the identifier of the client side text */
     public var error: String
 
-    public init(characteristics: CharacteristicsDTO, error: String) { 
+    public init(`id`: UUID, characteristics: CharacteristicsDTO, error: String) { 
+        self.`id` = `id`
         self.characteristics = characteristics
         self.error = error
     }

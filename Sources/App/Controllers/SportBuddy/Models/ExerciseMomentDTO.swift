@@ -10,11 +10,13 @@ import Vapor
 
 public final class ExerciseMomentDTO: Content {
 
+    public var `id`: UUID
     public var armCharacteristics: CharacteristicsDTO
     public var legCharacteristics: CharacteristicsDTO
     public var errors: [ExerciseErrorDTO]
 
-    public init(armCharacteristics: CharacteristicsDTO, legCharacteristics: CharacteristicsDTO, errors: [ExerciseErrorDTO]) { 
+    public init(`id`: UUID, armCharacteristics: CharacteristicsDTO, legCharacteristics: CharacteristicsDTO, errors: [ExerciseErrorDTO]) { 
+        self.`id` = `id`
         self.armCharacteristics = armCharacteristics
         self.legCharacteristics = legCharacteristics
         self.errors = errors

@@ -43,10 +43,12 @@ extension AdminControllerImpl: AdminController {
                             id: $0.id ?? .init(),
                             sequence: $0.sequence.map {
                                 .init(
+                                    id: $0.id,
                                     armCharacteristics: $0.armCharacteristics.dto,
                                     legCharacteristics: $0.legCharacteristics.dto,
                                     errors: $0.errors.map {
                                         .init(
+                                            id: $0.id,
                                             characteristics: $0.characteristics.dto,
                                             error: $0.error
                                         )
@@ -112,10 +114,12 @@ extension AdminControllerImpl: AdminController {
                     id: body.id,
                     sequence: body.sequence.map {
                         .init(
+                            id: $0.id,
                             armCharacteristics: .init(from: $0.armCharacteristics),
                             legCharacteristics: .init(from: $0.legCharacteristics),
                             errors: $0.errors.map {
                                 .init(
+                                    id: $0.id,
                                     characteristics: .init(from: $0.characteristics),
                                     error: $0.error
                                 )
