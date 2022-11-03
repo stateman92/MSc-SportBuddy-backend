@@ -108,6 +108,10 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
   groupForBearer.on(.GET, "/exerciseModels".asPathComponents) { (request: Request) -> EventLoopFuture<exerciseModelsGetResponse> in
     return try backend.exerciseModelsGet(with: request, asAuthenticated: request.auth.require(authForBearer.authType()))
   }
+  groupForBearer.on(.POST, "/exerciseModels".asPathComponents) { (request: Request) -> EventLoopFuture<exerciseModelsPostResponse> in
+    let body = try request.content.decode(ExerciseModelDTO.self)
+    return try backend.exerciseModelsPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
+  }
   app.on(.POST, "/forgotPassword".asPathComponents) { (request: Request) -> EventLoopFuture<forgotPasswordPostResponse> in
     let emailOptional = try? request.query.get(String.self, at: "email")
     guard let email = emailOptional else {
@@ -171,10 +175,6 @@ public func routes<authForBearer: AuthenticationMiddleware, backend: BackendApiD
       throw Abort(HTTPResponseStatus.badRequest, reason: "Missing query parameter name")
     }
     return try backend.searchUserPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), name: name)
-  }
-  groupForBearer.on(.POST, "/uploadExerciseModel".asPathComponents) { (request: Request) -> EventLoopFuture<uploadExerciseModelPostResponse> in
-    let body = try request.content.decode(ExerciseModelDTO.self)
-    return try backend.uploadExerciseModelPost(with: request, asAuthenticated: request.auth.require(authForBearer.authType()), body: body)
   }
   groupForBearer.on(.GET, "/userImage".asPathComponents) { (request: Request) -> EventLoopFuture<userImageGetResponse> in
     let chatIdOptional = try? request.query.get(String.self, at: "chatId")

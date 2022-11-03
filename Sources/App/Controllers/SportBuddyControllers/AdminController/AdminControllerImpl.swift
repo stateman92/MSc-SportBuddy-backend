@@ -101,16 +101,13 @@ extension AdminControllerImpl: AdminController {
             .map { $0 ? .http200 : .http400 }
     }
     
-    func uploadExerciseModelPost(with req: Request, asAuthenticated user: User, body: ExerciseModelDTO) throws -> EventLoopFuture<uploadExerciseModelPostResponse> {
+    func exerciseModelsPost(with req: Request, asAuthenticated user: User, body: ExerciseModelDTO) throws -> EventLoopFuture<exerciseModelsPostResponse> {
         req
             .repositories
             .exerciseModels
             .queryAll()
             .flatMap {
-                if $0.contains(where: { $0.id == body.id }) {
-                    return req.eventLoop.future(.http400)
-                }
-                return req.repositories.exerciseModels.create(.init(
+                let exerciseModel = ExerciseModel(
                     id: body.id,
                     sequence: body.sequence.map {
                         .init(
@@ -131,7 +128,11 @@ extension AdminControllerImpl: AdminController {
                     videoId: body.videoId,
                     name: body.name,
                     details: body.details
-                ), transformTo: .http200)
+                )
+                if $0.contains(where: { $0.id == body.id }) {
+                    return req.repositories.exerciseModels.update(exerciseModel, transformTo: .http200)
+                }
+                return req.repositories.exerciseModels.create(exerciseModel, transformTo: .http200)
             }
     }
     

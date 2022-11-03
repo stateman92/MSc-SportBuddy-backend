@@ -199,6 +199,25 @@ public enum exerciseModelsGetResponse: ResponseEncodable {
 }
 
 
+public enum exerciseModelsPostResponse: ResponseEncodable {
+  case http200
+  case http400
+
+  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
+    switch self {
+    case .http200:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 200)
+      return request.eventLoop.makeSucceededFuture(response)
+    case .http400:
+      let response = Response()
+      response.status = HTTPStatus(statusCode: 400)
+      return request.eventLoop.makeSucceededFuture(response)
+    }
+  }
+}
+
+
 public enum forgotPasswordPostResponse: ResponseEncodable {
   case http200
   case http400
@@ -374,25 +393,6 @@ public enum searchUserPostResponse: ResponseEncodable {
 }
 
 
-public enum uploadExerciseModelPostResponse: ResponseEncodable {
-  case http200
-  case http400
-
-  public func encodeResponse(for request: Request) -> EventLoopFuture<Response> {
-    switch self {
-    case .http200:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 200)
-      return request.eventLoop.makeSucceededFuture(response)
-    case .http400:
-      let response = Response()
-      response.status = HTTPStatus(statusCode: 400)
-      return request.eventLoop.makeSucceededFuture(response)
-    }
-  }
-}
-
-
 public enum userImageGetResponse: ResponseEncodable {
   case http200(String)
   case http400
@@ -495,6 +495,10 @@ public protocol BackendApiDelegate {
   Get all exercises' information */
   func exerciseModelsGet(with req: Request, asAuthenticated user: AuthType) throws -> EventLoopFuture<exerciseModelsGetResponse>
   /**
+  POST /exerciseModels
+  Upload a new exercise */
+  func exerciseModelsPost(with req: Request, asAuthenticated user: AuthType, body: ExerciseModelDTO) throws -> EventLoopFuture<exerciseModelsPostResponse>
+  /**
   POST /forgotPassword
   Send a recovery email to an existing user of the application or an admin */
   func forgotPasswordPost(with req: Request, email: String) throws -> EventLoopFuture<forgotPasswordPostResponse>
@@ -530,10 +534,6 @@ public protocol BackendApiDelegate {
   POST /searchUser
   Search a user */
   func searchUserPost(with req: Request, asAuthenticated user: AuthType, name: String) throws -> EventLoopFuture<searchUserPostResponse>
-  /**
-  POST /uploadExerciseModel
-  Upload a new exercise */
-  func uploadExerciseModelPost(with req: Request, asAuthenticated user: AuthType, body: ExerciseModelDTO) throws -> EventLoopFuture<uploadExerciseModelPostResponse>
   /**
   GET /userImage
   Image gathering of a chat (user) */

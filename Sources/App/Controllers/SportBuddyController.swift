@@ -120,8 +120,8 @@ extension SportBuddyController {
         try adminController.saveNewPasswordPost(with: req, requestId: requestId, newPassword: newPassword)
     }
 
-    func uploadExerciseModelPost(with req: Request, asAuthenticated user: User, body: ExerciseModelDTO) throws -> EventLoopFuture<uploadExerciseModelPostResponse> {
-        try adminController.uploadExerciseModelPost(with: req, asAuthenticated: user, body: body)
+    func exerciseModelsPost(with req: Request, asAuthenticated user: User, body: ExerciseModelDTO) throws -> EventLoopFuture<exerciseModelsPostResponse> {
+        try adminController.exerciseModelsPost(with: req, asAuthenticated: user, body: body)
     }
 
     func usersGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<usersGetResponse> {

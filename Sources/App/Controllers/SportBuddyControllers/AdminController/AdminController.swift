@@ -13,6 +13,6 @@ protocol AdminController {
     func exerciseModelsGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<exerciseModelsGetResponse>
     func resetDatabasePost(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<resetDatabasePostResponse>
     func saveNewPasswordPost(with req: Request, requestId: UUID, newPassword: String) throws -> EventLoopFuture<saveNewPasswordPostResponse>
-    func uploadExerciseModelPost(with req: Request, asAuthenticated user: User, body: ExerciseModelDTO) throws -> EventLoopFuture<uploadExerciseModelPostResponse>
+    func exerciseModelsPost(with req: Request, asAuthenticated user: User, body: ExerciseModelDTO) throws -> EventLoopFuture<exerciseModelsPostResponse>
     func usersGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<usersGetResponse>
 }
