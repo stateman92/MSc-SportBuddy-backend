@@ -23,6 +23,12 @@ SportBuddy backend app
 
 - Run `cd path/to/vapor-server-codegen/target && java --add-opens=java.base/java.util=ALL-UNNAMED -cp vapor-server-codegen-4.0.0.jar:swagger-codegen-cli-3.0.14.jar io.swagger.codegen.v3.cli.SwaggerCodegen generate -l SwiftVapor4 -i path/to/swagger.yaml -o ./output/SwaggerOutput --additional-properties projectName=SportBuddy` in the terminal
 
+#### Update version
+
+- Run `sh bump.sh` in the terminal
+
+- By default it bumps the patch version. If you want other behavior, add a `major` / `minor` / `patch` flag, e.g. `sh bump.sh major`
+
 #### Server starting on http://127.0.0.1:8080 - Address already in use (errno: 48)
 
 - Run `sudo lsof -i :8080` in the terminal, you have to get a result something like this:
