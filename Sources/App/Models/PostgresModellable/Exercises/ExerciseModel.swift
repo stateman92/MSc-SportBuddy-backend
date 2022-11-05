@@ -5,6 +5,8 @@
 //  Created by Kristof Kalai on 2022. 10. 18..
 //
 
+import Vapor
+import FluentPostgresDriver
 import Foundation
 
 final class ExerciseModel: Codable {

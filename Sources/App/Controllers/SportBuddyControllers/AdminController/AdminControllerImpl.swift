@@ -106,8 +106,8 @@ extension AdminControllerImpl: AdminController {
             .repositories
             .exerciseModels
             .queryAll()
-            .flatMap {
-                let exerciseModel = ExerciseModel(
+            .flatMap { _ in
+                let model = ExerciseModel(
                     id: body.id,
                     sequence: body.sequence.map {
                         .init(
@@ -129,11 +129,10 @@ extension AdminControllerImpl: AdminController {
                     name: body.name,
                     details: body.details
                 )
-                if $0.contains(where: { $0.id == body.id }) {
-                    return req.repositories.exerciseModels.update(exerciseModel, transformTo: .http200)
-                }
-                return req.repositories.exerciseModels.create(exerciseModel, transformTo: .http200)
+                return req.repositories.exerciseModels.delete(body.id)
+                    .flatMap { _ in req.repositories.exerciseModels.create(model) }
             }
+            .map { .http200 }
     }
     
     func usersGet(with req: Request, asAuthenticated user: User) throws -> EventLoopFuture<usersGetResponse> {

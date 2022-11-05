@@ -17,12 +17,24 @@ public final class CharacteristicsDTO: Content {
     public var distanceType: DistanceTypeDTO?
     public var type: CharacteristicsTypeDTO
 
-    public init(firstHalfPositionType: HalfPositionTypeDTO?, firstFullPositionType: FullPositionTypeDTO?, secondFullPositionType: FullPositionTypeDTO?, secondHalfPositionType: HalfPositionTypeDTO?, distanceType: DistanceTypeDTO?, type: CharacteristicsTypeDTO) { 
+    public init(firstHalfPositionType: HalfPositionTypeDTO?, firstFullPositionType: FullPositionTypeDTO?, secondFullPositionType: FullPositionTypeDTO?, secondHalfPositionType: HalfPositionTypeDTO?, distanceType: DistanceTypeDTO?, type: CharacteristicsTypeDTO) {
         self.firstHalfPositionType = firstHalfPositionType
         self.firstFullPositionType = firstFullPositionType
         self.secondFullPositionType = secondFullPositionType
         self.secondHalfPositionType = secondHalfPositionType
         self.distanceType = distanceType
         self.type = type
+    }
+
+    // DO NOT MODIFY
+    // needed to work with Angular models (data it not missing if nil, but represented as a "null" string)
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.firstHalfPositionType = try? container.decodeIfPresent(HalfPositionTypeDTO.self, forKey: .firstHalfPositionType)
+        self.firstFullPositionType = try? container.decodeIfPresent(FullPositionTypeDTO.self, forKey: .firstFullPositionType)
+        self.secondFullPositionType = try? container.decodeIfPresent(FullPositionTypeDTO.self, forKey: .secondFullPositionType)
+        self.secondHalfPositionType = try? container.decodeIfPresent(HalfPositionTypeDTO.self, forKey: .secondHalfPositionType)
+        self.distanceType = try? container.decodeIfPresent(DistanceTypeDTO.self, forKey: .distanceType)
+        self.type = try container.decode(CharacteristicsTypeDTO.self, forKey: .type)
     }
 }
