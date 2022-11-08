@@ -197,7 +197,7 @@ extension Database {
             sequenceCount: 20,
             delay: 1,
             videoId: "466OCQliI1E",
-            name: "exercise_kettlebell_1",
+            name: "exercise_kettlebell_1_name",
             details: "exercise_kettlebell_1_details")
 
         return firstUser.create(on: self)
