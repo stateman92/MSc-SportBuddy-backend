@@ -207,7 +207,6 @@ extension Database {
             .flatMap { _ in secondChatEntry.create(on: self) }
             .flatMap { _ in chat.create(on: self) }
             .flatMap { _ in firstExerciseModel.create(on: self) }
-            .flatMap { _ in secondExerciseModel.create(on: self) }
     }
 
     /// Add the admin user.
