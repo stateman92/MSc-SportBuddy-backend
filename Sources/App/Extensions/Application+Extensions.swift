@@ -30,7 +30,7 @@ extension Application {
                                 username: Environment.get(.username),
                                 password: Environment.get(.password),
                                 database: Environment.get(.database),
-                                tlsConfiguration: tlsConfiguration),
+                                tlsConfiguration: Environment.get(.tls) == "false" ? nil : tlsConfiguration),
                       as: .psql,
                       isDefault: true)
         try setupMigrations()

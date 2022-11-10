@@ -54,6 +54,24 @@ OR as a one-liner:
 
 - Run `git push heroku main` in the terminal
 
+#### Run via Docker
+
+- Make sure you've installed [Docker 4.13.1 (90346)](https://www.docker.com/) - if not, download and install it
+
+- Run `docker-compose --file docker-compose.yml up --build` in the terminal in the root directory
+
+- Wait until the command finishes (e.g. it prints `database system is ready to accept connections`)
+
+- Run `docker ps` in a new terminal
+
+- Run `docker attach <container_id>` in the new terminal. The `container_id` is the CONTAINER ID of the api:dev image. It should print `root@<container_id>:/app#`
+
+- Run `swift build` in the new terminal
+
+- Run `swift run Run serve -b 0.0.0.0` in the new terminal. It should print `[ NOTICE ] Server starting on http://0.0.0.0:8080`
+
+- The app is running, you can test it. [It](http://localhost:8080/version) should print the current version of the app
+
 #### Update mocks
 
 - Make sure you've installed [Sourcery](https://github.com/krzysztofzablocki/Sourcery) - if not, use e.g. `brew install sourcery` via [Homebrew](https://brew.sh/)
