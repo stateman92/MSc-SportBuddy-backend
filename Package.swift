@@ -9,8 +9,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/vapor/vapor.git", exact: .init(4, 65, 2)),
         .package(url: "https://github.com/vapor/fluent.git", exact: .init(4, 4, 0)),
-        .package(url: "https://github.com/vapor/postgres-kit.git", exact: .init(2, 5, 1)),
-        .package(url: "https://github.com/vapor/postgres-nio.git", exact: .init(1, 7, 2)),
+        .package(url: "https://github.com/vapor/postgres-kit.git", exact: .init(2, 5, 1)), // FluentPostgresDriver depends on this, and if we write it here (with exact version), then the version is revolved consistently
+        .package(url: "https://github.com/vapor/postgres-nio.git", exact: .init(1, 7, 2)), // Fluent depends on this, and if we write it here (with exact version), then the version is revolved consistently
         .package(url: "https://github.com/vapor/fluent-postgres-driver.git", exact: .init(2, 2, 4)),
         .package(url: "https://github.com/nodes-vapor/gatekeeper.git", exact: .init(4, 2, 0)),
         .package(url: "https://github.com/vapor-community/sendgrid.git", exact: .init(4, 0, 0)),
@@ -27,7 +27,9 @@ let package = Package(
                 .product(name: "Gatekeeper", package: "gatekeeper"),
                 .product(name: "SendGrid", package: "sendgrid"),
                 .product(name: "Resolver", package: "Resolver"),
-                .product(name: "Mailgun", package: "mailgun")
+                .product(name: "Mailgun", package: "mailgun"),
+                .product(name: "PostgresKit", package: "postgres-kit"), // to bypass warning (not used dependency - it is used, not directly but transitively)
+                .product(name: "PostgresNIO", package: "postgres-nio") // to bypass warning (not used dependency - it is used, not directly but transitively)
             ],
             swiftSettings: [
                 .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release))
