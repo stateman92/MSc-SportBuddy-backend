@@ -268,122 +268,6 @@ extension Database {
                         type: .arms
                     ),
                     legCharacteristics: .init(
-                        firstHalfPositionType: .around90,
-                        firstFullPositionType: .around90,
-                        secondFullPositionType: .around90,
-                        secondHalfPositionType: .around90,
-                        distanceType: .around1,
-                        type: .legs
-                    ),
-                    errors: [
-                        .init(
-                            id: .init(),
-                            characteristics: .init(
-                                distanceType: .around2,
-                                type: .legs
-                            ),
-                            error: "exercise_kettlebell_1_error_1"
-                        ),
-                        .init(
-                            id: .init(),
-                            characteristics: .init(
-                                distanceType: .around3,
-                                type: .legs
-                            ),
-                            error: "exercise_kettlebell_1_error_1"
-                        ),
-                        .init(
-                            id: .init(),
-                            characteristics: .init(
-                                distanceType: .around4,
-                                type: .legs
-                            ),
-                            error: "exercise_kettlebell_1_error_1"
-                        ),
-                        .init(
-                            id: .init(),
-                            characteristics: .init(
-                                distanceType: .around0,
-                                type: .legs
-                            ),
-                            error: "exercise_kettlebell_1_error_2"
-                        )
-                    ]
-                ),
-                .init(
-                    id: .init(),
-                    armCharacteristics: .init(
-                        firstHalfPositionType: .around180,
-                        firstFullPositionType: .around90,
-                        secondFullPositionType: .around90,
-                        secondHalfPositionType: .around180,
-                        distanceType: .around0,
-                        type: .arms
-                    ),
-                    legCharacteristics: .init(
-                        firstHalfPositionType: .around180,
-                        firstFullPositionType: .around90,
-                        secondFullPositionType: .around90,
-                        secondHalfPositionType: .around180,
-                        distanceType: .around2,
-                        type: .legs
-                    ),
-                    errors: [
-                        .init(
-                            id: .init(),
-                            characteristics: .init(
-                                distanceType: .around2,
-                                type: .legs
-                            ),
-                            error: "exercise_kettlebell_1_error_1"
-                        ),
-                        .init(
-                            id: .init(),
-                            characteristics: .init(
-                                distanceType: .around3,
-                                type: .legs
-                            ),
-                            error: "exercise_kettlebell_1_error_1"
-                        ),
-                        .init(
-                            id: .init(),
-                            characteristics: .init(
-                                distanceType: .around4,
-                                type: .legs
-                            ),
-                            error: "exercise_kettlebell_1_error_1"
-                        ),
-                        .init(
-                            id: .init(),
-                            characteristics: .init(
-                                distanceType: .around0,
-                                type: .legs
-                            ),
-                            error: "exercise_kettlebell_1_error_2"
-                        )
-                    ]
-                )
-            ],
-            sequenceCount: 20,
-            delay: 1,
-            videoId: "466OCQliI1E",
-            name: "exercise_kettlebell_1_name",
-            details: "exercise_kettlebell_1_details")
-
-        let thirdExerciseModel = ExerciseModel(
-            id: .init(),
-            sequence: [
-                .init(
-                    id: .init(),
-                    armCharacteristics: .init(
-                        firstHalfPositionType: .around180,
-                        firstFullPositionType: .around90,
-                        secondFullPositionType: .around90,
-                        secondHalfPositionType: .around180,
-                        distanceType: .around0,
-                        type: .arms
-                    ),
-                    legCharacteristics: .init(
                         firstHalfPositionType: .around180,
                         firstFullPositionType: .around90,
                         secondFullPositionType: .around90,
@@ -485,6 +369,122 @@ extension Database {
             videoId: "rPqwkfX_NiI",
             name: "exercise_swiss_1_name",
             details: "exercise_swiss_1_details")
+
+        let thirdExerciseModel = ExerciseModel(
+            id: .init(),
+            sequence: [
+                .init(
+                    id: .init(),
+                    armCharacteristics: .init(
+                        firstHalfPositionType: .around180,
+                        firstFullPositionType: .around90,
+                        secondFullPositionType: .around90,
+                        secondHalfPositionType: .around180,
+                        distanceType: .around0,
+                        type: .arms
+                    ),
+                    legCharacteristics: .init(
+                        firstHalfPositionType: .around90,
+                        firstFullPositionType: .around90,
+                        secondFullPositionType: .around90,
+                        secondHalfPositionType: .around90,
+                        distanceType: .around1,
+                        type: .legs
+                    ),
+                    errors: [
+                        .init(
+                            id: .init(),
+                            characteristics: .init(
+                                distanceType: .around2,
+                                type: .legs
+                            ),
+                            error: "exercise_kettlebell_1_error_1"
+                        ),
+                        .init(
+                            id: .init(),
+                            characteristics: .init(
+                                distanceType: .around3,
+                                type: .legs
+                            ),
+                            error: "exercise_kettlebell_1_error_1"
+                        ),
+                        .init(
+                            id: .init(),
+                            characteristics: .init(
+                                distanceType: .around4,
+                                type: .legs
+                            ),
+                            error: "exercise_kettlebell_1_error_1"
+                        ),
+                        .init(
+                            id: .init(),
+                            characteristics: .init(
+                                distanceType: .around0,
+                                type: .legs
+                            ),
+                            error: "exercise_kettlebell_1_error_2"
+                        )
+                    ]
+                ),
+                .init(
+                    id: .init(),
+                    armCharacteristics: .init(
+                        firstHalfPositionType: .around180,
+                        firstFullPositionType: .around90,
+                        secondFullPositionType: .around90,
+                        secondHalfPositionType: .around180,
+                        distanceType: .around0,
+                        type: .arms
+                    ),
+                    legCharacteristics: .init(
+                        firstHalfPositionType: .around180,
+                        firstFullPositionType: .around90,
+                        secondFullPositionType: .around90,
+                        secondHalfPositionType: .around180,
+                        distanceType: .around2,
+                        type: .legs
+                    ),
+                    errors: [
+                        .init(
+                            id: .init(),
+                            characteristics: .init(
+                                distanceType: .around2,
+                                type: .legs
+                            ),
+                            error: "exercise_kettlebell_1_error_1"
+                        ),
+                        .init(
+                            id: .init(),
+                            characteristics: .init(
+                                distanceType: .around3,
+                                type: .legs
+                            ),
+                            error: "exercise_kettlebell_1_error_1"
+                        ),
+                        .init(
+                            id: .init(),
+                            characteristics: .init(
+                                distanceType: .around4,
+                                type: .legs
+                            ),
+                            error: "exercise_kettlebell_1_error_1"
+                        ),
+                        .init(
+                            id: .init(),
+                            characteristics: .init(
+                                distanceType: .around0,
+                                type: .legs
+                            ),
+                            error: "exercise_kettlebell_1_error_2"
+                        )
+                    ]
+                )
+            ],
+            sequenceCount: 20,
+            delay: 1,
+            videoId: "466OCQliI1E",
+            name: "exercise_kettlebell_1_name",
+            details: "exercise_kettlebell_1_details")
 
         let fourthExerciseModel = ExerciseModel(
             id: .init(),

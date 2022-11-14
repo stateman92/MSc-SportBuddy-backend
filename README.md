@@ -11,7 +11,7 @@ SportBuddy backend app
 
 - Checkout repo
 
-- Make sure you've installed Xcode 14.0.0 (Swift 5.7)
+- Make sure you've installed Xcode 14.1.0 (Swift 5.7)
 
 - Open Package.swift and hit run
 
