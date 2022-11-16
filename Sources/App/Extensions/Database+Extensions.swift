@@ -380,13 +380,13 @@ extension Database {
                         firstFullPositionType: .around90,
                         secondFullPositionType: .around90,
                         secondHalfPositionType: .around180,
-                        distanceType: .around0,
+                        distanceType: .around1,
                         type: .arms
                     ),
                     legCharacteristics: .init(
-                        firstHalfPositionType: .around90,
-                        firstFullPositionType: .around90,
-                        secondFullPositionType: .around90,
+                        firstHalfPositionType: .around135,
+                        firstFullPositionType: .around45,
+                        secondFullPositionType: .around135,
                         secondHalfPositionType: .around90,
                         distanceType: .around1,
                         type: .legs
@@ -433,7 +433,7 @@ extension Database {
                         firstFullPositionType: .around90,
                         secondFullPositionType: .around90,
                         secondHalfPositionType: .around180,
-                        distanceType: .around0,
+                        distanceType: .around1,
                         type: .arms
                     ),
                     legCharacteristics: .init(
@@ -441,7 +441,7 @@ extension Database {
                         firstFullPositionType: .around90,
                         secondFullPositionType: .around90,
                         secondHalfPositionType: .around180,
-                        distanceType: .around2,
+                        distanceType: .around1,
                         type: .legs
                     ),
                     errors: [
@@ -480,7 +480,7 @@ extension Database {
                     ]
                 )
             ],
-            sequenceCount: 20,
+            sequenceCount: 2,
             delay: 1,
             videoId: "466OCQliI1E",
             name: "exercise_kettlebell_1_name",
